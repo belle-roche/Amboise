@@ -91,7 +91,7 @@ $('#main').onclick=async e=>{const id=e.target.dataset.del;if(id&&confirm('Suppr
 $('#bUser').onclick=()=>{if(user){user=null;sb.auth.signOut();render();return}reg=false;authUI();dAuth.showModal()};
 function authUI(){$('#aT').textContent=reg?'Créer un compte':'Connexion';$('#aCode').hidden=!reg;$('#aOk').textContent=reg?'Créer le compte':'Se connecter';$('#aSw').textContent=reg?'J\'ai déjà un compte':'Créer un compte'}
 $('#aSw').onclick=()=>{reg=!reg;authUI()};$('#aX').onclick=()=>dAuth.close();
-const mail=(n,p)=>(n+'.'+p).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')+'@belleroche-rp.fr';
+const mail=(n,p)=>('br '+n+' '+p).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')+'@gmail.com';
 const setU=ses=>{const m=ses&&ses.user.user_metadata;user=m&&m.nom?{nom:m.nom,prenom:m.prenom}:null;render()};
 sb.auth.getSession().then(({data})=>setU(data.session));
 $('#aOk').onclick=async()=>{const nom=$('#nom').value.trim().toLowerCase(),prenom=$('#pre').value.trim().toLowerCase(),pw=$('#mdp').value;
