@@ -57,6 +57,7 @@ fieldset{border:1.5px solid #cfd8dc;border-radius:8px;margin:0 0 16px;padding:6p
 <fieldset><legend>Nouveau lien (site d'entreprise)</legend><label>Catégorie</label><select id="lCat"></select><label>Titre</label><input id="lT"><label>Lien</label><input id="lU" placeholder="https://..."><label>Image</label><input id="lI" type="file" accept="image/*"><div class="row"><button id="lOk">Ajouter</button></div></fieldset>
 <fieldset><legend>Nouveau giveaway</legend><label>Catégorie</label><select id="gCat"></select><label>Titre</label><input id="gT"><label>Description du lot</label><textarea id="gTx" rows="3"></textarea><label>Image</label><input id="gI" type="file" accept="image/*"><label>Date de fin (facultatif)</label><input id="gD" type="datetime-local"><div class="row"><button id="gOk">Lancer le giveaway</button></div></fieldset>
 <fieldset><legend>Nouvelle voiture perdue</legend><label>Catégorie</label><select id="vCat"></select><label>Titre</label><input id="vT"><label>Plaque</label><input id="vP"><label>Image</label><input id="vI" type="file" accept="image/*"><div class="row"><button id="vOk">Ajouter la voiture</button></div></fieldset>
+<fieldset><legend>Fond du site</legend><label>Image de fond (bandeau d'accueil)</label><input id="sbg" type="file" accept="image/*"><div class="row"><button id="sbOk">Appliquer</button><button class="g" id="sbDel">Retirer</button></div></fieldset>
 <fieldset><legend>Identités</legend><label>Nom</label><input id="iN"><label>Prénom</label><input id="iP"><label>Date de naissance</label><input id="iD" type="date"><label>Profession</label><input id="iJ"><label>Photo</label><input id="iPh" type="file" accept="image/*"><div class="row"><button id="iOk">Ajouter l'identité</button></div><label>Rechercher</label><input id="iS" placeholder="Nom ou prénom"><div id="iL" style="margin-top:10px"></div></fieldset>
 <fieldset><legend>Nouvelle catégorie</legend><label>Nom</label><input id="cN"><label>Contenu</label><select id="cK"><option value="posts">Posts / actus</option><option value="links">Liens d'entreprises</option><option value="giveaway">Giveaway</option><option value="cars">Voitures perdues</option></select><div class="row"><button id="cOk">Créer</button></div></fieldset>
 <fieldset><legend>Codes d'accès</legend><label>Code (vide = généré)</label><input id="kC"><label>Type</label><select id="kR"><option value="compte">Création de compte</option><option value="admin">Admin</option></select><div class="row"><button id="kOk">Créer le code</button></div><div id="kL" style="margin-top:10px"></div></fieldset>
@@ -64,13 +65,15 @@ fieldset{border:1.5px solid #cfd8dc;border-radius:8px;margin:0 0 16px;padding:6p
 
 <dialog id="dTk" style="width:min(94vw,560px)"><h2>Tickets</h2><div id="tkF"><label>Sujet</label><input id="tkS"><label>Message</label><textarea id="tkM" rows="3"></textarea><div class="row"><button id="tkOk">Envoyer le ticket</button></div></div><div id="tkL" style="margin-top:14px"></div><div class="row"><button class="g" onclick="dTk.close()">Fermer</button></div></dialog>
 <script>
-const SUPABASE_URL='https://VOTRE-PROJET.supabase.co',SUPABASE_KEY='VOTRE_CLE_ANON';
+const SUPABASE_URL='https://ubgrdwutztpzhjitikpd.supabase.co',SUPABASE_KEY='sb_publishable_8WVQYX2D0lL0yj55-2bEIA_ul5xOKkN';
 const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 const $=s=>document.querySelector(s),esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const safe=u=>/^https?:\/\//i.test(u||'')?u:'#',sha=async t=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(t)))].map(b=>b.toString(16).padStart(2,'0')).join('');
 let cats=[],items=[],entries=[],identites=[],editId=null,admin=sessionStorage.br_admin==='1',user=JSON.parse(localStorage.br_user||'null'),reg=false;
 const toast=m=>{const t=$('#toast');t.textContent=m;t.style.display='block';setTimeout(()=>t.style.display='none',3000)};
-async function load(){const[c,i,e]=await Promise.all([sb.from('categories').select('*').order('position'),sb.from('items').select('*').order('created_at',{ascending:false}),sb.from('giveaway_entries').select('*')]);cats=c.data||[];items=i.data||[];entries=e.data||[];render()}
+async function bg(){const{data}=await sb.from('site_settings').select('value').eq('key','bg_url').maybeSingle();const h=document.querySelector('.hero');
+ h.style.background=data&&data.value?`linear-gradient(#16202bb0,#16202bb0),url('${data.value.replace(/'/g,'%27')}') center/cover`:''}
+async function load(){bg();const[c,i,e]=await Promise.all([sb.from('categories').select('*').order('position'),sb.from('items').select('*').order('created_at',{ascending:false}),sb.from('giveaway_entries').select('*')]);cats=c.data||[];items=i.data||[];entries=e.data||[];render()}
 function render(){
  $('#bUser').textContent=user?user.prenom+' '+user.nom+' (quitter)':'Connexion';
  $('#tabs').innerHTML=cats.map(c=>`<a href="#c${c.id}">${esc(c.name)}</a>`).join('');
@@ -136,5 +139,7 @@ $('#bTk').onclick=()=>{if(!user&&!admin)return toast('Connecte-toi pour utiliser
 $('#tkOk').onclick=async()=>{if(!tkS.value.trim()||!tkM.value.trim())return toast('Sujet et message requis.');const{error}=await sb.from('tickets').insert({nom:user.nom,prenom:user.prenom,sujet:tkS.value.trim(),message:tkM.value.trim()});if(error)return toast('Erreur : '+error.message);tkS.value=tkM.value='';toast('Ticket envoyé.');tickets()};
 $('#tkL').onclick=async e=>{const d=e.target.dataset;if(d.tr){const r=prompt('Réponse au ticket :');if(r){await sb.from('tickets').update({reply:r,status:'fermé'}).eq('id',d.tr);tickets()}}
  if(d.td&&confirm('Supprimer ce ticket ?')){await sb.from('tickets').delete().eq('id',d.td);tickets()}};
+$('#sbOk').onclick=()=>run(async()=>{const f=$('#sbg').files[0];if(!f)throw'Choisis une image';const value=await up(f);const{error}=await sb.from('site_settings').upsert({key:'bg_url',value});if(error)throw error;$('#sbg').value=''},'Fond du site mis à jour.');
+$('#sbDel').onclick=()=>run(async()=>{const{error}=await sb.from('site_settings').delete().eq('key','bg_url');if(error)throw error},'Fond retiré.');
 load();
 </script></body></html>
