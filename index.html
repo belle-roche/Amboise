@@ -69,7 +69,7 @@ const SUPABASE_URL='https://dkrwriqngiydoaqfyxzg.supabase.co',SUPABASE_KEY='sb_p
 const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 const $=s=>document.querySelector(s),esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const safe=u=>/^https?:\/\//i.test(u||'')?u:'#',sha=async t=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(t)))].map(b=>b.toString(16).padStart(2,'0')).join('');
-let cats=[],items=[],entries=[],identites=[],editId=null,admin=sessionStorage.br_admin==='1',user=JSON.parse(localStorage.br_user||'null'),reg=false;
+let cats=[],items=[],entries=[],identites=[],editId=null,admin=sessionStorage.br_admin==='1',user=null,reg=false;
 const toast=m=>{const t=$('#toast');t.textContent=m;t.style.display='block';setTimeout(()=>t.style.display='none',3000)};
 async function bg(){const{data}=await sb.from('site_settings').select('value').eq('key','bg_url').maybeSingle();const h=document.querySelector('.hero');
  h.style.background=data&&data.value?`linear-gradient(#16202bb0,#16202bb0),url('${data.value.replace(/'/g,'%27')}') center/cover`:''}
@@ -88,15 +88,24 @@ function render(){
 function spy(){const io=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){document.querySelectorAll('.tabs a').forEach(a=>a.classList.toggle('on',a.hash==='#'+x.target.id))}}),{rootMargin:'-30% 0px -60% 0px'});document.querySelectorAll('section').forEach(s=>io.observe(s))}
 $('#main').onclick=async e=>{const id=e.target.dataset.del;if(id&&confirm('Supprimer cet élément ?')){await sb.from('items').delete().eq('id',id);load()}};
 // Connexion
-$('#bUser').onclick=()=>{if(user){user=null;localStorage.removeItem('br_user');render();return}reg=false;authUI();dAuth.showModal()};
+$('#bUser').onclick=()=>{if(user){user=null;sb.auth.signOut();render();return}reg=false;authUI();dAuth.showModal()};
 function authUI(){$('#aT').textContent=reg?'Créer un compte':'Connexion';$('#aCode').hidden=!reg;$('#aOk').textContent=reg?'Créer le compte':'Se connecter';$('#aSw').textContent=reg?'J\'ai déjà un compte':'Créer un compte'}
 $('#aSw').onclick=()=>{reg=!reg;authUI()};$('#aX').onclick=()=>dAuth.close();
-$('#aOk').onclick=async()=>{const nom=$('#nom').value.trim().toLowerCase(),prenom=$('#pre').value.trim().toLowerCase(),h=await sha($('#mdp').value);
- if(!nom||!prenom||!$('#mdp').value)return toast('Remplissez tous les champs.');
- if(reg){const{data:k}=await sb.from('access_codes').select('role').eq('code',$('#cod').value.trim()).maybeSingle();if(!k)return toast('Code d\'accès invalide.');
-  const{error}=await sb.from('accounts').insert({nom,prenom,pass_hash:h});if(error)return toast('Ce nom et prénom existent déjà.')}
- else{const{data}=await sb.from('accounts').select('id').eq('nom',nom).eq('prenom',prenom).eq('pass_hash',h).maybeSingle();if(!data)return toast('Identifiants incorrects.')}
- user={nom,prenom};localStorage.br_user=JSON.stringify(user);dAuth.close();render();toast('Connecté.')};
+const mail=(n,p)=>(n+'.'+p).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')+'@belleroche-rp.fr';
+const setU=ses=>{const m=ses&&ses.user.user_metadata;user=m&&m.nom?{nom:m.nom,prenom:m.prenom}:null;render()};
+sb.auth.getSession().then(({data})=>setU(data.session));
+$('#aOk').onclick=async()=>{const nom=$('#nom').value.trim().toLowerCase(),prenom=$('#pre').value.trim().toLowerCase(),pw=$('#mdp').value;
+ if(!nom||!prenom||!pw)return toast('Remplissez tous les champs.');
+ if(reg){if(pw.length<6)return toast('Mot de passe : 6 caractères minimum.');
+  const{data:k,error:ke}=await sb.from('access_codes').select('role').eq('code',$('#cod').value.trim()).maybeSingle();
+  if(ke)return toast('Erreur base de données : '+ke.message);if(!k)return toast('Code d\'accès invalide.');
+  const{data,error}=await sb.auth.signUp({email:mail(nom,prenom),password:pw,options:{data:{nom,prenom}}});
+  if(error)return toast(/registered|exists/i.test(error.message)?'Ce nom et prénom existent déjà.':'Erreur : '+error.message);
+  if(!data.session)return toast('Compte créé mais non connecté : désactive "Confirm email" dans Supabase > Authentication.');
+  setU(data.session)}
+ else{const{data,error}=await sb.auth.signInWithPassword({email:mail(nom,prenom),password:pw});
+  if(error)return toast(/invalid/i.test(error.message)?'Identifiants incorrects.':'Erreur : '+error.message);setU(data.session)}
+ dAuth.close();toast('Connecté.')};
 // Admin
 $('#bAdm').onclick=()=>{if(admin){codes();dAdm.showModal()}else dCode.showModal()};
 $('#adOk').onclick=async()=>{const{data}=await sb.from('access_codes').select('role').eq('code',$('#adc').value.trim()).eq('role','admin').maybeSingle();
