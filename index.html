@@ -69,7 +69,7 @@ const SUPABASE_URL='https://dkrwriqngiydoaqfyxzg.supabase.co',SUPABASE_KEY='sb_p
 const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 const $=s=>document.querySelector(s),esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const safe=u=>/^https?:\/\//i.test(u||'')?u:'#',sha=async t=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(t)))].map(b=>b.toString(16).padStart(2,'0')).join('');
-let cats=[],items=[],entries=[],identites=[],editId=null,admin=sessionStorage.br_admin==='1',user=null,reg=false;
+let cats=[],items=[],entries=[],identites=[],editId=null,admin=false,user=null,reg=false;
 const toast=m=>{const t=$('#toast');t.textContent=m;t.style.display='block';setTimeout(()=>t.style.display='none',3000)};
 async function bg(){const{data}=await sb.from('site_settings').select('value').eq('key','bg_url').maybeSingle();const h=document.querySelector('.hero');
  h.style.background=data&&data.value?`linear-gradient(#16202bb0,#16202bb0),url('${data.value.replace(/'/g,'%27')}') center/cover`:''}
@@ -109,8 +109,8 @@ $('#aOk').onclick=async()=>{const nom=$('#nom').value.trim().toLowerCase(),preno
 // Admin
 $('#bAdm').onclick=()=>{if(admin){codes();dAdm.showModal()}else dCode.showModal()};
 $('#adOk').onclick=async()=>{const{data}=await sb.from('access_codes').select('role').eq('code',$('#adc').value.trim()).eq('role','admin').maybeSingle();
- if(!data)return toast('Code administrateur invalide.');admin=true;sessionStorage.br_admin='1';dCode.close();$('#adc').value='';render();codes();dAdm.showModal()};
-$('#adOut').onclick=()=>{admin=false;sessionStorage.removeItem('br_admin');dAdm.close();render()};
+ if(!data)return toast('Code administrateur invalide.');admin=true;localStorage.br_admin_code=$('#adc').value.trim();dCode.close();$('#adc').value='';render();codes();dAdm.showModal()};
+$('#adOut').onclick=()=>{admin=false;localStorage.removeItem('br_admin_code');dAdm.close();render()};
 async function up(f){if(!f)return null;const p=Date.now()+'-'+f.name.replace(/[^\w.]/g,'_');const{error}=await sb.storage.from('media').upload(p,f);if(error)throw error;return sb.storage.from('media').getPublicUrl(p).data.publicUrl}
 async function run(fn,ok){try{await fn();toast(ok);await load()}catch(e){toast('Erreur : '+(e.message||e))}}
 $('#pOk').onclick=()=>run(async()=>{if(!$('#pCat').value||!$('#pT').value)throw'Catégorie et titre requis';
@@ -150,5 +150,6 @@ $('#tkL').onclick=async e=>{const d=e.target.dataset;if(d.tr){const r=prompt('R�
  if(d.td&&confirm('Supprimer ce ticket ?')){await sb.from('tickets').delete().eq('id',d.td);tickets()}};
 $('#sbOk').onclick=()=>run(async()=>{const f=$('#sbg').files[0];if(!f)throw'Choisis une image';const value=await up(f);const{error}=await sb.from('site_settings').upsert({key:'bg_url',value});if(error)throw error;$('#sbg').value=''},'Fond du site mis à jour.');
 $('#sbDel').onclick=()=>run(async()=>{const{error}=await sb.from('site_settings').delete().eq('key','bg_url');if(error)throw error},'Fond retiré.');
+(async()=>{const c=localStorage.br_admin_code;if(!c)return;const{data}=await sb.from('access_codes').select('role').eq('code',c).eq('role','admin').maybeSingle();if(data)admin=true;else localStorage.removeItem('br_admin_code');render()})();
 load();
 </script></body></html>
