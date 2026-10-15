@@ -65,7 +65,7 @@ fieldset{border:1.5px solid #cfd8dc;border-radius:8px;margin:0 0 16px;padding:6p
 
 <dialog id="dTk" style="width:min(94vw,560px)"><h2>Tickets</h2><div id="tkF"><label>Sujet</label><input id="tkS"><label>Message</label><textarea id="tkM" rows="3"></textarea><div class="row"><button id="tkOk">Envoyer le ticket</button></div></div><div id="tkL" style="margin-top:14px"></div><div class="row"><button class="g" onclick="dTk.close()">Fermer</button></div></dialog>
 <script>
-const SUPABASE_URL='https://ubgrdwutztpzhjitikpd.supabase.co',SUPABASE_KEY='sb_publishable_8WVQYX2D0lL0yj55-2bEIA_ul5xOKkN';
+const SUPABASE_URL='https://dkrwriqngiydoaqfyxzg.supabase.co',SUPABASE_KEY='sb_publishable_v-yycYgqQ9dehuVZ5YqwZQ_PfCBFa0M';
 const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 const $=s=>document.querySelector(s),esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const safe=u=>/^https?:\/\//i.test(u||'')?u:'#',sha=async t=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(t)))].map(b=>b.toString(16).padStart(2,'0')).join('');
