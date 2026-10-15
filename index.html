@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Belle-Roche-Sur-Amboise</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=Newsreader:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<style>
+:root{--ard:#22303b;--loire:#1d6a7a;--or:#c79a3b;--bg:#eceff0;--ink:#1b252d;--w:#fff;color-scheme:light}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:70px}
+body{margin:0;background:var(--bg);color:var(--ink);font:18px/1.55 Newsreader,Georgia,serif}
+h1,h2,h3,button,.tabs a,label{font-family:'Bricolage Grotesque',system-ui,sans-serif}
+header{position:sticky;top:0;z-index:5;background:var(--w);border-bottom:2px solid var(--ard);display:flex;gap:12px;align-items:center;padding:10px 16px}
+.brand{font:800 17px 'Bricolage Grotesque';color:var(--ard);white-space:nowrap}
+.tabs{display:flex;gap:6px;overflow-x:auto;flex:1;scrollbar-width:none}
+.tabs a{padding:6px 14px;border-radius:99px;color:var(--ard);text-decoration:none;font-size:15px;font-weight:600;white-space:nowrap}
+.tabs a.on{background:var(--ard);color:var(--w)}
+.hb{display:flex;gap:6px}
+button{font-size:15px;font-weight:600;border:0;border-radius:6px;padding:8px 14px;background:var(--loire);color:var(--w);cursor:pointer}
+button.g{background:transparent;color:var(--ard);border:1.5px solid var(--ard)}button.x{background:#a33;font-size:13px;padding:4px 10px;margin-top:8px}
+:focus-visible{outline:3px solid var(--or);outline-offset:2px}
+.hero{background:repeating-linear-gradient(135deg,#22303b 0 22px,#27374399 22px 24px),var(--ard);color:var(--w);padding:90px 20px 70px;text-align:center}
+.hero h1{font-size:clamp(34px,7vw,72px);line-height:1.05;margin:0 0 12px;font-weight:800}
+.hero p{margin:0;font-style:italic;font-size:21px;color:#d9e4e8}
+main{max-width:1000px;margin:0 auto;padding:0 16px 80px}
+section{padding-top:48px}h2{font-size:34px;margin:0 0 20px;border-left:6px solid var(--or);padding-left:14px;color:var(--ard)}
+.post{background:var(--ard) center/cover;border-radius:10px;margin-bottom:22px;overflow:hidden}
+.pc{min-height:260px;padding:28px;color:var(--w);background:linear-gradient(90deg,#16202bee,#16202b66);display:flex;flex-direction:column;justify-content:flex-end;align-items:flex-start}
+.pc img{max-width:100%;max-height:220px;border-radius:6px;margin-bottom:14px}.pc h3{font-size:28px;margin:0 0 6px}.pc p{margin:0 0 8px;white-space:pre-line;max-width:62ch}.pc time{font-size:14px;opacity:.8}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:18px}
+.lk{background:var(--w);border-radius:10px;padding:12px;border:1px solid #cfd8dc}.lk a{color:var(--ink);text-decoration:none}
+.im{aspect-ratio:4/3;background:var(--bg) center/cover;border-radius:6px;margin-bottom:10px}.lk h3{margin:0;font-size:18px}.lk a:hover h3{color:var(--loire)}
+.empty{font-style:italic;color:#5b6a73}
+dialog{border:0;border-radius:12px;padding:24px;width:min(92vw,460px);max-height:90vh}dialog::backdrop{background:#0008}
+dialog h2{font-size:24px;margin-bottom:14px}label{display:block;font-size:14px;font-weight:600;margin:10px 0 3px}
+input,select,textarea{width:100%;font:16px Newsreader,serif;padding:8px;border:1.5px solid #9fb0b8;border-radius:6px;background:#fff}
+fieldset{border:1.5px solid #cfd8dc;border-radius:8px;margin:0 0 16px;padding:6px 14px 14px}legend{font:800 16px 'Bricolage Grotesque';color:var(--loire)}
+.row{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}.cd{display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid #e1e7ea;font-size:15px}
+#toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:var(--ard);color:#fff;padding:10px 18px;border-radius:8px;display:none;z-index:9}
+.pl{display:inline-block;margin:6px 0 0;padding:2px 12px;border:2px solid var(--ard);border-radius:5px;background:#fff;font:800 16px 'Bricolage Grotesque';letter-spacing:.12em}
+@media(max-width:640px){.brand{display:none}.pc{padding:18px}}
+</style></head><body>
+<header><span class="brand">Belle-Roche</span><nav class="tabs" id="tabs"></nav>
+<div class="hb"><button class="g" id="bTk">Tickets</button><button class="g" id="bUser">Connexion</button><button id="bAdm">Admin</button></div></header>
+<div class="hero"><h1>Belle-Roche-Sur-Amboise</h1><p>Le site officiel de la ville</p></div>
+<main id="main"></main><div id="toast"></div>
+
+<dialog id="dAuth"><h2 id="aT">Connexion</h2>
+<div id="aNom"><label>Nom RP</label><input id="nom"><label>Prénom RP</label><input id="pre"></div>
+<label>Mot de passe</label><input id="mdp" type="password">
+<div id="aCode" hidden><label>Code d'accès</label><input id="cod"></div>
+<div class="row"><button id="aOk">Se connecter</button><button class="g" id="aSw">Créer un compte</button><button class="g" id="aX">Fermer</button></div></dialog>
+
+<dialog id="dCode"><h2>Accès administrateur</h2><label>Code d'accès</label><input id="adc" type="password">
+<div class="row"><button id="adOk">Entrer</button><button class="g" onclick="dCode.close()">Annuler</button></div></dialog>
+
+<dialog id="dAdm" style="width:min(94vw,620px)"><h2>Administration</h2>
+<fieldset><legend>Nouveau post</legend><label>Catégorie</label><select id="pCat"></select><label>Titre</label><input id="pT"><label>Texte</label><textarea id="pTx" rows="4"></textarea><label>Image</label><input id="pI" type="file" accept="image/*"><label>Photo de fond</label><input id="pB" type="file" accept="image/*"><div class="row"><button id="pOk">Publier</button></div></fieldset>
+<fieldset><legend>Nouveau lien (site d'entreprise)</legend><label>Catégorie</label><select id="lCat"></select><label>Titre</label><input id="lT"><label>Lien</label><input id="lU" placeholder="https://..."><label>Image</label><input id="lI" type="file" accept="image/*"><div class="row"><button id="lOk">Ajouter</button></div></fieldset>
+<fieldset><legend>Nouveau giveaway</legend><label>Catégorie</label><select id="gCat"></select><label>Titre</label><input id="gT"><label>Description du lot</label><textarea id="gTx" rows="3"></textarea><label>Image</label><input id="gI" type="file" accept="image/*"><label>Date de fin (facultatif)</label><input id="gD" type="datetime-local"><div class="row"><button id="gOk">Lancer le giveaway</button></div></fieldset>
+<fieldset><legend>Nouvelle voiture perdue</legend><label>Catégorie</label><select id="vCat"></select><label>Titre</label><input id="vT"><label>Plaque</label><input id="vP"><label>Image</label><input id="vI" type="file" accept="image/*"><div class="row"><button id="vOk">Ajouter la voiture</button></div></fieldset>
+<fieldset><legend>Identités</legend><label>Nom</label><input id="iN"><label>Prénom</label><input id="iP"><label>Date de naissance</label><input id="iD" type="date"><label>Profession</label><input id="iJ"><label>Photo</label><input id="iPh" type="file" accept="image/*"><div class="row"><button id="iOk">Ajouter l'identité</button></div><label>Rechercher</label><input id="iS" placeholder="Nom ou prénom"><div id="iL" style="margin-top:10px"></div></fieldset>
+<fieldset><legend>Nouvelle catégorie</legend><label>Nom</label><input id="cN"><label>Contenu</label><select id="cK"><option value="posts">Posts / actus</option><option value="links">Liens d'entreprises</option><option value="giveaway">Giveaway</option><option value="cars">Voitures perdues</option></select><div class="row"><button id="cOk">Créer</button></div></fieldset>
+<fieldset><legend>Codes d'accès</legend><label>Code (vide = généré)</label><input id="kC"><label>Type</label><select id="kR"><option value="compte">Création de compte</option><option value="admin">Admin</option></select><div class="row"><button id="kOk">Créer le code</button></div><div id="kL" style="margin-top:10px"></div></fieldset>
+<div class="row"><button class="g" id="adOut">Quitter le mode admin</button><button class="g" onclick="dAdm.close()">Fermer</button></div></dialog>
+
+<dialog id="dTk" style="width:min(94vw,560px)"><h2>Tickets</h2><div id="tkF"><label>Sujet</label><input id="tkS"><label>Message</label><textarea id="tkM" rows="3"></textarea><div class="row"><button id="tkOk">Envoyer le ticket</button></div></div><div id="tkL" style="margin-top:14px"></div><div class="row"><button class="g" onclick="dTk.close()">Fermer</button></div></dialog>
+<script>
+const SUPABASE_URL='https://VOTRE-PROJET.supabase.co',SUPABASE_KEY='VOTRE_CLE_ANON';
+const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+const $=s=>document.querySelector(s),esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const safe=u=>/^https?:\/\//i.test(u||'')?u:'#',sha=async t=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(t)))].map(b=>b.toString(16).padStart(2,'0')).join('');
+let cats=[],items=[],entries=[],identites=[],editId=null,admin=sessionStorage.br_admin==='1',user=JSON.parse(localStorage.br_user||'null'),reg=false;
+const toast=m=>{const t=$('#toast');t.textContent=m;t.style.display='block';setTimeout(()=>t.style.display='none',3000)};
+async function load(){const[c,i,e]=await Promise.all([sb.from('categories').select('*').order('position'),sb.from('items').select('*').order('created_at',{ascending:false}),sb.from('giveaway_entries').select('*')]);cats=c.data||[];items=i.data||[];entries=e.data||[];render()}
+function render(){
+ $('#bUser').textContent=user?user.prenom+' '+user.nom+' (quitter)':'Connexion';
+ $('#tabs').innerHTML=cats.map(c=>`<a href="#c${c.id}">${esc(c.name)}</a>`).join('');
+ const del=id=>admin?`<button class="x" data-del="${id}">Supprimer</button>`:'';
+ $('#main').innerHTML=cats.map(c=>{const it=items.filter(x=>x.category_id===c.id);
+  const b=c.kind==='cars'?`<div class="grid">${it.map(x=>carCard(x,del(x.id))).join('')}</div>`:c.kind==='giveaway'?it.map(x=>givCard(x,del(x.id))).join(''):c.kind==='links'?`<div class="grid">${it.map(x=>`<div class="lk"><a href="${esc(safe(x.link_url))}" target="_blank" rel="noopener"><div class="im" style="background-image:url('${esc(x.image_url)}')"></div><h3>${esc(x.title)}</h3></a>${del(x.id)}</div>`).join('')}</div>`
+  :it.map(x=>`<article class="post" style="background-image:url('${esc(x.bg_url)}')"><div class="pc">${x.image_url?`<img src="${esc(x.image_url)}" alt="">`:''}<h3>${esc(x.title)}</h3><p>${esc(x.text)}</p><time>${new Date(x.created_at).toLocaleDateString('fr-FR')}</time>${del(x.id)}</div></article>`).join('');
+  return`<section id="c${c.id}"><h2>${esc(c.name)}</h2>${b||'<p class="empty">Rien ici pour le moment.</p>'}</section>`}).join('');
+ const o=c=>cats.filter(x=>x.kind===c).map(x=>`<option value="${x.id}">${esc(x.name)}</option>`).join('');
+ $('#pCat').innerHTML=o('posts');$('#lCat').innerHTML=o('links');$('#gCat').innerHTML=o('giveaway');$('#vCat').innerHTML=o('cars');
+ $('#bAdm').textContent=admin?'Panneau admin':'Admin';spy()}
+function spy(){const io=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){document.querySelectorAll('.tabs a').forEach(a=>a.classList.toggle('on',a.hash==='#'+x.target.id))}}),{rootMargin:'-30% 0px -60% 0px'});document.querySelectorAll('section').forEach(s=>io.observe(s))}
+$('#main').onclick=async e=>{const id=e.target.dataset.del;if(id&&confirm('Supprimer cet élément ?')){await sb.from('items').delete().eq('id',id);load()}};
+// Connexion
+$('#bUser').onclick=()=>{if(user){user=null;localStorage.removeItem('br_user');render();return}reg=false;authUI();dAuth.showModal()};
+function authUI(){$('#aT').textContent=reg?'Créer un compte':'Connexion';$('#aCode').hidden=!reg;$('#aOk').textContent=reg?'Créer le compte':'Se connecter';$('#aSw').textContent=reg?'J\'ai déjà un compte':'Créer un compte'}
+$('#aSw').onclick=()=>{reg=!reg;authUI()};$('#aX').onclick=()=>dAuth.close();
+$('#aOk').onclick=async()=>{const nom=$('#nom').value.trim().toLowerCase(),prenom=$('#pre').value.trim().toLowerCase(),h=await sha($('#mdp').value);
+ if(!nom||!prenom||!$('#mdp').value)return toast('Remplissez tous les champs.');
+ if(reg){const{data:k}=await sb.from('access_codes').select('role').eq('code',$('#cod').value.trim()).maybeSingle();if(!k)return toast('Code d\'accès invalide.');
+  const{error}=await sb.from('accounts').insert({nom,prenom,pass_hash:h});if(error)return toast('Ce nom et prénom existent déjà.')}
+ else{const{data}=await sb.from('accounts').select('id').eq('nom',nom).eq('prenom',prenom).eq('pass_hash',h).maybeSingle();if(!data)return toast('Identifiants incorrects.')}
+ user={nom,prenom};localStorage.br_user=JSON.stringify(user);dAuth.close();render();toast('Connecté.')};
+// Admin
+$('#bAdm').onclick=()=>{if(admin){codes();dAdm.showModal()}else dCode.showModal()};
+$('#adOk').onclick=async()=>{const{data}=await sb.from('access_codes').select('role').eq('code',$('#adc').value.trim()).eq('role','admin').maybeSingle();
+ if(!data)return toast('Code administrateur invalide.');admin=true;sessionStorage.br_admin='1';dCode.close();$('#adc').value='';render();codes();dAdm.showModal()};
+$('#adOut').onclick=()=>{admin=false;sessionStorage.removeItem('br_admin');dAdm.close();render()};
+async function up(f){if(!f)return null;const p=Date.now()+'-'+f.name.replace(/[^\w.]/g,'_');const{error}=await sb.storage.from('media').upload(p,f);if(error)throw error;return sb.storage.from('media').getPublicUrl(p).data.publicUrl}
+async function run(fn,ok){try{await fn();toast(ok);await load()}catch(e){toast('Erreur : '+(e.message||e))}}
+$('#pOk').onclick=()=>run(async()=>{if(!$('#pCat').value||!$('#pT').value)throw'Catégorie et titre requis';
+ const[image_url,bg_url]=await Promise.all([up($('#pI').files[0]),up($('#pB').files[0])]);
+ const{error}=await sb.from('items').insert({category_id:+$('#pCat').value,title:$('#pT').value,text:$('#pTx').value,image_url,bg_url});if(error)throw error;
+ ['pT','pTx','pI','pB'].forEach(i=>$('#'+i).value='')},'Post publié.');
+$('#lOk').onclick=()=>run(async()=>{if(!$('#lCat').value||!$('#lT').value||!/^https?:\/\//i.test($('#lU').value))throw'Catégorie, titre et lien (https://) requis';
+ const image_url=await up($('#lI').files[0]);const{error}=await sb.from('items').insert({category_id:+$('#lCat').value,title:$('#lT').value,link_url:$('#lU').value,image_url});if(error)throw error;
+ ['lT','lU','lI'].forEach(i=>$('#'+i).value='')},'Lien ajouté.');
+$('#cOk').onclick=()=>run(async()=>{if(!$('#cN').value)throw'Nom requis';const{error}=await sb.from('categories').insert({name:$('#cN').value,kind:$('#cK').value,position:Math.max(0,...cats.map(c=>c.position||0))+1});if(error)throw error;$('#cN').value=''},'Catégorie créée.');
+async function codes(){ids();const{data}=await sb.from('access_codes').select('*').order('created_at',{ascending:false});
+ $('#kL').innerHTML=(data||[]).map(k=>`<div class="cd"><span><b>${esc(k.code)}</b> (${k.role==='admin'?'admin':'compte'})</span><button class="x" data-k="${esc(k.code)}">Supprimer</button></div>`).join('')}
+$('#kOk').onclick=async()=>{const c=$('#kC').value.trim()||Math.random().toString(36).slice(2,10).toUpperCase();const{error}=await sb.from('access_codes').insert({code:c,role:$('#kR').value});if(error)return toast('Code déjà existant.');$('#kC').value='';codes();toast('Code créé : '+c)};
+$('#kL').onclick=async e=>{const k=e.target.dataset.k;if(k&&confirm('Supprimer ce code ?')){await sb.from('access_codes').delete().eq('code',k);codes()}};
+const carCard=(x,d)=>`<div class="lk"><div class="im" style="background-image:url('${esc(x.image_url)}')"></div><h3>${esc(x.title)}</h3><span class="pl">${esc(x.plate)}</span>${d}</div>`;
+const givCard=(x,d)=>{const n=entries.filter(e=>e.item_id===x.id).length,end=x.ends_at?new Date(x.ends_at):null,over=x.winner||(end&&end<new Date());
+return`<article class="post" style="background-image:url('${esc(x.image_url)}')"><div class="pc"><h3>${esc(x.title)}</h3><p>${esc(x.text)}</p><time>${end?'Fin le '+end.toLocaleString('fr-FR',{dateStyle:'short',timeStyle:'short'})+', ':''}${n} participant(s)</time>${x.winner?`<p><b>Gagnant : ${esc(x.winner)}</b></p>`:''}<div class="row">${!over?`<button data-join="${x.id}">Participer</button>`:''}${admin&&!x.winner?`<button class="g" style="color:#fff;border-color:#fff" data-draw="${x.id}">Tirer au sort</button>`:''}</div>${d}</div></article>`};
+$('#main').addEventListener('click',async e=>{const j=e.target.dataset.join,d=e.target.dataset.draw;
+ if(j){if(!user)return toast('Connecte-toi pour participer.');const{error}=await sb.from('giveaway_entries').insert({item_id:+j,nom:user.nom,prenom:user.prenom});toast(error?'Tu participes déjà.':'Participation enregistrée.');load()}
+ if(d){const p=entries.filter(x=>x.item_id===+d);if(!p.length)return toast('Aucun participant.');const w=p[Math.floor(Math.random()*p.length)];await sb.from('items').update({winner:w.prenom+' '+w.nom}).eq('id',+d);toast('Gagnant : '+w.prenom+' '+w.nom);load()}});
+$('#gOk').onclick=()=>run(async()=>{if(!$('#gCat').value||!$('#gT').value)throw'Catégorie et titre requis';const image_url=await up($('#gI').files[0]);const{error}=await sb.from('items').insert({category_id:+$('#gCat').value,title:$('#gT').value,text:$('#gTx').value,image_url,ends_at:$('#gD').value?new Date($('#gD').value).toISOString():null});if(error)throw error;['gT','gTx','gI','gD'].forEach(i=>$('#'+i).value='')},'Giveaway créé.');
+$('#vOk').onclick=()=>run(async()=>{if(!$('#vCat').value||!$('#vT').value||!$('#vP').value)throw'Catégorie, titre et plaque requis';const image_url=await up($('#vI').files[0]);const{error}=await sb.from('items').insert({category_id:+$('#vCat').value,title:$('#vT').value,plate:$('#vP').value.toUpperCase(),image_url});if(error)throw error;['vT','vP','vI'].forEach(i=>$('#'+i).value='')},'Voiture ajoutée.');
+// Identités
+async function ids(){const q=$('#iS').value.trim().toLowerCase();const{data}=await sb.from('identites').select('*').order('nom');identites=(data||[]).filter(x=>!q||(x.nom+' '+x.prenom).toLowerCase().includes(q));
+ $('#iL').innerHTML=identites.map(x=>`<div class="cd"><span>${x.photo_url?`<img src="${esc(x.photo_url)}" width="32" height="32" alt="" style="border-radius:50%;vertical-align:middle;margin-right:8px;object-fit:cover">`:''}<b>${esc(x.prenom)} ${esc(x.nom)}</b>, né(e) le ${esc(x.naissance||'?')}, ${esc(x.profession||'sans profession')}</span><span><button class="x" data-ie="${x.id}">Modifier</button> <button class="x" data-idel="${x.id}">Supprimer</button></span></div>`).join('')||'<p class="empty">Aucune identité.</p>'}
+$('#iS').oninput=ids;
+$('#iOk').onclick=()=>run(async()=>{if(!iN.value||!iP.value)throw'Nom et prénom requis';const r={nom:iN.value.trim(),prenom:iP.value.trim(),naissance:iD.value||null,profession:iJ.value};const ph=await up(iPh.files[0]);if(ph)r.photo_url=ph;
+ const{error}=editId?await sb.from('identites').update(r).eq('id',editId):await sb.from('identites').insert(r);if(error)throw error;editId=null;iOk.textContent="Ajouter l'identité";[iN,iP,iD,iJ,iPh].forEach(i=>i.value='');ids()},'Identité enregistrée.');
+$('#iL').onclick=async e=>{const d=e.target.dataset;if(d.idel&&confirm('Supprimer cette identité ?')){await sb.from('identites').delete().eq('id',d.idel);ids()}
+ if(d.ie){const x=identites.find(y=>y.id==d.ie);editId=x.id;iN.value=x.nom;iP.value=x.prenom;iD.value=x.naissance||'';iJ.value=x.profession||'';iOk.textContent='Enregistrer les modifications';iN.scrollIntoView()}};
+// Tickets
+async function tickets(){let q=sb.from('tickets').select('*').order('created_at',{ascending:false});if(!admin)q=q.eq('nom',user.nom).eq('prenom',user.prenom);const{data}=await q;
+ $('#tkL').innerHTML=(data||[]).map(t=>`<div class="lk" style="margin-bottom:10px"><h3>${esc(t.sujet)} <small>(${esc(t.status)})</small></h3>${admin?`<small>${esc(t.prenom)} ${esc(t.nom)}</small>`:''}<p>${esc(t.message)}</p>${t.reply?`<p><b>Réponse :</b> ${esc(t.reply)}</p>`:''}${admin&&t.status==='ouvert'?`<button class="x" style="background:var(--loire)" data-tr="${t.id}">Répondre et fermer</button> `:''}${admin?`<button class="x" data-td="${t.id}">Supprimer</button>`:''}</div>`).join('')||'<p class="empty">Aucun ticket.</p>'}
+$('#bTk').onclick=()=>{if(!user&&!admin)return toast('Connecte-toi pour utiliser les tickets.');$('#tkF').hidden=!user;tickets();dTk.showModal()};
+$('#tkOk').onclick=async()=>{if(!tkS.value.trim()||!tkM.value.trim())return toast('Sujet et message requis.');const{error}=await sb.from('tickets').insert({nom:user.nom,prenom:user.prenom,sujet:tkS.value.trim(),message:tkM.value.trim()});if(error)return toast('Erreur : '+error.message);tkS.value=tkM.value='';toast('Ticket envoyé.');tickets()};
+$('#tkL').onclick=async e=>{const d=e.target.dataset;if(d.tr){const r=prompt('Réponse au ticket :');if(r){await sb.from('tickets').update({reply:r,status:'fermé'}).eq('id',d.tr);tickets()}}
+ if(d.td&&confirm('Supprimer ce ticket ?')){await sb.from('tickets').delete().eq('id',d.td);tickets()}};
+load();
+</script></body></html>
