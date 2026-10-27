@@ -46,7 +46,7 @@ fieldset{border:1.5px solid #cfd8dc;border-radius:8px;margin:0 0 16px;padding:6p
 <dialog id="dAuth"><h2 id="aT">Connexion</h2>
 <div id="aNom"><label>Nom RP</label><input id="nom"><label>Prénom RP</label><input id="pre"></div>
 <label>Mot de passe</label><input id="mdp" type="password">
-<div id="aCode" hidden><label>Code d'accès</label><input id="cod"></div>
+<div id="aCode" hidden><label>Code d'accès (facultatif)</label><input id="cod" placeholder="Laisse vide si tu n'en as pas"></div>
 <div class="row"><button id="aOk">Se connecter</button><button class="g" id="aSw">Créer un compte</button><button class="g" id="aX">Fermer</button></div></dialog>
 
 <dialog id="dCode"><h2>Accès administrateur</h2><label>Code d'accès</label><input id="adc" type="password">
@@ -97,8 +97,7 @@ sb.auth.getSession().then(({data})=>setU(data.session));
 $('#aOk').onclick=async()=>{const nom=$('#nom').value.trim().toLowerCase(),prenom=$('#pre').value.trim().toLowerCase(),pw=$('#mdp').value;
  if(!nom||!prenom||!pw)return toast('Remplissez tous les champs.');
  if(reg){if(pw.length<6)return toast('Mot de passe : 6 caractères minimum.');
-  const{data:k,error:ke}=await sb.from('access_codes').select('role').eq('code',$('#cod').value.trim()).maybeSingle();
-  if(ke)return toast('Erreur base de données : '+ke.message);if(!k)return toast('Code d\'accès invalide.');
+  const code=$('#cod').value.trim();if(code){const{data:k,error:ke}=await sb.from('access_codes').select('role').eq('code',code).maybeSingle();if(ke)return toast('Erreur base de données : '+ke.message);if(!k)return toast("Code d'accès invalide. Laisse le champ vide si tu n'en as pas.")}
   const{data,error}=await sb.auth.signUp({email:mail(nom,prenom),password:pw,options:{data:{nom,prenom}}});
   if(error)return toast(/registered|exists/i.test(error.message)?'Ce nom et prénom existent déjà.':'Erreur : '+error.message);
   if(!data.session)return toast('Compte créé mais non connecté : désactive "Confirm email" dans Supabase > Authentication.');
