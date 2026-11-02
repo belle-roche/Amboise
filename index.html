@@ -83,9 +83,12 @@ function render(){
   :it.map(x=>`<article class="post" style="background-image:url('${esc(x.bg_url)}')"><div class="pc">${x.image_url?`<img src="${esc(x.image_url)}" alt="">`:''}<h3>${esc(x.title)}</h3><p>${esc(x.text)}</p><time>${new Date(x.created_at).toLocaleDateString('fr-FR')}</time>${del(x.id)}</div></article>`).join('');
   return`<section id="c${c.id}"><h2>${esc(c.name)}</h2>${b||'<p class="empty">Rien ici pour le moment.</p>'}</section>`}).join('');
  const o=c=>cats.filter(x=>x.kind===c).map(x=>`<option value="${x.id}">${esc(x.name)}</option>`).join('');
+ const sel=['pCat','lCat','gCat','vCat'].map(i=>$('#'+i).value);
  $('#pCat').innerHTML=o('posts');$('#lCat').innerHTML=o('links');$('#gCat').innerHTML=o('giveaway');$('#vCat').innerHTML=o('cars');
+ ['pCat','lCat','gCat','vCat'].forEach((i,n)=>{if(sel[n])$('#'+i).value=sel[n]});
  $('#bAdm').textContent=admin?'Panneau admin':'Admin';spy()}
-function spy(){const io=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){document.querySelectorAll('.tabs a').forEach(a=>a.classList.toggle('on',a.hash==='#'+x.target.id))}}),{rootMargin:'-30% 0px -60% 0px'});document.querySelectorAll('section').forEach(s=>io.observe(s))}
+let spyIO;
+function spy(){if(spyIO)spyIO.disconnect();spyIO=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){document.querySelectorAll('.tabs a').forEach(a=>a.classList.toggle('on',a.hash==='#'+x.target.id))}}),{rootMargin:'-30% 0px -60% 0px'});document.querySelectorAll('section').forEach(s=>spyIO.observe(s))}
 $('#main').onclick=async e=>{const id=e.target.dataset.del;if(id&&confirm('Supprimer cet élément ?')){await sb.from('items').delete().eq('id',id);load()}};
 // Connexion
 $('#bUser').onclick=()=>{if(user){user=null;sb.auth.signOut();render();return}reg=false;authUI();dAuth.showModal()};
@@ -150,5 +153,13 @@ $('#tkL').onclick=async e=>{const d=e.target.dataset;if(d.tr){const r=prompt('R�
 $('#sbOk').onclick=()=>run(async()=>{const f=$('#sbg').files[0];if(!f)throw'Choisis une image';const value=await up(f);const{error}=await sb.from('site_settings').upsert({key:'bg_url',value});if(error)throw error;$('#sbg').value=''},'Fond du site mis à jour.');
 $('#sbDel').onclick=()=>run(async()=>{const{error}=await sb.from('site_settings').delete().eq('key','bg_url');if(error)throw error},'Fond retiré.');
 (async()=>{const c=localStorage.br_admin_code;if(!c)return;const{data}=await sb.from('access_codes').select('role').eq('code',c).eq('role','admin').maybeSingle();if(data)admin=true;else localStorage.removeItem('br_admin_code');render()})();
+// Direct : le site se met à jour tout seul quand quelqu'un publie
+let liveT;const live=()=>{clearTimeout(liveT);liveT=setTimeout(load,400)};
+sb.channel('site-live')
+ .on('postgres_changes',{event:'*',schema:'public',table:'items'},live)
+ .on('postgres_changes',{event:'*',schema:'public',table:'categories'},live)
+ .on('postgres_changes',{event:'*',schema:'public',table:'giveaway_entries'},live)
+ .on('postgres_changes',{event:'*',schema:'public',table:'site_settings'},live)
+ .subscribe();
 load();
 </script></body></html>
