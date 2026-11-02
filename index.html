@@ -60,6 +60,7 @@ fieldset{border:1.5px solid #cfd8dc;border-radius:8px;margin:0 0 16px;padding:6p
 <fieldset><legend>Fond du site</legend><label>Image de fond (bandeau d'accueil)</label><input id="sbg" type="file" accept="image/*"><div class="row"><button id="sbOk">Appliquer</button><button class="g" id="sbDel">Retirer</button></div></fieldset>
 <fieldset><legend>Identités</legend><label>Nom</label><input id="iN"><label>Prénom</label><input id="iP"><label>Date de naissance</label><input id="iD" type="date"><label>Profession</label><input id="iJ"><label>Photo</label><input id="iPh" type="file" accept="image/*"><div class="row"><button id="iOk">Ajouter l'identité</button></div><label>Rechercher</label><input id="iS" placeholder="Nom ou prénom"><div id="iL" style="margin-top:10px"></div></fieldset>
 <fieldset><legend>Nouvelle catégorie</legend><label>Nom</label><input id="cN"><label>Contenu</label><select id="cK"><option value="posts">Posts / actus</option><option value="links">Liens d'entreprises</option><option value="giveaway">Giveaway</option><option value="cars">Voitures perdues</option></select><div class="row"><button id="cOk">Créer</button></div></fieldset>
+<fieldset><legend>Discord</legend><p style="margin:6px 0">Envoie un message de test sur le webhook et vérifie que Discord l'a bien reçu.</p><div class="row"><button id="dcTest">Tester le webhook</button></div><p id="dcOut" role="status" style="margin:10px 0 0;font-weight:600"></p></fieldset>
 <fieldset><legend>Codes d'accès</legend><label>Code (vide = généré)</label><input id="kC"><label>Type</label><select id="kR"><option value="compte">Création de compte</option><option value="admin">Admin</option></select><div class="row"><button id="kOk">Créer le code</button></div><div id="kL" style="margin-top:10px"></div></fieldset>
 <div class="row"><button class="g" id="adOut">Quitter le mode admin</button><button class="g" onclick="dAdm.close()">Fermer</button></div></dialog>
 
@@ -77,11 +78,11 @@ async function load(){bg();const[c,i,e]=await Promise.all([sb.from('categories')
 function render(){
  $('#bUser').textContent=user?user.prenom+' '+user.nom+' (quitter)':'Connexion';
  $('#tabs').innerHTML=cats.map(c=>`<a href="#c${c.id}">${esc(c.name)}</a>`).join('');
- const del=id=>admin?`<button class="x" data-del="${id}">Supprimer</button>`:'';
+ const del=id=>admin?`<button class="x" data-del="${id}">Supprimer</button> <button class="x" style="background:var(--loire)" data-dc="${id}">Envoyer sur Discord</button>`:'';
  $('#main').innerHTML=cats.map(c=>{const it=items.filter(x=>x.category_id===c.id);
   const b=c.kind==='cars'?`<div class="grid">${it.map(x=>carCard(x,del(x.id))).join('')}</div>`:c.kind==='giveaway'?it.map(x=>givCard(x,del(x.id))).join(''):c.kind==='links'?`<div class="grid">${it.map(x=>`<div class="lk"><a href="${esc(safe(x.link_url))}" target="_blank" rel="noopener"><div class="im" style="background-image:url('${esc(x.image_url)}')"></div><h3>${esc(x.title)}</h3></a>${del(x.id)}</div>`).join('')}</div>`
   :it.map(x=>`<article class="post" style="background-image:url('${esc(x.bg_url)}')"><div class="pc">${x.image_url?`<img src="${esc(x.image_url)}" alt="">`:''}<h3>${esc(x.title)}</h3><p>${esc(x.text)}</p><time>${new Date(x.created_at).toLocaleDateString('fr-FR')}</time>${del(x.id)}</div></article>`).join('');
-  return`<section id="c${c.id}"><h2>${esc(c.name)}</h2>${b||'<p class="empty">Rien ici pour le moment.</p>'}</section>`}).join('');
+  return`<section id="c${c.id}"><h2>${esc(c.name)}</h2>${it.length?b:'<p class="empty">Rien ici pour le moment.</p>'}</section>`}).join('');
  const o=c=>cats.filter(x=>x.kind===c).map(x=>`<option value="${x.id}">${esc(x.name)}</option>`).join('');
  const sel=['pCat','lCat','gCat','vCat'].map(i=>$('#'+i).value);
  $('#pCat').innerHTML=o('posts');$('#lCat').innerHTML=o('links');$('#gCat').innerHTML=o('giveaway');$('#vCat').innerHTML=o('cars');
@@ -89,7 +90,8 @@ function render(){
  $('#bAdm').textContent=admin?'Panneau admin':'Admin';spy()}
 let spyIO;
 function spy(){if(spyIO)spyIO.disconnect();spyIO=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){document.querySelectorAll('.tabs a').forEach(a=>a.classList.toggle('on',a.hash==='#'+x.target.id))}}),{rootMargin:'-30% 0px -60% 0px'});document.querySelectorAll('section').forEach(s=>spyIO.observe(s))}
-$('#main').onclick=async e=>{const id=e.target.dataset.del;if(id&&confirm('Supprimer cet élément ?')){await sb.from('items').delete().eq('id',id);load()}};
+$('#main').onclick=async e=>{const id=e.target.dataset.del,dc=e.target.dataset.dc;if(id&&confirm('Supprimer cet élément ?')){await sb.from('items').delete().eq('id',id);load()}
+ if(dc){e.target.disabled=true;await dcCall('send_item_discord',{item_id:+dc},toast);e.target.disabled=false}};
 // Connexion
 $('#bUser').onclick=()=>{if(user){user=null;sb.auth.signOut();render();return}reg=false;authUI();dAuth.showModal()};
 function authUI(){$('#aT').textContent=reg?'Créer un compte':'Connexion';$('#aCode').hidden=!reg;$('#aOk').textContent=reg?'Créer le compte':'Se connecter';$('#aSw').textContent=reg?'J\'ai déjà un compte':'Créer un compte'}
@@ -153,6 +155,24 @@ $('#tkL').onclick=async e=>{const d=e.target.dataset;if(d.tr){const r=prompt('R�
 $('#sbOk').onclick=()=>run(async()=>{const f=$('#sbg').files[0];if(!f)throw'Choisis une image';const value=await up(f);const{error}=await sb.from('site_settings').upsert({key:'bg_url',value});if(error)throw error;$('#sbg').value=''},'Fond du site mis à jour.');
 $('#sbDel').onclick=()=>run(async()=>{const{error}=await sb.from('site_settings').delete().eq('key','bg_url');if(error)throw error},'Fond retiré.');
 (async()=>{const c=localStorage.br_admin_code;if(!c)return;const{data}=await sb.from('access_codes').select('role').eq('code',c).eq('role','admin').maybeSingle();if(data)admin=true;else localStorage.removeItem('br_admin_code');render()})();
+// Discord : envoi manuel + vérification que le webhook répond
+async function dcResult(rid){
+ for(let i=0;i<10;i++){await new Promise(r=>setTimeout(r,1000));
+  const{data}=await sb.rpc('discord_result',{rid});
+  if(data&&(data.status!=null||data.error)){
+   if(data.error)return'❌ Erreur réseau : '+data.error;
+   if(data.status>=200&&data.status<300)return'✅ Discord a bien reçu le message (code '+data.status+').';
+   if(data.status===401||data.status===404)return'❌ Discord refuse (code '+data.status+') : webhook supprimé ou incorrect.';
+   if(data.status===429)return'⏳ Discord limite les envois (code 429) : réessaie dans un instant.';
+   return'❌ Discord a répondu avec le code '+data.status+'.'}}
+ return'⏳ Pas encore de réponse de Discord : réessaie dans un instant.'}
+async function dcCall(fn,args,out){out('Envoi en cours…');
+ const{data,error}=await sb.rpc(fn,{admin_code:localStorage.br_admin_code||'',...args});
+ if(error)return out('❌ '+error.message+(/function|schema cache/i.test(error.message)?' (lance d’abord le script SQL mis à jour dans Supabase)':''));
+ let m=await dcResult(data.rid);
+ if(!data.trigger)m+=' ⚠️ L’envoi automatique des nouveaux posts est désactivé : relance le script SQL.';
+ out(m)}
+$('#dcTest').onclick=async()=>{const b=$('#dcTest');b.disabled=true;await dcCall('test_discord',{},m=>{$('#dcOut').textContent=m});b.disabled=false};
 // Direct : le site se met à jour tout seul quand quelqu'un publie
 let liveT;const live=()=>{clearTimeout(liveT);liveT=setTimeout(load,400)};
 sb.channel('site-live')
