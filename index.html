@@ -39,12 +39,18 @@ fieldset{border:1.5px solid #cfd8dc;border-radius:8px;margin:0 0 16px;padding:6p
 .srv{display:inline-block;margin-top:18px;padding:6px 16px;border-radius:99px;background:#ffffff1f;font:600 15px 'Bricolage Grotesque',system-ui,sans-serif;color:var(--w)}
 .srv:empty{display:none}
 footer.ft{text-align:center;padding:0 16px 40px}footer.ft img{max-width:100%;height:auto;border-radius:8px}
+.opt{display:flex;gap:8px;align-items:flex-start;margin:5px 0;padding:8px 10px;border:1px solid #cfd8dc;border-radius:8px;cursor:pointer;font:400 16px/1.4 Newsreader,Georgia,serif}.opt input{width:auto;margin-top:5px}
+.rq{margin:16px 0}.rq p{margin:0 0 6px;font-weight:600}#recMain{padding-bottom:30px}
+.rstats{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px;margin:12px 0}.rs{border:1px solid #cfd8dc;border-radius:8px;padding:8px;text-align:center}.rs b{display:block;font:800 20px 'Bricolage Grotesque',sans-serif}.rs span{font-size:13px;color:#5b6a73}
+.rt{width:100%;border-collapse:collapse;font-size:14px;margin-top:10px}.rt th,.rt td{text-align:left;padding:6px;border-bottom:1px solid #e1e7ea;vertical-align:top}
 @media(max-width:640px){.brand{display:none}.pc{padding:18px}}
 </style></head><body>
 <header><span class="brand">Belle-Roche</span><nav class="tabs" id="tabs"></nav>
 <div class="hb"><button class="g" id="bTk">Tickets</button><button class="g" id="bUser">Connexion</button><button id="bAdm">Admin</button></div></header>
 <div class="hero"><h1>Belle-Roche-Sur-Amboise</h1><p>Le site officiel de la ville</p><div class="srv" id="srv" role="status" aria-live="polite"></div></div>
 <main id="main"></main>
+<main id="recMain"><section id="recrutement" hidden><h2>Recrutement staff</h2>
+<p id="recIntro"></p><div class="row"><button id="recGo">Postuler</button><button class="g" id="recFind">Retrouver ma réponse</button></div></section></main>
 <footer class="ft"><a href="https://www.teamkit.fr/serveur/tk-novalifeamboise-206?src=banniere" title="BelleRoche — serveur Nova-Life: Amboise gratuit sur TeamKit"><img src="https://www.teamkit.fr/banniere/tk-novalifeamboise-206.png" alt="BelleRoche — serveur Nova-Life: Amboise gratuit sur TeamKit" width="600" height="200"></a></footer>
 <div id="toast"></div>
 
@@ -72,10 +78,36 @@ footer.ft{text-align:center;padding:0 16px 40px}footer.ft img{max-width:100%;hei
 <a href="https://www.teamkit.fr/serveur/tk-novalifeamboise-206?src=banniere" title="BelleRoche — serveur Nova-Life: Amboise gratuit sur TeamKit"><img src="https://www.teamkit.fr/banniere/tk-novalifeamboise-206.png" alt="BelleRoche — serveur Nova-Life: Amboise gratuit sur TeamKit" width="600" height="200" style="max-width:100%;height:auto"></a>
 <div class="row"><button id="stOn">Lancer le suivi</button><button class="g" id="stNow">Actualiser maintenant</button><button class="g" id="stNew">Nouveau message</button><button class="x" style="margin:0" id="stOff">Arrêter</button></div>
 <p id="stOut" role="status" style="margin:10px 0 0;font-weight:600"></p></fieldset>
+<fieldset><legend>Recrutement staff</legend><p style="margin:6px 0">Les candidatures du test s'affichent ici (et sont envoyées sur Discord). Toi seul(e), avec les autres admins, les voyez.</p><div class="row"><button id="recOpen">Voir les candidatures</button></div></fieldset>
 <fieldset><legend>Codes d'accès</legend><label>Code (vide = généré)</label><input id="kC"><label>Type</label><select id="kR"><option value="compte">Création de compte</option><option value="admin">Admin</option></select><div class="row"><button id="kOk">Créer le code</button></div><div id="kL" style="margin-top:10px"></div></fieldset>
 <div class="row"><button class="g" id="adOut">Quitter le mode admin</button><button class="g" onclick="dAdm.close()">Fermer</button></div></dialog>
 
 <dialog id="dTk" style="width:min(94vw,560px)"><h2>Tickets</h2><div id="tkF"><label>Sujet</label><input id="tkS"><label>Message</label><textarea id="tkM" rows="3"></textarea><div class="row"><button id="tkOk">Envoyer le ticket</button></div></div><div id="tkL" style="margin-top:14px"></div><div class="row"><button class="g" onclick="dTk.close()">Fermer</button></div></dialog>
+<dialog id="dRecF" style="width:min(94vw,640px)"><h2>Candidature staff</h2>
+<label>Pseudo Discord</label><input id="rPs" maxlength="40"><label>Âge</label><input id="rAge" type="number" min="10" max="99">
+<label>Disponibilités (jours / heures par semaine)</label><input id="rDi" maxlength="120">
+<label>Expérience en modération (facultatif)</label><textarea id="rXp" rows="3" maxlength="600"></textarea>
+<label>Pourquoi veux-tu rejoindre le staff ?</label><textarea id="rWh" rows="4" maxlength="800"></textarea>
+<h2 style="margin-top:22px">Test de mise en situation</h2><p id="rProg" style="margin:0;font-style:italic"></p><div id="rQz"></div>
+<p id="rErr" role="alert" style="color:#a33;font-weight:600"></p>
+<div class="row"><button id="rSend">Envoyer ma candidature</button><button class="g" onclick="dRecF.close()">Fermer</button></div></dialog>
+
+<dialog id="dRecR"><h2>Ma candidature</h2><label>Code de suivi</label><input id="rCode" maxlength="8" style="text-transform:uppercase" placeholder="Ex. A1B2C3D4">
+<div class="row"><button id="rSee">Voir</button></div>
+<div style="margin-top:14px"><span class="pl" id="rCd"></span><p id="rScore" style="font:800 34px 'Bricolage Grotesque',sans-serif;margin:8px 0"></p><p id="rVerd"></p></div>
+<div class="row"><button class="g" onclick="dRecR.close()">Fermer</button></div></dialog>
+
+<dialog id="dRecA" style="width:min(96vw,900px)"><h2>Candidatures staff</h2>
+<fieldset><legend>Réglages</legend><div class="row" style="align-items:center">
+<label style="margin:0;display:flex;gap:6px;align-items:center"><input type="checkbox" id="raOpen" style="width:auto">Recrutements ouverts</label>
+<label style="margin:0">Seuil % <input id="raSeuil" type="number" min="0" max="100" style="width:80px"></label>
+<label style="margin:0">Délai min (min) <input id="raMin" type="number" min="0" style="width:80px"></label>
+<label style="margin:0">max <input id="raMax" type="number" min="0" style="width:80px"></label>
+<button id="raSave">Enregistrer</button></div></fieldset>
+<div class="rstats" id="raStats"></div>
+<div class="row" style="margin-top:0"><select id="raFilt" style="width:auto"><option value="all">Toutes</option><option value="pass">Test réussi</option><option value="fail">Test non réussi</option><option value="att">À traiter</option></select><button class="g" id="raCsv">⬇ Export CSV</button></div>
+<div style="overflow-x:auto"><table class="rt"><thead><tr><th>Date</th><th>Pseudo</th><th>Âge</th><th>Score</th><th>Réponse au candidat</th><th>Statut</th><th>Actions</th></tr></thead><tbody id="raRows"></tbody></table></div>
+<div class="row"><button class="g" onclick="dRecA.close()">Fermer</button></div></dialog>
 <script>
 const SUPABASE_URL='https://dkrwriqngiydoaqfyxzg.supabase.co',SUPABASE_KEY='sb_publishable_v-yycYgqQ9dehuVZ5YqwZQ_PfCBFa0M';
 const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
@@ -88,7 +120,7 @@ async function bg(){const{data}=await sb.from('site_settings').select('value').e
 async function load(){bg();const[c,i,e]=await Promise.all([sb.from('categories').select('*').order('position'),sb.from('items').select('*').order('created_at',{ascending:false}),sb.from('giveaway_entries').select('*')]);cats=c.data||[];items=i.data||[];entries=e.data||[];render()}
 function render(){
  $('#bUser').textContent=user?user.prenom+' '+user.nom+' (quitter)':'Connexion';
- $('#tabs').innerHTML=cats.map(c=>`<a href="#c${c.id}">${esc(c.name)}</a>`).join('');
+ $('#tabs').innerHTML=cats.map(c=>`<a href="#c${c.id}">${esc(c.name)}</a>`).join('')+(rec&&rec.open?'<a href="#recrutement">Recrutement staff</a>':'');
  const del=id=>admin?`<button class="x" data-del="${id}">Supprimer</button> <button class="x" style="background:var(--loire)" data-dc="${id}">Envoyer sur Discord</button>`:'';
  $('#main').innerHTML=cats.map(c=>{const it=items.filter(x=>x.category_id===c.id);
   const b=c.kind==='cars'?`<div class="grid">${it.map(x=>carCard(x,del(x.id))).join('')}</div>`:c.kind==='giveaway'?it.map(x=>givCard(x,del(x.id))).join(''):c.kind==='links'?`<div class="grid">${it.map(x=>`<div class="lk"><a href="${esc(safe(x.link_url))}" target="_blank" rel="noopener"><div class="im" style="background-image:url('${esc(x.image_url)}')"></div><h3>${esc(x.title)}</h3></a>${del(x.id)}</div>`).join('')}</div>`
@@ -184,6 +216,65 @@ async function dcCall(fn,args,out){out('Envoi en cours…');
  if(!data.trigger)m+=' ⚠️ L’envoi automatique des nouveaux posts est désactivé : relance le script SQL.';
  out(m)}
 $('#dcTest').onclick=async()=>{const b=$('#dcTest');b.disabled=true;await dcCall('test_discord',{},m=>{$('#dcOut').textContent=m});b.disabled=false};
+// ===== Recrutement staff =====
+let rec=null,recT,recApps=[],recOpened={},recPoll;
+const recAdm=(fn,args)=>sb.rpc(fn,{admin_code:localStorage.br_admin_code||'',...args});
+async function loadRec(){const{data,error}=await sb.rpc('recruit_info');rec=error?null:data;
+ const s=$('#recrutement');s.hidden=!(rec&&rec.open);
+ if(rec&&rec.open)$('#recIntro').textContent=`Postule pour rejoindre le staff de ${rec.serveur} : un formulaire puis un test de ${rec.questions.length} questions. Il faut au moins ${rec.seuil} % de bonnes réponses. Ta réponse arrive ${rec.delai_min} à ${rec.delai_max} minutes après l'envoi.`;
+ render()}
+function buildQuiz(){if($('#rQz').childElementCount)return;
+ $('#rQz').innerHTML=rec.questions.map((it,i)=>`<div class="rq"><p>${i+1}. ${esc(it.q)}</p>${it.o.map((t,j)=>`<label class="opt"><input type="radio" name="q${i}" value="${j}"><span>${esc(t)}</span></label>`).join('')}</div>`).join('');
+ $('#rQz').onchange=()=>{$('#rProg').textContent=document.querySelectorAll('#rQz input:checked').length+' / '+rec.questions.length+' questions répondues'}}
+$('#recGo').onclick=()=>{if(!rec||!rec.open)return;buildQuiz();$('#rErr').textContent='';dRecF.showModal()};
+$('#recFind').onclick=()=>{dRecR.showModal();const c=localStorage.br_rec_code;if(c){$('#rCode').value=c;recFollow(c)}};
+$('#rSee').onclick=()=>recFollow($('#rCode').value);
+dRecR.addEventListener('close',()=>clearInterval(recT));
+$('#rSend').onclick=async()=>{const n=rec.questions.length,ans=[];
+ for(let i=0;i<n;i++){const c=document.querySelector(`input[name="q${i}"]:checked`);if(!c){$('#rErr').textContent=`Réponds à toutes les questions du test (manque la question ${i+1}).`;return}ans.push(+c.value)}
+ $('#rErr').textContent='';$('#rSend').disabled=true;
+ const{data,error}=await sb.rpc('recruit_apply',{p_pseudo:$('#rPs').value,p_age:parseInt($('#rAge').value,10)||null,p_dispo:$('#rDi').value,p_xp:$('#rXp').value,p_why:$('#rWh').value,p_answers:ans});
+ $('#rSend').disabled=false;
+ if(error)return $('#rErr').textContent=error.message+(/function|schema cache/i.test(error.message)?' (le script SQL du recrutement n’est pas installé)':'');
+ localStorage.br_rec_code=data.code;dRecF.close();$('#rCode').value=data.code;dRecR.showModal();recFollow(data.code)};
+async function recFollow(code){clearInterval(recT);code=String(code||'').trim().toUpperCase();if(!code)return;
+ const run=async()=>{const{data,error}=await sb.rpc('recruit_result',{p_code:code});
+  if(error){clearInterval(recT);if(/introuvable/i.test(error.message))localStorage.removeItem('br_rec_code');$('#rCd').textContent='';$('#rScore').textContent='';$('#rVerd').textContent=error.message;return}
+  localStorage.br_rec_code=code;$('#rCd').textContent=code;
+  if(!data.ready){const m=Math.max(1,Math.ceil((new Date(data.reveal_at)-Date.now())/60000));$('#rScore').textContent='';$('#rVerd').textContent=`Candidature reçue, elle est en cours d'examen. Réponse dans environ ${m} min. Tu peux fermer cette page et revenir avec ton code.`;return}
+  clearInterval(recT);
+  $('#rScore').textContent=`${data.score} % (${data.good}/${data.total})`;$('#rScore').style.color=data.passed?'#1f7a45':'#a33';
+  $('#rVerd').textContent=data.status==='accepté'?'Félicitations, ta candidature est acceptée ! Un recruteur te contactera.':data.status==='refusé'?"Ta candidature n'a pas été retenue. Merci pour ton intérêt.":data.passed?'Test réussi : ta candidature est présélectionnée. Un recruteur te contactera.':'Test non réussi cette fois. Tu pourras retenter plus tard.'};
+ await run();recT=setInterval(run,20000)}
+// -- admin : candidatures
+$('#recOpen').onclick=()=>{recAdminLoad(true);dRecA.showModal();clearInterval(recPoll);recPoll=setInterval(()=>recAdminLoad(false),15000)};
+dRecA.addEventListener('close',()=>clearInterval(recPoll));
+async function recAdminLoad(first){const{data,error}=await recAdm('recruit_admin_list');
+ if(error)return toast('❌ '+error.message+(/function|schema cache/i.test(error.message)?' (lance d’abord le script SQL du recrutement)':''));
+ recApps=data.apps||[];
+ if(first){$('#raOpen').checked=data.open;$('#raSeuil').value=data.seuil;$('#raMin').value=data.delai_min;$('#raMax').value=data.delai_max}
+ recRender()}
+function recRender(){const now=Date.now(),tot=recApps.length;let acc=0,ref=0,att=0,pass=0,wait=0;
+ recApps.forEach(a=>{if(a.passed)pass++;if(a.status==='accepté')acc++;else if(a.status==='refusé')ref++;else att++;if(new Date(a.reveal_at)>now)wait++});
+ const pr=tot?Math.round(pass/tot*100):0,dec=acc+ref,ar=dec?Math.round(acc/dec*100):0;
+ $('#raStats').innerHTML=[['Candidatures',tot],['Test réussi',pr+' %'],['Acceptés',acc],['Refusés',ref],['À traiter',att],['Réponses en attente',wait],['Taux d’acceptation',ar+' %']].map(v=>`<div class="rs"><b>${v[1]}</b><span>${v[0]}</span></div>`).join('');
+ const f=$('#raFilt').value;
+ $('#raRows').innerHTML=recApps.filter(a=>f==='all'||(f==='pass'&&a.passed)||(f==='fail'&&!a.passed)||(f==='att'&&a.status==='en attente')).map(a=>{
+  const left=new Date(a.reveal_at)-now;
+  return`<tr><td>${new Date(a.created_at).toLocaleString('fr-FR')}</td><td>${esc(a.pseudo)}</td><td>${a.age}</td><td>${a.score} % ${a.passed?'✅':'❌'}</td><td>${left>0?'envoi dans '+Math.ceil(left/60000)+' min':'envoyée'}</td><td>${esc(a.status)}</td>
+  <td><button class="x" style="background:var(--ard)" data-k="see" data-id="${a.id}">Voir</button> <button class="x" style="background:#1f7a45" data-k="ok" data-id="${a.id}">Accepter</button> <button class="x" data-k="ko" data-id="${a.id}">Refuser</button> <button class="x" style="background:#6b7a83" data-k="del" data-id="${a.id}">Supprimer</button></td></tr>`
+  +(recOpened[a.id]?`<tr><td colspan="7" style="white-space:pre-wrap">Disponibilités : ${esc(a.dispo)}\nExpérience : ${esc(a.xp||'—')}\nMotivation : ${esc(a.why)}\nCode de suivi : ${esc(a.code)}</td></tr>`:'')}).join('')}
+$('#raFilt').onchange=recRender;
+$('#raRows').onclick=async e=>{const b=e.target.closest('button');if(!b)return;const id=b.dataset.id,k=b.dataset.k;
+ if(k==='see'){recOpened[id]=!recOpened[id];return recRender()}
+ if(k==='ok'||k==='ko'){const{error}=await recAdm('recruit_admin_status',{app_id:id,new_status:k==='ok'?'accepté':'refusé'});if(error)toast('❌ '+error.message);return recAdminLoad(false)}
+ if(k==='del'){if(!b.dataset.c){b.dataset.c='1';b.textContent='Confirmer ?';setTimeout(()=>{b.dataset.c='';b.textContent='Supprimer'},4000);return}
+  const{error}=await recAdm('recruit_admin_delete',{app_id:id});if(error)toast('❌ '+error.message);recAdminLoad(false)}};
+$('#raSave').onclick=async()=>{const{error}=await recAdm('recruit_admin_settings',{p_open:$('#raOpen').checked,p_seuil:parseInt($('#raSeuil').value,10),p_dmin:parseInt($('#raMin').value,10),p_dmax:parseInt($('#raMax').value,10)});
+ if(error)return toast('❌ '+error.message);toast('Réglages enregistrés.');loadRec()};
+$('#raCsv').onclick=()=>{const q=v=>{v=String(v??'');if(/^[=+\-@]/.test(v))v="'"+v;return'"'+v.replace(/"/g,'""')+'"'};
+ const rows=[['Date','Pseudo','Âge','Score %','Réussi','Statut','Disponibilités','Expérience','Motivation']].concat(recApps.map(a=>[a.created_at,a.pseudo,a.age,a.score,a.passed?'oui':'non',a.status,a.dispo,a.xp,a.why]));
+ const u=URL.createObjectURL(new Blob(['\ufeff'+rows.map(r=>r.map(q).join(';')).join('\n')],{type:'text/csv;charset=utf-8'})),l=document.createElement('a');l.href=u;l.download='candidatures.csv';l.click();URL.revokeObjectURL(u)};
 // Statut du serveur Nova : badge public + boutons admin
 let st=null;
 function showSt(){
@@ -215,5 +306,5 @@ sb.channel('site-live')
  .on('postgres_changes',{event:'*',schema:'public',table:'giveaway_entries'},live)
  .on('postgres_changes',{event:'*',schema:'public',table:'site_settings'},live)
  .subscribe();
-load();
+load();loadRec();
 </script></body></html>
