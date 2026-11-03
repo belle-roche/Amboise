@@ -1,52 +1,55 @@
 <!DOCTYPE html>
 <html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Belle-Roche-Sur-Amboise</title>
+<script>(function(){var t=null;try{t=localStorage.getItem('br_theme')}catch(e){}if(t!=='dark'&&t!=='light')t=window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';document.documentElement.dataset.theme=t})()</script>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=Newsreader:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <style>
-:root{--ard:#22303b;--loire:#1d6a7a;--or:#c79a3b;--bg:#eceff0;--ink:#1b252d;--w:#fff;color-scheme:light}
+:root{--ard:#22303b;--loire:#1d6a7a;--or:#c79a3b;--bg:#eceff0;--ink:#1b252d;--w:#fff;color-scheme:light;
+--surf:#fff;--tx:#22303b;--act:#22303b;--acc:#1d6a7a;--mut:#5b6a73;--line:#cfd8dc;--line2:#9fb0b8;--line3:#e1e7ea;--err:#a33;--ok:#1f7a45}
+:root[data-theme=dark]{--bg:#12181d;--ink:#e4ecf0;--surf:#1b242b;--tx:#dbe6ec;--act:#1d6a7a;--acc:#5fb3c4;--mut:#9fb0b8;--line:#33424c;--line2:#4a5b66;--line3:#2a363f;--err:#ff8a80;--ok:#5fd08a;color-scheme:dark}
 *{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:70px}
 body{margin:0;background:var(--bg);color:var(--ink);font:18px/1.55 Newsreader,Georgia,serif}
 h1,h2,h3,button,.tabs a,label{font-family:'Bricolage Grotesque',system-ui,sans-serif}
-header{position:sticky;top:0;z-index:5;background:var(--w);border-bottom:2px solid var(--ard);display:flex;gap:12px;align-items:center;padding:10px 16px}
-.brand{font:800 17px 'Bricolage Grotesque';color:var(--ard);white-space:nowrap}
+header{position:sticky;top:0;z-index:5;background:var(--surf);border-bottom:2px solid var(--tx);display:flex;gap:12px;align-items:center;padding:10px 16px}
+.brand{font:800 17px 'Bricolage Grotesque';color:var(--tx);white-space:nowrap}
 .tabs{display:flex;gap:6px;overflow-x:auto;flex:1;scrollbar-width:none}
-.tabs a{padding:6px 14px;border-radius:99px;color:var(--ard);text-decoration:none;font-size:15px;font-weight:600;white-space:nowrap}
-.tabs a.on{background:var(--ard);color:var(--w)}
+.tabs a{padding:6px 14px;border-radius:99px;color:var(--tx);text-decoration:none;font-size:15px;font-weight:600;white-space:nowrap}
+.tabs a.on{background:var(--act);color:var(--w)}
 .hb{display:flex;gap:6px}
 button{font-size:15px;font-weight:600;border:0;border-radius:6px;padding:8px 14px;background:var(--loire);color:var(--w);cursor:pointer}
-button.g{background:transparent;color:var(--ard);border:1.5px solid var(--ard)}button.x{background:#a33;font-size:13px;padding:4px 10px;margin-top:8px}
+button.g{background:transparent;color:var(--tx);border:1.5px solid var(--tx)}button.x{background:#a33;font-size:13px;padding:4px 10px;margin-top:8px}
 :focus-visible{outline:3px solid var(--or);outline-offset:2px}
 .hero{background:repeating-linear-gradient(135deg,#22303b 0 22px,#27374399 22px 24px),var(--ard);color:var(--w);padding:90px 20px 70px;text-align:center}
 .hero h1{font-size:clamp(34px,7vw,72px);line-height:1.05;margin:0 0 12px;font-weight:800}
 .hero p{margin:0;font-style:italic;font-size:21px;color:#d9e4e8}
 main{max-width:1000px;margin:0 auto;padding:0 16px 80px}
-section{padding-top:48px}h2{font-size:34px;margin:0 0 20px;border-left:6px solid var(--or);padding-left:14px;color:var(--ard)}
+section{padding-top:48px}h2{font-size:34px;margin:0 0 20px;border-left:6px solid var(--or);padding-left:14px;color:var(--tx)}
 .post{background:var(--ard) center/cover;border-radius:10px;margin-bottom:22px;overflow:hidden}
 .pc{min-height:260px;padding:28px;color:var(--w);background:linear-gradient(90deg,#16202bee,#16202b66);display:flex;flex-direction:column;justify-content:flex-end;align-items:flex-start}
 .pc img{max-width:100%;max-height:220px;border-radius:6px;margin-bottom:14px}.pc h3{font-size:28px;margin:0 0 6px}.pc p{margin:0 0 8px;white-space:pre-line;max-width:62ch}.pc time{font-size:14px;opacity:.8}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:18px}
-.lk{background:var(--w);border-radius:10px;padding:12px;border:1px solid #cfd8dc}.lk a{color:var(--ink);text-decoration:none}
-.im{aspect-ratio:4/3;background:var(--bg) center/cover;border-radius:6px;margin-bottom:10px}.lk h3{margin:0;font-size:18px}.lk a:hover h3{color:var(--loire)}
-.empty{font-style:italic;color:#5b6a73}
-dialog{border:0;border-radius:12px;padding:24px;width:min(92vw,460px);max-height:90vh}dialog::backdrop{background:#0008}
+.lk{background:var(--surf);border-radius:10px;padding:12px;border:1px solid var(--line)}.lk a{color:var(--ink);text-decoration:none}
+.im{aspect-ratio:4/3;background:var(--bg) center/cover;border-radius:6px;margin-bottom:10px}.lk h3{margin:0;font-size:18px}.lk a:hover h3{color:var(--acc)}
+.empty{font-style:italic;color:var(--mut)}
+dialog{border:0;border-radius:12px;background:var(--surf);color:var(--ink);padding:24px;width:min(92vw,460px);max-height:90vh}dialog::backdrop{background:#0008}
 dialog h2{font-size:24px;margin-bottom:14px}label{display:block;font-size:14px;font-weight:600;margin:10px 0 3px}
-input,select,textarea{width:100%;font:16px Newsreader,serif;padding:8px;border:1.5px solid #9fb0b8;border-radius:6px;background:#fff}
-fieldset{border:1.5px solid #cfd8dc;border-radius:8px;margin:0 0 16px;padding:6px 14px 14px}legend{font:800 16px 'Bricolage Grotesque';color:var(--loire)}
-.row{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}.cd{display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid #e1e7ea;font-size:15px}
-#toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:var(--ard);color:#fff;padding:10px 18px;border-radius:8px;display:none;z-index:9}
-.pl{display:inline-block;margin:6px 0 0;padding:2px 12px;border:2px solid var(--ard);border-radius:5px;background:#fff;font:800 16px 'Bricolage Grotesque';letter-spacing:.12em}
+input,select,textarea{width:100%;font:16px Newsreader,serif;padding:8px;border:1.5px solid var(--line2);border-radius:6px;background:var(--surf);color:var(--ink)}
+fieldset{border:1.5px solid var(--line);border-radius:8px;margin:0 0 16px;padding:6px 14px 14px}legend{font:800 16px 'Bricolage Grotesque';color:var(--acc)}
+.row{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}.cd{display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid var(--line3);font-size:15px}
+#toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:var(--act);color:#fff;padding:10px 18px;border-radius:8px;display:none;z-index:9}
+.pl{display:inline-block;margin:6px 0 0;padding:2px 12px;border:2px solid var(--tx);border-radius:5px;background:var(--surf);color:var(--ink);font:800 16px 'Bricolage Grotesque';letter-spacing:.12em}
 .srv{display:inline-block;margin-top:18px;padding:6px 16px;border-radius:99px;background:#ffffff1f;font:600 15px 'Bricolage Grotesque',system-ui,sans-serif;color:var(--w)}
 .srv:empty{display:none}
 footer.ft{text-align:center;padding:0 16px 40px}footer.ft img{max-width:100%;height:auto;border-radius:8px}
-.opt{display:flex;gap:8px;align-items:flex-start;margin:5px 0;padding:8px 10px;border:1px solid #cfd8dc;border-radius:8px;cursor:pointer;font:400 16px/1.4 Newsreader,Georgia,serif}.opt input{width:auto;margin-top:5px}
+.opt{display:flex;gap:8px;align-items:flex-start;margin:5px 0;padding:8px 10px;border:1px solid var(--line);border-radius:8px;cursor:pointer;font:400 16px/1.4 Newsreader,Georgia,serif}.opt input{width:auto;margin-top:5px}
 .rq{margin:16px 0}.rq p{margin:0 0 6px;font-weight:600}#recMain{padding-bottom:30px}
-.rstats{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px;margin:12px 0}.rs{border:1px solid #cfd8dc;border-radius:8px;padding:8px;text-align:center}.rs b{display:block;font:800 20px 'Bricolage Grotesque',sans-serif}.rs span{font-size:13px;color:#5b6a73}
-.rt{width:100%;border-collapse:collapse;font-size:14px;margin-top:10px}.rt th,.rt td{text-align:left;padding:6px;border-bottom:1px solid #e1e7ea;vertical-align:top}
+.rstats{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px;margin:12px 0}.rs{border:1px solid var(--line);border-radius:8px;padding:8px;text-align:center}.rs b{display:block;font:800 20px 'Bricolage Grotesque',sans-serif}.rs span{font-size:13px;color:var(--mut)}
+.rt{width:100%;border-collapse:collapse;font-size:14px;margin-top:10px}.rt th,.rt td{text-align:left;padding:6px;border-bottom:1px solid var(--line3);vertical-align:top}
 @media(max-width:640px){.brand{display:none}.pc{padding:18px}}
 </style></head><body>
 <header><span class="brand">Belle-Roche</span><nav class="tabs" id="tabs"></nav>
-<div class="hb"><button class="g" id="bTk">Tickets</button><button class="g" id="bUser">Connexion</button><button id="bAdm">Admin</button></div></header>
+<div class="hb"><button class="g" id="bTheme" type="button"></button><button class="g" id="bTk">Tickets</button><button class="g" id="bUser">Connexion</button><button id="bAdm">Admin</button></div></header>
 <div class="hero"><h1>Belle-Roche-Sur-Amboise</h1><p>Le site officiel de la ville</p><div class="srv" id="srv" role="status" aria-live="polite"></div></div>
 <main id="main"></main>
 <main id="recMain"><section id="recrutement" hidden><h2>Recrutement staff</h2>
@@ -89,7 +92,7 @@ footer.ft{text-align:center;padding:0 16px 40px}footer.ft img{max-width:100%;hei
 <label>Expérience en modération (facultatif)</label><textarea id="rXp" rows="3" maxlength="600"></textarea>
 <label>Pourquoi veux-tu rejoindre le staff ?</label><textarea id="rWh" rows="4" maxlength="800"></textarea>
 <h2 style="margin-top:22px">Test de mise en situation</h2><p id="rProg" style="margin:0;font-style:italic"></p><div id="rQz"></div>
-<p id="rErr" role="alert" style="color:#a33;font-weight:600"></p>
+<p id="rErr" role="alert" style="color:var(--err);font-weight:600"></p>
 <div class="row"><button id="rSend">Envoyer ma candidature</button><button class="g" onclick="dRecF.close()">Fermer</button></div></dialog>
 
 <dialog id="dRecR"><h2>Ma candidature</h2><label>Code de suivi</label><input id="rCode" maxlength="8" style="text-transform:uppercase" placeholder="Ex. A1B2C3D4">
@@ -216,6 +219,12 @@ async function dcCall(fn,args,out){out('Envoi en cours…');
  if(!data.trigger)m+=' ⚠️ L’envoi automatique des nouveaux posts est désactivé : relance le script SQL.';
  out(m)}
 $('#dcTest').onclick=async()=>{const b=$('#dcTest');b.disabled=true;await dcCall('test_discord',{},m=>{$('#dcOut').textContent=m});b.disabled=false};
+// Thème : suit le navigateur par défaut, le bouton change et mémorise le choix
+const themeBtn=$('#bTheme');
+function setTheme(t,save){document.documentElement.dataset.theme=t;const d=t==='dark';themeBtn.textContent=d?'☀️':'🌙';themeBtn.title=d?'Passer en mode clair':'Passer en mode sombre';themeBtn.setAttribute('aria-label',themeBtn.title);if(save)try{localStorage.setItem('br_theme',t)}catch(e){}}
+setTheme(document.documentElement.dataset.theme==='dark'?'dark':'light');
+themeBtn.onclick=()=>setTheme(document.documentElement.dataset.theme==='dark'?'light':'dark',true);
+if(window.matchMedia)matchMedia('(prefers-color-scheme:dark)').addEventListener('change',e=>{let c=null;try{c=localStorage.getItem('br_theme')}catch(x){}if(c!=='dark'&&c!=='light')setTheme(e.matches?'dark':'light')});
 // ===== Recrutement staff =====
 let rec=null,recT,recApps=[],recOpened={},recPoll;
 const recAdm=(fn,args)=>sb.rpc(fn,{admin_code:localStorage.br_admin_code||'',...args});
@@ -243,7 +252,7 @@ async function recFollow(code){clearInterval(recT);code=String(code||'').trim().
   localStorage.br_rec_code=code;$('#rCd').textContent=code;
   if(!data.ready){const m=Math.max(1,Math.ceil((new Date(data.reveal_at)-Date.now())/60000));$('#rScore').textContent='';$('#rVerd').textContent=`Candidature reçue, elle est en cours d'examen. Réponse dans environ ${m} min. Tu peux fermer cette page et revenir avec ton code.`;return}
   clearInterval(recT);
-  $('#rScore').textContent=`${data.score} % (${data.good}/${data.total})`;$('#rScore').style.color=data.passed?'#1f7a45':'#a33';
+  $('#rScore').textContent=`${data.score} % (${data.good}/${data.total})`;$('#rScore').style.color=data.passed?'var(--ok)':'var(--err)';
   $('#rVerd').textContent=data.status==='accepté'?'Félicitations, ta candidature est acceptée ! Un recruteur te contactera.':data.status==='refusé'?"Ta candidature n'a pas été retenue. Merci pour ton intérêt.":data.passed?'Test réussi : ta candidature est présélectionnée. Un recruteur te contactera.':'Test non réussi cette fois. Tu pourras retenter plus tard.'};
  await run();recT=setInterval(run,20000)}
 // -- admin : candidatures
@@ -262,7 +271,7 @@ function recRender(){const now=Date.now(),tot=recApps.length;let acc=0,ref=0,att
  $('#raRows').innerHTML=recApps.filter(a=>f==='all'||(f==='pass'&&a.passed)||(f==='fail'&&!a.passed)||(f==='att'&&a.status==='en attente')).map(a=>{
   const left=new Date(a.reveal_at)-now;
   return`<tr><td>${new Date(a.created_at).toLocaleString('fr-FR')}</td><td>${esc(a.pseudo)}</td><td>${a.age}</td><td>${a.score} % ${a.passed?'✅':'❌'}</td><td>${left>0?'envoi dans '+Math.ceil(left/60000)+' min':'envoyée'}</td><td>${esc(a.status)}</td>
-  <td><button class="x" style="background:var(--ard)" data-k="see" data-id="${a.id}">Voir</button> <button class="x" style="background:#1f7a45" data-k="ok" data-id="${a.id}">Accepter</button> <button class="x" data-k="ko" data-id="${a.id}">Refuser</button> <button class="x" style="background:#6b7a83" data-k="del" data-id="${a.id}">Supprimer</button></td></tr>`
+  <td><button class="x" style="background:var(--loire)" data-k="see" data-id="${a.id}">Voir</button> <button class="x" style="background:#1f7a45" data-k="ok" data-id="${a.id}">Accepter</button> <button class="x" data-k="ko" data-id="${a.id}">Refuser</button> <button class="x" style="background:#6b7a83" data-k="del" data-id="${a.id}">Supprimer</button></td></tr>`
   +(recOpened[a.id]?`<tr><td colspan="7" style="white-space:pre-wrap">Disponibilités : ${esc(a.dispo)}\nExpérience : ${esc(a.xp||'—')}\nMotivation : ${esc(a.why)}\nCode de suivi : ${esc(a.code)}</td></tr>`:'')}).join('')}
 $('#raFilt').onchange=recRender;
 $('#raRows').onclick=async e=>{const b=e.target.closest('button');if(!b)return;const id=b.dataset.id,k=b.dataset.k;
