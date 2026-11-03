@@ -81,6 +81,13 @@ footer.ft{text-align:center;padding:0 16px 40px}footer.ft img{max-width:100%;hei
 <a href="https://www.teamkit.fr/serveur/tk-novalifeamboise-206?src=banniere" title="BelleRoche — serveur Nova-Life: Amboise gratuit sur TeamKit"><img src="https://www.teamkit.fr/banniere/tk-novalifeamboise-206.png" alt="BelleRoche — serveur Nova-Life: Amboise gratuit sur TeamKit" width="600" height="200" style="max-width:100%;height:auto"></a>
 <div class="row"><button id="stOn">Lancer le suivi</button><button class="g" id="stNow">Actualiser maintenant</button><button class="g" id="stNew">Nouveau message</button><button class="x" style="margin:0" id="stOff">Arrêter</button></div>
 <p id="stOut" role="status" style="margin:10px 0 0;font-weight:600"></p></fieldset>
+<fieldset id="whBox"><legend>Webhooks Discord (séparés)</legend>
+<p style="margin:6px 0;font-weight:600">Statut du serveur</p>
+<div class="row" style="margin-top:6px"><button class="g" data-wh="check" data-w="statut">Vérifier</button><button class="g" data-wh="test" data-w="statut">Envoyer un test</button><button class="g" data-wh="sync" data-w="statut">Resynchroniser le message</button></div>
+<p id="whS" role="status" style="margin:6px 0 14px"></p>
+<p style="margin:6px 0;font-weight:600">Recrutement staff</p>
+<div class="row" style="margin-top:6px"><button class="g" data-wh="check" data-w="recrut">Vérifier</button><button class="g" data-wh="test" data-w="recrut">Envoyer un test</button><button class="g" data-wh="sync" data-w="recrut">Renvoyer les candidatures non envoyées</button></div>
+<p id="whR" role="status" style="margin:6px 0 0"></p></fieldset>
 <fieldset><legend>Recrutement staff</legend><p style="margin:6px 0">Les candidatures du test s'affichent ici (et sont envoyées sur Discord). Toi seul(e), avec les autres admins, les voyez.</p><div class="row"><button id="recOpen">Voir les candidatures</button></div></fieldset>
 <fieldset><legend>Codes d'accès</legend><label>Code (vide = généré)</label><input id="kC"><label>Type</label><select id="kR"><option value="compte">Création de compte</option><option value="admin">Admin</option></select><div class="row"><button id="kOk">Créer le code</button></div><div id="kL" style="margin-top:10px"></div></fieldset>
 <div class="row"><button class="g" id="adOut">Quitter le mode admin</button><button class="g" onclick="dAdm.close()">Fermer</button></div></dialog>
@@ -91,7 +98,7 @@ footer.ft{text-align:center;padding:0 16px 40px}footer.ft img{max-width:100%;hei
 <label>Disponibilités (jours / heures par semaine)</label><input id="rDi" maxlength="120">
 <label>Expérience en modération (facultatif)</label><textarea id="rXp" rows="3" maxlength="600"></textarea>
 <label>Pourquoi veux-tu rejoindre le staff ?</label><textarea id="rWh" rows="4" maxlength="800"></textarea>
-<h2 style="margin-top:22px">Test de mise en situation</h2><p id="rProg" style="margin:0;font-style:italic"></p><div id="rQz"></div>
+<h2 style="margin-top:22px">Test de mise en situation</h2><p id="rNote" style="margin:0 0 6px;font-size:15px"></p><p id="rProg" style="margin:0;font-style:italic"></p><div id="rQz"></div>
 <p id="rErr" role="alert" style="color:var(--err);font-weight:600"></p>
 <div class="row"><button id="rSend">Envoyer ma candidature</button><button class="g" onclick="dRecF.close()">Fermer</button></div></dialog>
 
@@ -103,13 +110,14 @@ footer.ft{text-align:center;padding:0 16px 40px}footer.ft img{max-width:100%;hei
 <dialog id="dRecA" style="width:min(96vw,900px)"><h2>Candidatures staff</h2>
 <fieldset><legend>Réglages</legend><div class="row" style="align-items:center">
 <label style="margin:0;display:flex;gap:6px;align-items:center"><input type="checkbox" id="raOpen" style="width:auto">Recrutements ouverts</label>
+<label style="margin:0;display:flex;gap:6px;align-items:center"><input type="checkbox" id="raBlock" style="width:auto">Bloquer le copier-coller</label>
 <label style="margin:0">Seuil % <input id="raSeuil" type="number" min="0" max="100" style="width:80px"></label>
 <label style="margin:0">Délai min (min) <input id="raMin" type="number" min="0" style="width:80px"></label>
 <label style="margin:0">max <input id="raMax" type="number" min="0" style="width:80px"></label>
 <button id="raSave">Enregistrer</button></div></fieldset>
 <div class="rstats" id="raStats"></div>
-<div class="row" style="margin-top:0"><select id="raFilt" style="width:auto"><option value="all">Toutes</option><option value="pass">Test réussi</option><option value="fail">Test non réussi</option><option value="att">À traiter</option></select><button class="g" id="raCsv">⬇ Export CSV</button></div>
-<div style="overflow-x:auto"><table class="rt"><thead><tr><th>Date</th><th>Pseudo</th><th>Âge</th><th>Score</th><th>Réponse au candidat</th><th>Statut</th><th>Actions</th></tr></thead><tbody id="raRows"></tbody></table></div>
+<div class="row" style="margin-top:0"><select id="raFilt" style="width:auto"><option value="all">Toutes</option><option value="pass">Test réussi</option><option value="fail">Test non réussi</option><option value="att">À traiter</option></select><button class="g" id="raCsv">⬇ Export CSV</button><button class="g" id="raSync">⟳ Renvoyer sur Discord les non envoyées</button></div>
+<div style="overflow-x:auto"><table class="rt"><thead><tr><th>Date</th><th>Pseudo</th><th>Âge</th><th>Score</th><th>Suspicion IA</th><th>Discord</th><th>Réponse au candidat</th><th>Statut</th><th>Actions</th></tr></thead><tbody id="raRows"></tbody></table></div>
 <div class="row"><button class="g" onclick="dRecA.close()">Fermer</button></div></dialog>
 <script>
 const SUPABASE_URL='https://dkrwriqngiydoaqfyxzg.supabase.co',SUPABASE_KEY='sb_publishable_v-yycYgqQ9dehuVZ5YqwZQ_PfCBFa0M';
@@ -230,19 +238,35 @@ let rec=null,recT,recApps=[],recOpened={},recPoll;
 const recAdm=(fn,args)=>sb.rpc(fn,{admin_code:localStorage.br_admin_code||'',...args});
 async function loadRec(){const{data,error}=await sb.rpc('recruit_info');rec=error?null:data;
  const s=$('#recrutement');s.hidden=!(rec&&rec.open);
- if(rec&&rec.open)$('#recIntro').textContent=`Postule pour rejoindre le staff de ${rec.serveur} : un formulaire puis un test de ${rec.questions.length} questions. Il faut au moins ${rec.seuil} % de bonnes réponses. Ta réponse arrive ${rec.delai_min} à ${rec.delai_max} minutes après l'envoi.`;
+ if(rec&&rec.open)$('#recIntro').textContent=`Postule pour rejoindre le staff de ${rec.serveur} : un formulaire puis un test de ${rec.questions.length} questions${rec.questions.some(q=>q.kind==='libre')?' à réponse libre':''}. Il faut au moins ${rec.seuil} % de bonnes réponses. Ta réponse arrive ${rec.delai_min} à ${rec.delai_max} minutes après l'envoi.`;
  render()}
+let tel={paste:0,pasted:0,blocked:0,blur:0,inputs:0,t0:0};
+window.addEventListener('blur',()=>{if(dRecF.open)tel.blur++});
 function buildQuiz(){if($('#rQz').childElementCount)return;
- $('#rQz').innerHTML=rec.questions.map((it,i)=>`<div class="rq"><p>${i+1}. ${esc(it.q)}</p>${it.o.map((t,j)=>`<label class="opt"><input type="radio" name="q${i}" value="${j}"><span>${esc(t)}</span></label>`).join('')}</div>`).join('');
- $('#rQz').onchange=()=>{$('#rProg').textContent=document.querySelectorAll('#rQz input:checked').length+' / '+rec.questions.length+' questions répondues'}}
-$('#recGo').onclick=()=>{if(!rec||!rec.open)return;buildQuiz();$('#rErr').textContent='';dRecF.showModal()};
+ tel={paste:0,pasted:0,blocked:0,blur:0,inputs:0,t0:0};
+ $('#rQz').innerHTML=rec.questions.map((it,i)=>it.kind==='libre'
+  ?`<div class="rq"><p>${i+1}. ${esc(it.q)}</p><textarea class="rfree" data-i="${i}" rows="5" maxlength="1500" placeholder="Réponds avec tes propres mots…"></textarea><small id="rw${i}" style="color:var(--mut)">0 mot${it.min_words?' · '+it.min_words+' mots minimum conseillés':''}</small></div>`
+  :`<div class="rq"><p>${i+1}. ${esc(it.q)}</p>${(it.o||[]).map((t,j)=>`<label class="opt"><input type="radio" name="q${i}" value="${j}"><span>${esc(t)}</span></label>`).join('')}</div>`).join('')}
+const recProg=()=>{const n=document.querySelectorAll('#rQz input:checked').length+[...document.querySelectorAll('#rQz .rfree')].filter(t=>t.value.trim()).length;$('#rProg').textContent=n+' / '+rec.questions.length+' questions répondues'};
+dRecF.addEventListener('input',e=>{const t=e.target;
+ if(t.matches('textarea')){if(!tel.t0)tel.t0=Date.now();if(e.inputType!=='insertFromPaste'&&e.inputType!=='insertFromDrop')tel.inputs++}
+ if(t.classList&&t.classList.contains('rfree')){const w=t.value.trim()?t.value.trim().split(/\s+/).length:0;const q=rec.questions[+t.dataset.i];$('#rw'+t.dataset.i).textContent=w+' mot'+(w>1?'s':'')+(q&&q.min_words?' · '+q.min_words+' mots minimum conseillés':'')}
+ recProg()});
+dRecF.addEventListener('change',recProg);
+dRecF.addEventListener('paste',e=>{if(!e.target.matches('textarea'))return;const len=((e.clipboardData&&e.clipboardData.getData('text'))||'').length;
+ if(rec&&rec.bloque_collage){e.preventDefault();tel.blocked++;toast('Le copier-coller est désactivé : écris avec tes propres mots.')}else{tel.paste++;tel.pasted+=len}});
+dRecF.addEventListener('drop',e=>{if(rec&&rec.bloque_collage&&e.target.matches('textarea')){e.preventDefault();tel.blocked++}});
+$('#recGo').onclick=()=>{if(!rec||!rec.open)return;buildQuiz();$('#rErr').textContent='';$('#rNote').textContent=(rec.bloque_collage?'Écris avec tes propres mots : le copier-coller est désactivé. ':'')+'Pour garantir l’équité, la façon dont tu saisis tes réponses (collage, durée, changement de page) est analysée.';recProg();dRecF.showModal()};
 $('#recFind').onclick=()=>{dRecR.showModal();const c=localStorage.br_rec_code;if(c){$('#rCode').value=c;recFollow(c)}};
 $('#rSee').onclick=()=>recFollow($('#rCode').value);
 dRecR.addEventListener('close',()=>clearInterval(recT));
 $('#rSend').onclick=async()=>{const n=rec.questions.length,ans=[];
- for(let i=0;i<n;i++){const c=document.querySelector(`input[name="q${i}"]:checked`);if(!c){$('#rErr').textContent=`Réponds à toutes les questions du test (manque la question ${i+1}).`;return}ans.push(+c.value)}
+ for(let i=0;i<n;i++){const it=rec.questions[i];
+  if(it.kind==='libre'){const v=document.querySelector(`.rfree[data-i="${i}"]`).value.trim();if(!v){$('#rErr').textContent=`Réponds à toutes les questions du test (manque la question ${i+1}).`;return}ans.push(v)}
+  else{const c=document.querySelector(`input[name="q${i}"]:checked`);if(!c){$('#rErr').textContent=`Réponds à toutes les questions du test (manque la question ${i+1}).`;return}ans.push(+c.value)}}
  $('#rErr').textContent='';$('#rSend').disabled=true;
- const{data,error}=await sb.rpc('recruit_apply',{p_pseudo:$('#rPs').value,p_age:parseInt($('#rAge').value,10)||null,p_dispo:$('#rDi').value,p_xp:$('#rXp').value,p_why:$('#rWh').value,p_answers:ans});
+ const meta={paste_count:tel.paste,pasted_chars:tel.pasted,paste_blocked:tel.blocked,blur:tel.blur,inputs:tel.inputs,seconds:tel.t0?Math.round((Date.now()-tel.t0)/1000):0};
+ const{data,error}=await sb.rpc('recruit_apply',{p_pseudo:$('#rPs').value,p_age:parseInt($('#rAge').value,10)||null,p_dispo:$('#rDi').value,p_xp:$('#rXp').value,p_why:$('#rWh').value,p_answers:ans,p_meta:meta});
  $('#rSend').disabled=false;
  if(error)return $('#rErr').textContent=error.message+(/function|schema cache/i.test(error.message)?' (le script SQL du recrutement n’est pas installé)':'');
  localStorage.br_rec_code=data.code;dRecF.close();$('#rCode').value=data.code;dRecR.showModal();recFollow(data.code)};
@@ -261,28 +285,43 @@ dRecA.addEventListener('close',()=>clearInterval(recPoll));
 async function recAdminLoad(first){const{data,error}=await recAdm('recruit_admin_list');
  if(error)return toast('❌ '+error.message+(/function|schema cache/i.test(error.message)?' (lance d’abord le script SQL du recrutement)':''));
  recApps=data.apps||[];
- if(first){$('#raOpen').checked=data.open;$('#raSeuil').value=data.seuil;$('#raMin').value=data.delai_min;$('#raMax').value=data.delai_max}
+ if(first){$('#raOpen').checked=data.open;$('#raSeuil').value=data.seuil;$('#raMin').value=data.delai_min;$('#raMax').value=data.delai_max;$('#raBlock').checked=data.bloque_collage!==false}
  recRender()}
-function recRender(){const now=Date.now(),tot=recApps.length;let acc=0,ref=0,att=0,pass=0,wait=0;
- recApps.forEach(a=>{if(a.passed)pass++;if(a.status==='accepté')acc++;else if(a.status==='refusé')ref++;else att++;if(new Date(a.reveal_at)>now)wait++});
+function recRender(){const now=Date.now(),tot=recApps.length;let acc=0,ref=0,att=0,pass=0,wait=0,sus=0;
+ recApps.forEach(a=>{if(a.passed)pass++;if(a.status==='accepté')acc++;else if(a.status==='refusé')ref++;else att++;if(new Date(a.reveal_at)>now)wait++;if(a.ai_level==='élevé')sus++});
  const pr=tot?Math.round(pass/tot*100):0,dec=acc+ref,ar=dec?Math.round(acc/dec*100):0;
- $('#raStats').innerHTML=[['Candidatures',tot],['Test réussi',pr+' %'],['Acceptés',acc],['Refusés',ref],['À traiter',att],['Réponses en attente',wait],['Taux d’acceptation',ar+' %']].map(v=>`<div class="rs"><b>${v[1]}</b><span>${v[0]}</span></div>`).join('');
- const f=$('#raFilt').value;
+ $('#raStats').innerHTML=[['Candidatures',tot],['Test réussi',pr+' %'],['Acceptés',acc],['Refusés',ref],['À traiter',att],['Suspicion IA élevée',sus],['Réponses en attente',wait],['Taux d’acceptation',ar+' %']].map(v=>`<div class="rs"><b>${v[1]}</b><span>${v[0]}</span></div>`).join('');
+ const f=$('#raFilt').value,ic={faible:'🟢',moyen:'🟠','élevé':'🔴'},dc={ok:'✅ envoyé',attente:'⏳ en cours',echec:'⚠️ non confirmé'};
  $('#raRows').innerHTML=recApps.filter(a=>f==='all'||(f==='pass'&&a.passed)||(f==='fail'&&!a.passed)||(f==='att'&&a.status==='en attente')).map(a=>{
   const left=new Date(a.reveal_at)-now;
-  return`<tr><td>${new Date(a.created_at).toLocaleString('fr-FR')}</td><td>${esc(a.pseudo)}</td><td>${a.age}</td><td>${a.score} % ${a.passed?'✅':'❌'}</td><td>${left>0?'envoi dans '+Math.ceil(left/60000)+' min':'envoyée'}</td><td>${esc(a.status)}</td>
+  const det=(a.details||[]).map((d,i)=>`<div style="margin:8px 0"><b>${i+1}. ${esc(d.q)}</b><br>${d.kind==='libre'?`<span style="white-space:pre-wrap">${esc(d.a)}</span><br><small>${d.ok?'✅':'❌'} ${d.words} mots · critères validés : ${esc((d.hit||[]).join(', ')||'aucun')}${(d.miss||[]).length?' · manquants : '+esc(d.miss.join(', ')):''}</small>`:`${esc(d.a)} ${d.ok?'✅':'❌'}`}</div>`).join('');
+  const ai=a.ai_level?`<p style="margin:8px 0 0"><b>Suspicion IA : ${ic[a.ai_level]||''} ${esc(a.ai_level)} (${a.ai_score}/100)</b> <small>— indicateur, pas une preuve</small></p>${(a.ai_flags||[]).length?'<ul style="margin:4px 0 0 18px">'+a.ai_flags.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul>':''}`:'';
+  return`<tr><td>${new Date(a.created_at).toLocaleString('fr-FR')}</td><td>${esc(a.pseudo)}</td><td>${a.age}</td><td>${a.score} % ${a.passed?'✅':'❌'}</td><td>${a.ai_level?(ic[a.ai_level]||'')+' '+esc(a.ai_level)+' ('+a.ai_score+')':'—'}</td><td>${dc[a.discord]||''}</td><td>${left>0?'envoi dans '+Math.ceil(left/60000)+' min':'envoyée'}</td><td>${esc(a.status)}</td>
   <td><button class="x" style="background:var(--loire)" data-k="see" data-id="${a.id}">Voir</button> <button class="x" style="background:#1f7a45" data-k="ok" data-id="${a.id}">Accepter</button> <button class="x" data-k="ko" data-id="${a.id}">Refuser</button> <button class="x" style="background:#6b7a83" data-k="del" data-id="${a.id}">Supprimer</button></td></tr>`
-  +(recOpened[a.id]?`<tr><td colspan="7" style="white-space:pre-wrap">Disponibilités : ${esc(a.dispo)}\nExpérience : ${esc(a.xp||'—')}\nMotivation : ${esc(a.why)}\nCode de suivi : ${esc(a.code)}</td></tr>`:'')}).join('')}
+  +(recOpened[a.id]?`<tr><td colspan="9" style="white-space:normal"><b>Disponibilités :</b> ${esc(a.dispo)}<br><b>Expérience :</b> ${esc(a.xp||'—')}<br><b>Motivation :</b> <span style="white-space:pre-wrap">${esc(a.why)}</span><br><b>Code de suivi :</b> ${esc(a.code)}${ai}<hr style="border:0;border-top:1px solid var(--line3)">${det||'<i>Candidature ancienne : pas de détail des réponses.</i>'}</td></tr>`:'')}).join('')}
 $('#raFilt').onchange=recRender;
+async function recSync(out){const{data,error}=await recAdm('recruit_discord_resend');
+ if(error){out('❌ '+error.message+(/function|schema cache/i.test(error.message)?' (relance le script SQL du recrutement)':''));return}
+ out(data.sent?`✅ ${data.sent} candidature(s) renvoyée(s) sur Discord${data.not_confirmed?' (il en reste '+data.not_confirmed+', clique à nouveau)':''}.`:'✅ Toutes les candidatures sont déjà confirmées sur Discord.');setTimeout(()=>recAdminLoad(false),4000)}
+$('#raSync').onclick=()=>recSync(toast);
+$('#whBox').onclick=async e=>{const b=e.target.closest('button[data-wh]');if(!b)return;const w=b.dataset.w,k=b.dataset.wh,out=$(w==='statut'?'#whS':'#whR'),say=m=>out.textContent=m;
+ say('En cours…');b.disabled=true;
+ try{
+  if(k==='check'){const{data,error}=await recAdm('webhooks_check');if(error)throw error;const r=data[w];say(r.ok?`✅ Webhook valide : « ${r.name} » (salon ${r.channel_id})`:'❌ '+r.error)}
+  else if(k==='test'){const{data,error}=await recAdm('webhook_send_test',{which:w});if(error)throw error;say(data.ok?'✅ Message de test envoyé : regarde le salon Discord.':'❌ '+data.error)}
+  else if(w==='statut'){const{data,error}=await recAdm('status_refresh');if(error)throw error;say(data&&data.active===false?'⚠️ Le suivi du statut est arrêté : lance-le d’abord (bouton « Lancer le suivi » ci-dessus).':data&&data.error?'⚠️ '+data.error:'✅ Message du statut resynchronisé.')}
+  else await recSync(say)
+ }catch(err){say('❌ '+(err.message||err)+(/function|schema cache/i.test(err.message||'')?' (le script SQL correspondant n’est pas installé)':''))}
+ b.disabled=false};
 $('#raRows').onclick=async e=>{const b=e.target.closest('button');if(!b)return;const id=b.dataset.id,k=b.dataset.k;
  if(k==='see'){recOpened[id]=!recOpened[id];return recRender()}
  if(k==='ok'||k==='ko'){const{error}=await recAdm('recruit_admin_status',{app_id:id,new_status:k==='ok'?'accepté':'refusé'});if(error)toast('❌ '+error.message);return recAdminLoad(false)}
  if(k==='del'){if(!b.dataset.c){b.dataset.c='1';b.textContent='Confirmer ?';setTimeout(()=>{b.dataset.c='';b.textContent='Supprimer'},4000);return}
   const{error}=await recAdm('recruit_admin_delete',{app_id:id});if(error)toast('❌ '+error.message);recAdminLoad(false)}};
-$('#raSave').onclick=async()=>{const{error}=await recAdm('recruit_admin_settings',{p_open:$('#raOpen').checked,p_seuil:parseInt($('#raSeuil').value,10),p_dmin:parseInt($('#raMin').value,10),p_dmax:parseInt($('#raMax').value,10)});
+$('#raSave').onclick=async()=>{const{error}=await recAdm('recruit_admin_settings',{p_open:$('#raOpen').checked,p_seuil:parseInt($('#raSeuil').value,10),p_dmin:parseInt($('#raMin').value,10),p_dmax:parseInt($('#raMax').value,10),p_block:$('#raBlock').checked});
  if(error)return toast('❌ '+error.message);toast('Réglages enregistrés.');loadRec()};
 $('#raCsv').onclick=()=>{const q=v=>{v=String(v??'');if(/^[=+\-@]/.test(v))v="'"+v;return'"'+v.replace(/"/g,'""')+'"'};
- const rows=[['Date','Pseudo','Âge','Score %','Réussi','Statut','Disponibilités','Expérience','Motivation']].concat(recApps.map(a=>[a.created_at,a.pseudo,a.age,a.score,a.passed?'oui':'non',a.status,a.dispo,a.xp,a.why]));
+ const rows=[['Date','Pseudo','Âge','Score %','Réussi','Suspicion IA','Statut','Disponibilités','Expérience','Motivation']].concat(recApps.map(a=>[a.created_at,a.pseudo,a.age,a.score,a.passed?'oui':'non',(a.ai_level||'')+(a.ai_score!=null?' ('+a.ai_score+'/100)':''),a.status,a.dispo,a.xp,a.why]));
  const u=URL.createObjectURL(new Blob(['\ufeff'+rows.map(r=>r.map(q).join(';')).join('\n')],{type:'text/csv;charset=utf-8'})),l=document.createElement('a');l.href=u;l.download='candidatures.csv';l.click();URL.revokeObjectURL(u)};
 // Statut du serveur Nova : badge public + boutons admin
 let st=null;
