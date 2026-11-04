@@ -1,60 +1,98 @@
 <!DOCTYPE html>
 <html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Belle-Roche-Sur-Amboise</title>
+<meta name="description" content="Site officiel de la ville de Belle-Roche-Sur-Amboise : actualités, entreprises, giveaways, voitures perdues et recrutement du staff.">
+<meta name="theme-color" content="#1c2a35"><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%231d6a7a'/%3E%3Ctext x='50' y='64' font-size='46' font-family='sans-serif' font-weight='800' text-anchor='middle' fill='white'%3EBR%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <script>(function(){var t=null;try{t=localStorage.getItem('br_theme')}catch(e){}if(t!=='dark'&&t!=='light')t=window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';document.documentElement.dataset.theme=t})()</script>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=Newsreader:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <style>
-:root{--ard:#22303b;--loire:#1d6a7a;--or:#c79a3b;--bg:#eceff0;--ink:#1b252d;--w:#fff;color-scheme:light;
---surf:#fff;--tx:#22303b;--act:#22303b;--acc:#1d6a7a;--mut:#5b6a73;--line:#cfd8dc;--line2:#9fb0b8;--line3:#e1e7ea;--err:#a33;--ok:#1f7a45}
-:root[data-theme=dark]{--bg:#12181d;--ink:#e4ecf0;--surf:#1b242b;--tx:#dbe6ec;--act:#1d6a7a;--acc:#5fb3c4;--mut:#9fb0b8;--line:#33424c;--line2:#4a5b66;--line3:#2a363f;--err:#ff8a80;--ok:#5fd08a;color-scheme:dark}
-*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:70px}
-body{margin:0;background:var(--bg);color:var(--ink);font:18px/1.55 Newsreader,Georgia,serif}
+:root{--ard:#1c2a35;--loire:#1d6a7a;--or:#c79a3b;--bg:#eef2f3;--ink:#18232b;--w:#fff;color-scheme:light;
+--surf:#fff;--tx:#1c2a35;--act:#1c2a35;--acc:#1d6a7a;--mut:#5d6d77;--line:#d5dde1;--line2:#aab9c1;--line3:#e4eaed;--err:#b3362f;--ok:#1f7a45;
+--glass:#ffffffd9;--sh:0 1px 2px #0b141c14,0 12px 32px -16px #0b141c55;--ring:#1d6a7a40}
+:root[data-theme=dark]{--bg:#0f151a;--ink:#e6eef2;--surf:#18222a;--tx:#dbe6ec;--act:#1d6a7a;--acc:#5fb3c4;--mut:#9fb0b8;--line:#2b3943;--line2:#46576a;--line3:#232f38;--err:#ff8a80;--ok:#5fd08a;
+--glass:#18222ad9;--sh:0 1px 2px #0007,0 14px 34px -16px #000b;--ring:#5fb3c455;color-scheme:dark}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:84px;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:18px/1.6 Newsreader,Georgia,serif;-webkit-font-smoothing:antialiased}
 h1,h2,h3,button,.tabs a,label{font-family:'Bricolage Grotesque',system-ui,sans-serif}
-header{position:sticky;top:0;z-index:5;background:var(--surf);border-bottom:2px solid var(--tx);display:flex;gap:12px;align-items:center;padding:10px 16px}
-.brand{font:800 17px 'Bricolage Grotesque';color:var(--tx);white-space:nowrap}
-.tabs{display:flex;gap:6px;overflow-x:auto;flex:1;scrollbar-width:none}
-.tabs a{padding:6px 14px;border-radius:99px;color:var(--tx);text-decoration:none;font-size:15px;font-weight:600;white-space:nowrap}
-.tabs a.on{background:var(--act);color:var(--w)}
+.skip{position:absolute;left:12px;top:-60px;background:var(--act);color:#fff;padding:10px 16px;border-radius:10px;z-index:20;text-decoration:none;font:600 15px 'Bricolage Grotesque',sans-serif}.skip:focus{top:10px}
+header{position:sticky;top:0;z-index:5;background:var(--surf);background:var(--glass);-webkit-backdrop-filter:saturate(1.5) blur(14px);backdrop-filter:saturate(1.5) blur(14px);border-bottom:1px solid var(--line);display:flex;gap:14px;align-items:center;padding:10px 18px}
+.brand{display:flex;align-items:center;font:800 18px 'Bricolage Grotesque';color:var(--tx);white-space:nowrap;letter-spacing:-.01em}
+.brand::before{content:"BR";display:inline-grid;place-items:center;width:32px;height:32px;margin-right:10px;border-radius:10px;background:linear-gradient(135deg,#2b8a9d,#14495a);color:#fff;font-size:13px;letter-spacing:.04em;box-shadow:0 4px 12px -4px #14495a99}
+.tabs{display:flex;gap:4px;overflow-x:auto;flex:1;scrollbar-width:none}.tabs::-webkit-scrollbar{display:none}
+.tabs a{padding:7px 15px;border-radius:99px;color:var(--tx);text-decoration:none;font-size:15px;font-weight:600;white-space:nowrap;transition:background .2s,color .2s}
+.tabs a:hover{background:var(--line3)}.tabs a.on{background:var(--act);color:var(--w)}
 .hb{display:flex;gap:6px}
-button{font-size:15px;font-weight:600;border:0;border-radius:6px;padding:8px 14px;background:var(--loire);color:var(--w);cursor:pointer}
-button.g{background:transparent;color:var(--tx);border:1.5px solid var(--tx)}button.x{background:#a33;font-size:13px;padding:4px 10px;margin-top:8px}
+button{font-size:15px;font-weight:600;border:0;border-radius:10px;padding:9px 16px;min-height:40px;background:linear-gradient(180deg,#23808f,#1d6a7a);color:var(--w);cursor:pointer;box-shadow:0 1px 0 #ffffff33 inset,0 6px 14px -8px #14495a;transition:transform .15s,box-shadow .2s,background .2s,opacity .2s}
+button:hover{transform:translateY(-1px);box-shadow:0 1px 0 #ffffff33 inset,0 10px 18px -8px #14495a}button:active{transform:none}
+button:disabled{opacity:.55;cursor:not-allowed;transform:none}
+button.g{background:transparent;color:var(--tx);border:1.5px solid var(--line2);box-shadow:none}button.g:hover{background:var(--line3);box-shadow:none}
+button.x{background:var(--err);font-size:13px;padding:5px 11px;min-height:0;margin-top:8px;box-shadow:none}
 :focus-visible{outline:3px solid var(--or);outline-offset:2px}
-.hero{background:repeating-linear-gradient(135deg,#22303b 0 22px,#27374399 22px 24px),var(--ard);color:var(--w);padding:90px 20px 70px;text-align:center}
-.hero h1{font-size:clamp(34px,7vw,72px);line-height:1.05;margin:0 0 12px;font-weight:800}
-.hero p{margin:0;font-style:italic;font-size:21px;color:#d9e4e8}
-main{max-width:1000px;margin:0 auto;padding:0 16px 80px}
-section{padding-top:48px}h2{font-size:34px;margin:0 0 20px;border-left:6px solid var(--or);padding-left:14px;color:var(--tx)}
-.post{background:var(--ard) center/cover;border-radius:10px;margin-bottom:22px;overflow:hidden}
-.pc{min-height:260px;padding:28px;color:var(--w);background:linear-gradient(90deg,#16202bee,#16202b66);display:flex;flex-direction:column;justify-content:flex-end;align-items:flex-start}
-.pc img{max-width:100%;max-height:220px;border-radius:6px;margin-bottom:14px}.pc h3{font-size:28px;margin:0 0 6px}.pc p{margin:0 0 8px;white-space:pre-line;max-width:62ch}.pc time{font-size:14px;opacity:.8}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:18px}
-.lk{background:var(--surf);border-radius:10px;padding:12px;border:1px solid var(--line)}.lk a{color:var(--ink);text-decoration:none}
-.im{aspect-ratio:4/3;background:var(--bg) center/cover;border-radius:6px;margin-bottom:10px}.lk h3{margin:0;font-size:18px}.lk a:hover h3{color:var(--acc)}
+.hero{position:relative;background:radial-gradient(900px 420px at 12% -20%,#2b8a9d66,transparent 60%),radial-gradient(700px 380px at 95% 0,#c79a3b40,transparent 55%),linear-gradient(160deg,#121d26,#1c2a35 55%,#17495a);color:var(--w);padding:104px 20px 96px;text-align:center;overflow:hidden}
+.hero::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:70px;background:linear-gradient(transparent,var(--bg));pointer-events:none}
+.hero>*{position:relative;z-index:1}
+.hero h1{font-size:clamp(36px,7.4vw,78px);line-height:1.04;margin:0 0 14px;font-weight:800;letter-spacing:-.025em;text-wrap:balance;text-shadow:0 4px 28px #0006}
+.hero p{margin:0;font-style:italic;font-size:clamp(18px,2.4vw,23px);color:#dbe8ec}
+main{max-width:1040px;margin:0 auto;padding:0 18px 70px}
+section{padding-top:52px}
+h2{position:relative;font-size:clamp(26px,4vw,34px);line-height:1.15;margin:0 0 26px;padding:0 0 14px;color:var(--tx);letter-spacing:-.015em}
+h2::after{content:"";position:absolute;left:0;bottom:0;width:56px;height:4px;border-radius:4px;background:linear-gradient(90deg,var(--or),#e3c06f)}
+.post{background:var(--ard) center/cover;border-radius:20px;margin-bottom:24px;overflow:hidden;box-shadow:var(--sh);transition:transform .3s,box-shadow .3s}
+.post:hover{transform:translateY(-3px)}
+.pc{min-height:290px;padding:30px;color:var(--w);background:linear-gradient(0deg,#0b141cf0,#0b141c88 55%,#0b141c33);display:flex;flex-direction:column;justify-content:flex-end;align-items:flex-start}
+.pc img{max-width:100%;max-height:230px;border-radius:12px;margin-bottom:16px;box-shadow:0 10px 26px -12px #000}.pc h3{font-size:clamp(22px,3vw,30px);line-height:1.15;margin:0 0 8px}.pc p{margin:0 0 10px;white-space:pre-line;max-width:64ch;color:#e3ecef}.pc time{font-size:13px;opacity:.85;background:#ffffff1c;border-radius:99px;padding:2px 12px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:20px}
+.lk{background:var(--surf);border-radius:16px;padding:12px;border:1px solid var(--line);box-shadow:var(--sh);transition:transform .25s,box-shadow .25s,border-color .25s}
+.lk:hover{transform:translateY(-4px);border-color:var(--line2)}.lk a{color:var(--ink);text-decoration:none;display:block}
+.im{aspect-ratio:4/3;background:var(--bg) center/cover;border-radius:11px;margin-bottom:12px;transition:filter .3s}.lk:hover .im{filter:saturate(1.15) brightness(1.04)}.lk h3{margin:0 0 2px;font-size:18px;line-height:1.25}.lk a:hover h3{color:var(--acc)}
 .empty{font-style:italic;color:var(--mut)}
-dialog{border:0;border-radius:12px;background:var(--surf);color:var(--ink);padding:24px;width:min(92vw,460px);max-height:90vh}dialog::backdrop{background:#0008}
-dialog h2{font-size:24px;margin-bottom:14px}label{display:block;font-size:14px;font-weight:600;margin:10px 0 3px}
-input,select,textarea{width:100%;font:16px Newsreader,serif;padding:8px;border:1.5px solid var(--line2);border-radius:6px;background:var(--surf);color:var(--ink)}
-fieldset{border:1.5px solid var(--line);border-radius:8px;margin:0 0 16px;padding:6px 14px 14px}legend{font:800 16px 'Bricolage Grotesque';color:var(--acc)}
-.row{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}.cd{display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid var(--line3);font-size:15px}
-#toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:var(--act);color:#fff;padding:10px 18px;border-radius:8px;display:none;z-index:9}
-.pl{display:inline-block;margin:6px 0 0;padding:2px 12px;border:2px solid var(--tx);border-radius:5px;background:var(--surf);color:var(--ink);font:800 16px 'Bricolage Grotesque';letter-spacing:.12em}
-.srv{display:inline-block;margin-top:18px;padding:6px 16px;border-radius:99px;background:#ffffff1f;font:600 15px 'Bricolage Grotesque',system-ui,sans-serif;color:var(--w)}
+dialog{border:1px solid var(--line);border-radius:22px;background:var(--surf);color:var(--ink);padding:28px;width:min(92vw,480px);max-height:90vh;box-shadow:0 30px 80px -20px #000a}
+dialog[open]{animation:pop .24s cubic-bezier(.2,.8,.2,1)}
+dialog::backdrop{background:#0a121a99;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
+dialog h2{font-size:25px;margin-bottom:18px;padding-bottom:0}dialog h2::after{display:none}
+label{display:block;font-size:14px;font-weight:600;margin:12px 0 4px;color:var(--tx)}
+input,select,textarea{width:100%;font:16px Newsreader,serif;padding:10px 12px;border:1.5px solid var(--line2);border-radius:10px;background:var(--surf);color:var(--ink);transition:border-color .2s,box-shadow .2s}
+input:focus,select:focus,textarea:focus{outline:0;border-color:var(--acc);box-shadow:0 0 0 4px var(--ring)}textarea{resize:vertical}
+fieldset{border:1px solid var(--line);border-radius:14px;margin:0 0 16px;padding:6px 16px 16px;background:var(--bg)}legend{font:800 15px 'Bricolage Grotesque';color:var(--acc);padding:0 8px;letter-spacing:.02em}
+.row{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}.cd{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--line3);font-size:15px}
+#toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:var(--act);color:#fff;padding:12px 20px;border-radius:12px;display:none;z-index:30;box-shadow:0 14px 34px -12px #000a;animation:rise .3s both;max-width:90vw;font:600 15px 'Bricolage Grotesque',sans-serif}
+.pl{display:inline-block;margin:6px 0 0;padding:4px 14px;border:2px solid var(--tx);border-radius:8px;background:var(--surf);color:var(--ink);font:800 17px 'Bricolage Grotesque';letter-spacing:.14em}
+.srv{display:inline-block;margin-top:22px;padding:8px 20px;border-radius:99px;background:#ffffff1c;border:1px solid #ffffff33;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);font:600 15px 'Bricolage Grotesque',system-ui,sans-serif;color:var(--w)}
 .srv:empty{display:none}
-footer.ft{text-align:center;padding:0 16px 40px}footer.ft img{max-width:100%;height:auto;border-radius:8px}
-.opt{display:flex;gap:8px;align-items:flex-start;margin:5px 0;padding:8px 10px;border:1px solid var(--line);border-radius:8px;cursor:pointer;font:400 16px/1.4 Newsreader,Georgia,serif}.opt input{width:auto;margin-top:5px}
-.rq{margin:16px 0}.rq p{margin:0 0 6px;font-weight:600}#recMain{padding-bottom:30px}
-.rstats{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px;margin:12px 0}.rs{border:1px solid var(--line);border-radius:8px;padding:8px;text-align:center}.rs b{display:block;font:800 20px 'Bricolage Grotesque',sans-serif}.rs span{font-size:13px;color:var(--mut)}
-.rt{width:100%;border-collapse:collapse;font-size:14px;margin-top:10px}.rt th,.rt td{text-align:left;padding:6px;border-bottom:1px solid var(--line3);vertical-align:top}
-@media(max-width:640px){.brand{display:none}.pc{padding:18px}}
+footer.ft{text-align:center;padding:10px 16px 46px}footer.ft img{max-width:100%;height:auto;border-radius:14px;box-shadow:var(--sh)}footer.ft p{margin:14px 0 0;font-size:14px;color:var(--mut)}
+#recrutement .rbox{background:linear-gradient(135deg,color-mix(in srgb,var(--loire) 12%,var(--surf)),var(--surf));border:1px solid var(--line);border-radius:20px;padding:26px;box-shadow:var(--sh)}
+#recrutement p{margin:0;max-width:62ch}
+.opt{display:flex;gap:10px;align-items:flex-start;margin:6px 0;padding:10px 12px;border:1px solid var(--line);border-radius:12px;cursor:pointer;font:400 16px/1.4 Newsreader,Georgia,serif;background:var(--surf);transition:border-color .2s,background .2s}.opt:hover{border-color:var(--acc)}.opt input{width:auto;margin-top:5px}
+#rBarWrap{position:sticky;top:-1px;z-index:3;background:var(--surf);padding:10px 0 12px;margin-top:4px;border-bottom:1px solid var(--line3)}
+#rProg{margin:0 0 6px;font:600 14px 'Bricolage Grotesque',sans-serif;color:var(--mut)}
+.pbar{height:8px;border-radius:8px;background:var(--line3);overflow:hidden}.pbar i{display:block;height:100%;width:0;border-radius:8px;background:linear-gradient(90deg,var(--loire),var(--or));transition:width .35s ease}
+.qcat{display:flex;align-items:center;gap:10px;margin:26px 0 4px;font:800 15px 'Bricolage Grotesque',sans-serif;letter-spacing:.04em;text-transform:uppercase;color:var(--acc)}.qcat::before{content:"";width:10px;height:10px;border-radius:50%;background:var(--or)}.qcat small{font-weight:600;color:var(--mut);text-transform:none;letter-spacing:0}
+.rq{display:flex;gap:12px;margin:12px 0;padding:14px;border:1px solid var(--line);border-radius:16px;background:var(--bg);transition:border-color .25s,background .25s}
+.rq.done{border-color:color-mix(in srgb,var(--ok) 55%,var(--line));background:color-mix(in srgb,var(--ok) 6%,var(--bg))}
+.qn{flex:none;display:grid;place-items:center;width:30px;height:30px;border-radius:9px;background:var(--act);color:#fff;font:800 14px 'Bricolage Grotesque',sans-serif}.rq.done .qn{background:var(--ok)}
+.rq>div{flex:1;min-width:0}.rq p{margin:2px 0 8px;font-weight:600;line-height:1.4}.rq textarea{min-height:96px;background:var(--surf)}
+#recMain{padding-bottom:26px}
+.rstats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin:14px 0}.rs{border:1px solid var(--line);border-radius:14px;padding:10px;text-align:center;background:var(--bg)}.rs b{display:block;font:800 22px 'Bricolage Grotesque',sans-serif;color:var(--tx)}.rs span{font-size:13px;color:var(--mut)}
+.rt{width:100%;border-collapse:collapse;font-size:14px;margin-top:10px}.rt th{font:700 12px 'Bricolage Grotesque',sans-serif;text-transform:uppercase;letter-spacing:.05em;color:var(--mut)}.rt th,.rt td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--line3);vertical-align:top}.rt tbody tr:nth-child(odd) td{background:color-mix(in srgb,var(--bg) 60%,transparent)}.rt tbody tr:hover td{background:var(--line3)}
+@keyframes rise{from{opacity:0;transform:translate(var(--tx0,0),14px)}}
+@keyframes pop{from{opacity:0;transform:translateY(10px) scale(.97)}}
+.post,.lk,#recrutement .rbox{animation:rise .6s cubic-bezier(.2,.7,.2,1) both}
+.grid>*:nth-child(2){animation-delay:.05s}.grid>*:nth-child(3){animation-delay:.1s}.grid>*:nth-child(4){animation-delay:.15s}.grid>*:nth-child(5){animation-delay:.2s}.grid>*:nth-child(n+6){animation-delay:.25s}
+#toast{--tx0:-50%}
+@media(max-width:640px){.brand{display:none}.pc{padding:20px}header{padding:8px 12px}.hero{padding:76px 16px 80px}dialog{padding:20px;border-radius:18px}.rq{padding:12px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+@media print{header,.hero::after,#toast{display:none}}
 </style></head><body>
-<header><span class="brand">Belle-Roche</span><nav class="tabs" id="tabs"></nav>
+<a class="skip" href="#main">Aller au contenu</a>
+<header><span class="brand">Belle-Roche</span><nav class="tabs" id="tabs" aria-label="Sections"></nav>
 <div class="hb"><button class="g" id="bTheme" type="button"></button><button class="g" id="bTk">Tickets</button><button class="g" id="bUser">Connexion</button><button id="bAdm">Admin</button></div></header>
 <div class="hero"><h1>Belle-Roche-Sur-Amboise</h1><p>Le site officiel de la ville</p><div class="srv" id="srv" role="status" aria-live="polite"></div></div>
 <main id="main"></main>
 <main id="recMain"><section id="recrutement" hidden><h2>Recrutement staff</h2>
-<p id="recIntro"></p><div class="row"><button id="recGo">Postuler</button><button class="g" id="recFind">Retrouver ma réponse</button></div></section></main>
-<footer class="ft"><a href="https://www.teamkit.fr/serveur/tk-novalifeamboise-206?src=banniere" title="BelleRoche — serveur Nova-Life: Amboise gratuit sur TeamKit"><img src="https://www.teamkit.fr/banniere/tk-novalifeamboise-206.png" alt="BelleRoche — serveur Nova-Life: Amboise gratuit sur TeamKit" width="600" height="200"></a></footer>
+<div class="rbox"><p id="recIntro"></p><div class="row"><button id="recGo">Postuler</button><button class="g" id="recFind">Retrouver ma réponse</button></div></div></section></main>
+<footer class="ft"><a href="https://www.teamkit.fr/serveur/tk-novalifeamboise-206?src=banniere" title="BelleRoche — serveur Nova-Life: Amboise gratuit sur TeamKit"><img src="https://www.teamkit.fr/banniere/tk-novalifeamboise-206.png" alt="BelleRoche — serveur Nova-Life: Amboise gratuit sur TeamKit" width="600" height="200" loading="lazy" decoding="async"></a><p>Belle-Roche-Sur-Amboise · site officiel de la ville</p></footer>
 <div id="toast"></div>
 
 <dialog id="dAuth"><h2 id="aT">Connexion</h2>
@@ -93,12 +131,12 @@ footer.ft{text-align:center;padding:0 16px 40px}footer.ft img{max-width:100%;hei
 <div class="row"><button class="g" id="adOut">Quitter le mode admin</button><button class="g" onclick="dAdm.close()">Fermer</button></div></dialog>
 
 <dialog id="dTk" style="width:min(94vw,560px)"><h2>Tickets</h2><div id="tkF"><label>Sujet</label><input id="tkS"><label>Message</label><textarea id="tkM" rows="3"></textarea><div class="row"><button id="tkOk">Envoyer le ticket</button></div></div><div id="tkL" style="margin-top:14px"></div><div class="row"><button class="g" onclick="dTk.close()">Fermer</button></div></dialog>
-<dialog id="dRecF" style="width:min(94vw,640px)"><h2>Candidature staff</h2>
+<dialog id="dRecF" style="width:min(94vw,720px)"><h2>Candidature staff</h2>
 <label>Pseudo Discord</label><input id="rPs" maxlength="40"><label>Âge</label><input id="rAge" type="number" min="10" max="99">
 <label>Disponibilités (jours / heures par semaine)</label><input id="rDi" maxlength="120">
 <label>Expérience en modération (facultatif)</label><textarea id="rXp" rows="3" maxlength="600"></textarea>
 <label>Pourquoi veux-tu rejoindre le staff ?</label><textarea id="rWh" rows="4" maxlength="800"></textarea>
-<h2 style="margin-top:22px">Test de mise en situation</h2><p id="rNote" style="margin:0 0 6px;font-size:15px"></p><p id="rProg" style="margin:0;font-style:italic"></p><div id="rQz"></div>
+<h2 style="margin-top:22px">Test de mise en situation</h2><p id="rNote" style="margin:0 0 6px;font-size:15px"></p><div id="rBarWrap"><p id="rProg"></p><div class="pbar"><i id="rBar"></i></div></div><div id="rQz"></div>
 <p id="rErr" role="alert" style="color:var(--err);font-weight:600"></p>
 <div class="row"><button id="rSend">Envoyer ma candidature</button><button class="g" onclick="dRecF.close()">Fermer</button></div></dialog>
 
@@ -111,6 +149,7 @@ footer.ft{text-align:center;padding:0 16px 40px}footer.ft img{max-width:100%;hei
 <fieldset><legend>Réglages</legend><div class="row" style="align-items:center">
 <label style="margin:0;display:flex;gap:6px;align-items:center"><input type="checkbox" id="raOpen" style="width:auto">Recrutements ouverts</label>
 <label style="margin:0;display:flex;gap:6px;align-items:center"><input type="checkbox" id="raBlock" style="width:auto">Bloquer le copier-coller</label>
+<label style="margin:0">Questions par candidat (0 = toutes) <input id="raPer" type="number" min="0" style="width:80px"></label>
 <label style="margin:0">Seuil % <input id="raSeuil" type="number" min="0" max="100" style="width:80px"></label>
 <label style="margin:0">Délai min (min) <input id="raMin" type="number" min="0" style="width:80px"></label>
 <label style="margin:0">max <input id="raMax" type="number" min="0" style="width:80px"></label>
@@ -128,14 +167,14 @@ let cats=[],items=[],entries=[],identites=[],editId=null,admin=false,user=null,r
 const toast=m=>{const t=$('#toast');t.textContent=m;t.style.display='block';setTimeout(()=>t.style.display='none',3000)};
 async function bg(){const{data}=await sb.from('site_settings').select('value').eq('key','bg_url').maybeSingle();const h=document.querySelector('.hero');
  h.style.background=data&&data.value?`linear-gradient(#16202bb0,#16202bb0),url('${data.value.replace(/'/g,'%27')}') center/cover`:''}
-async function load(){bg();const[c,i,e]=await Promise.all([sb.from('categories').select('*').order('position'),sb.from('items').select('*').order('created_at',{ascending:false}),sb.from('giveaway_entries').select('*')]);cats=c.data||[];items=i.data||[];entries=e.data||[];render()}
+async function load(){const[c,i,e]=await Promise.all([sb.from('categories').select('*').order('position'),sb.from('items').select('*').order('created_at',{ascending:false}),sb.from('giveaway_entries').select('*')]);cats=c.data||[];items=i.data||[];entries=e.data||[];render()}
 function render(){
  $('#bUser').textContent=user?user.prenom+' '+user.nom+' (quitter)':'Connexion';
  $('#tabs').innerHTML=cats.map(c=>`<a href="#c${c.id}">${esc(c.name)}</a>`).join('')+(rec&&rec.open?'<a href="#recrutement">Recrutement staff</a>':'');
  const del=id=>admin?`<button class="x" data-del="${id}">Supprimer</button> <button class="x" style="background:var(--loire)" data-dc="${id}">Envoyer sur Discord</button>`:'';
  $('#main').innerHTML=cats.map(c=>{const it=items.filter(x=>x.category_id===c.id);
   const b=c.kind==='cars'?`<div class="grid">${it.map(x=>carCard(x,del(x.id))).join('')}</div>`:c.kind==='giveaway'?it.map(x=>givCard(x,del(x.id))).join(''):c.kind==='links'?`<div class="grid">${it.map(x=>`<div class="lk"><a href="${esc(safe(x.link_url))}" target="_blank" rel="noopener"><div class="im" style="background-image:url('${esc(x.image_url)}')"></div><h3>${esc(x.title)}</h3></a>${del(x.id)}</div>`).join('')}</div>`
-  :it.map(x=>`<article class="post" style="background-image:url('${esc(x.bg_url)}')"><div class="pc">${x.image_url?`<img src="${esc(x.image_url)}" alt="">`:''}<h3>${esc(x.title)}</h3><p>${esc(x.text)}</p><time>${new Date(x.created_at).toLocaleDateString('fr-FR')}</time>${del(x.id)}</div></article>`).join('');
+  :it.map(x=>`<article class="post" style="background-image:url('${esc(x.bg_url)}')"><div class="pc">${x.image_url?`<img src="${esc(x.image_url)}" alt="" loading="lazy" decoding="async">`:''}<h3>${esc(x.title)}</h3><p>${esc(x.text)}</p><time>${new Date(x.created_at).toLocaleDateString('fr-FR')}</time>${del(x.id)}</div></article>`).join('');
   return`<section id="c${c.id}"><h2>${esc(c.name)}</h2>${it.length?b:'<p class="empty">Rien ici pour le moment.</p>'}</section>`}).join('');
  const o=c=>cats.filter(x=>x.kind===c).map(x=>`<option value="${x.id}">${esc(x.name)}</option>`).join('');
  const sel=['pCat','lCat','gCat','vCat'].map(i=>$('#'+i).value);
@@ -238,38 +277,63 @@ let rec=null,recT,recApps=[],recOpened={},recPoll;
 const recAdm=(fn,args)=>sb.rpc(fn,{admin_code:localStorage.br_admin_code||'',...args});
 async function loadRec(){const{data,error}=await sb.rpc('recruit_info');rec=error?null:data;
  const s=$('#recrutement');s.hidden=!(rec&&rec.open);
- if(rec&&rec.open)$('#recIntro').textContent=`Postule pour rejoindre le staff de ${rec.serveur} : un formulaire puis un test de ${rec.questions.length} questions${rec.questions.some(q=>q.kind==='libre')?' à réponse libre':''}. Il faut au moins ${rec.seuil} % de bonnes réponses. Ta réponse arrive ${rec.delai_min} à ${rec.delai_max} minutes après l'envoi.`;
+ if(rec&&rec.open)$('#recIntro').textContent=`Postule pour rejoindre le staff de ${rec.serveur} : un formulaire puis un test de ${rec.par_test>0?Math.min(rec.par_test,rec.questions.length):rec.questions.length} questions${rec.questions.some(q=>q.kind==='libre')?' à réponse libre':''}${rec.par_test>0&&rec.par_test<rec.questions.length?', tirées au hasard':''}. Il faut au moins ${rec.seuil} % de bonnes réponses. Ta réponse arrive ${rec.delai_min} à ${rec.delai_max} minutes après l'envoi.`;
  render()}
-let tel={paste:0,pasted:0,blocked:0,blur:0,inputs:0,t0:0};
-window.addEventListener('blur',()=>{if(dRecF.open)tel.blur++});
-function buildQuiz(){if($('#rQz').childElementCount)return;
- tel={paste:0,pasted:0,blocked:0,blur:0,inputs:0,t0:0};
- $('#rQz').innerHTML=rec.questions.map((it,i)=>it.kind==='libre'
-  ?`<div class="rq"><p>${i+1}. ${esc(it.q)}</p><textarea class="rfree" data-i="${i}" rows="5" maxlength="1500" placeholder="Réponds avec tes propres mots…"></textarea><small id="rw${i}" style="color:var(--mut)">0 mot${it.min_words?' · '+it.min_words+' mots minimum conseillés':''}</small></div>`
-  :`<div class="rq"><p>${i+1}. ${esc(it.q)}</p>${(it.o||[]).map((t,j)=>`<label class="opt"><input type="radio" name="q${i}" value="${j}"><span>${esc(t)}</span></label>`).join('')}</div>`).join('')}
-const recProg=()=>{const n=document.querySelectorAll('#rQz input:checked').length+[...document.querySelectorAll('#rQz .rfree')].filter(t=>t.value.trim()).length;$('#rProg').textContent=n+' / '+rec.questions.length+' questions répondues'};
+const DRAFT='br_rec_draft';
+let tel={paste:0,pasted:0,blocked:0,blur:0,inputs:0,t0:0},recPick=[],draftT;
+window.addEventListener('blur',()=>{if(dRecF.open){tel.blur++;saveDraft()}});
+const readDraft=()=>{try{return JSON.parse(localStorage.getItem(DRAFT)||'null')}catch(e){return null}};
+function saveDraft(){clearTimeout(draftT);draftT=setTimeout(()=>{if(!recPick.length)return;const a={};
+ document.querySelectorAll('#rQz .rq').forEach(el=>{const t=el.querySelector('textarea'),r=el.querySelector('input:checked'),v=t?t.value:r?r.value:'';if(v!=='')a[el.dataset.id]=v});
+ try{localStorage.setItem(DRAFT,JSON.stringify({ids:recPick.map(q=>q.id),a,tel,f:{ps:$('#rPs').value,age:$('#rAge').value,di:$('#rDi').value,xp:$('#rXp').value,wh:$('#rWh').value}}))}catch(e){}},400)}
+// tirage au hasard équilibré par catégorie ; conservé dans le brouillon pour ne pas changer si la page est rechargée
+function drawQuestions(){const qs=rec.questions,N=rec.par_test>0?Math.min(rec.par_test,qs.length):qs.length,d=readDraft();
+ if(d&&Array.isArray(d.ids)&&d.ids.length===N&&d.ids.every(id=>qs.some(q=>q.id===id)))return qs.filter(q=>d.ids.includes(q.id));
+ const by={};qs.forEach(q=>{const k=q.cat||'Questions';(by[k]=by[k]||[]).push(q)});
+ Object.values(by).forEach(a=>{for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}});
+ const keys=Object.keys(by),pick=[];
+ for(let k=0;pick.length<N&&k<N*keys.length+keys.length;k++){const a=by[keys[k%keys.length]];if(a.length)pick.push(a.pop())}
+ return qs.filter(q=>pick.includes(q))}
+function buildQuiz(){const sig=rec.questions.map(q=>q.id).join(',')+'|'+rec.par_test,box=$('#rQz');if(box.dataset.sig===sig)return;box.dataset.sig=sig;
+ recPick=drawQuestions();const groups=[];
+ recPick.forEach(q=>{const k=q.cat||'Questions';let g=groups.find(x=>x.k===k);if(!g)groups.push(g={k,l:[]});g.l.push(q)});
+ recPick=groups.flatMap(g=>g.l);let n=0;
+ box.innerHTML=groups.map(g=>`<div class="qcat">${esc(g.k)} <small>${g.l.length} question${g.l.length>1?'s':''}</small></div>`+g.l.map(it=>{n++;
+  return`<div class="rq" data-id="${it.id}"><span class="qn">${n}</span><div><p>${esc(it.q)}</p>`+(it.kind==='libre'
+   ?`<textarea class="rfree" rows="4" maxlength="1500" placeholder="Réponds avec tes propres mots…"></textarea><small class="rw" style="color:var(--mut)">0 mot${it.min_words?' · '+it.min_words+' mots minimum conseillés':''}</small>`
+   :(it.o||[]).map((t,j)=>`<label class="opt"><input type="radio" name="q${it.id}" value="${j}"><span>${esc(t)}</span></label>`).join(''))+'</div></div>'}).join('')).join('');
+ const d=readDraft();
+ if(d&&Array.isArray(d.ids)&&d.ids.length===recPick.length&&recPick.every(q=>d.ids.includes(q.id))){
+  Object.entries(d.a||{}).forEach(([id,v])=>{const el=box.querySelector(`.rq[data-id="${id}"]`);if(!el)return;const t=el.querySelector('textarea');
+   if(t){t.value=v;wc(t)}else{const r=el.querySelector(`input[value="${v}"]`);if(r)r.checked=true}});
+  if(d.tel)tel=d.tel;const f=d.f||{};if(f.ps)$('#rPs').value=f.ps;if(f.age)$('#rAge').value=f.age;if(f.di)$('#rDi').value=f.di;if(f.xp)$('#rXp').value=f.xp;if(f.wh)$('#rWh').value=f.wh}
+ else tel={paste:0,pasted:0,blocked:0,blur:0,inputs:0,t0:0}}
+function wc(t){const w=t.value.trim()?t.value.trim().split(/\s+/).length:0,q=recPick.find(x=>x.id==t.closest('.rq').dataset.id),o=t.parentElement.querySelector('.rw');
+ if(o)o.textContent=w+' mot'+(w>1?'s':'')+(q&&q.min_words?' · '+q.min_words+' mots minimum conseillés':'')}
+const recProg=()=>{let n=0;document.querySelectorAll('#rQz .rq').forEach(el=>{const t=el.querySelector('textarea'),done=t?t.value.trim().length>0:!!el.querySelector('input:checked');el.classList.toggle('done',done);if(done)n++});
+ const tot=recPick.length;$('#rProg').textContent=n+' / '+tot+' questions répondues';$('#rBar').style.width=(tot?n/tot*100:0)+'%'};
 dRecF.addEventListener('input',e=>{const t=e.target;
  if(t.matches('textarea')){if(!tel.t0)tel.t0=Date.now();if(e.inputType!=='insertFromPaste'&&e.inputType!=='insertFromDrop')tel.inputs++}
- if(t.classList&&t.classList.contains('rfree')){const w=t.value.trim()?t.value.trim().split(/\s+/).length:0;const q=rec.questions[+t.dataset.i];$('#rw'+t.dataset.i).textContent=w+' mot'+(w>1?'s':'')+(q&&q.min_words?' · '+q.min_words+' mots minimum conseillés':'')}
- recProg()});
-dRecF.addEventListener('change',recProg);
+ if(t.classList&&t.classList.contains('rfree'))wc(t);
+ recProg();saveDraft()});
+dRecF.addEventListener('change',()=>{recProg();saveDraft()});
 dRecF.addEventListener('paste',e=>{if(!e.target.matches('textarea'))return;const len=((e.clipboardData&&e.clipboardData.getData('text'))||'').length;
- if(rec&&rec.bloque_collage){e.preventDefault();tel.blocked++;toast('Le copier-coller est désactivé : écris avec tes propres mots.')}else{tel.paste++;tel.pasted+=len}});
-dRecF.addEventListener('drop',e=>{if(rec&&rec.bloque_collage&&e.target.matches('textarea')){e.preventDefault();tel.blocked++}});
-$('#recGo').onclick=()=>{if(!rec||!rec.open)return;buildQuiz();$('#rErr').textContent='';$('#rNote').textContent=(rec.bloque_collage?'Écris avec tes propres mots : le copier-coller est désactivé. ':'')+'Pour garantir l’équité, la façon dont tu saisis tes réponses (collage, durée, changement de page) est analysée.';recProg();dRecF.showModal()};
+ if(rec&&rec.bloque_collage){e.preventDefault();tel.blocked++;toast('Le copier-coller est désactivé : écris avec tes propres mots.')}else{tel.paste++;tel.pasted+=len}saveDraft()});
+dRecF.addEventListener('drop',e=>{if(rec&&rec.bloque_collage&&e.target.matches('textarea')){e.preventDefault();tel.blocked++;saveDraft()}});
+$('#recGo').onclick=()=>{if(!rec||!rec.open)return;buildQuiz();$('#rErr').textContent='';$('#rNote').textContent=(rec.bloque_collage?'Écris avec tes propres mots : le copier-coller est désactivé. ':'')+'Pour garantir l’équité, la façon dont tu saisis tes réponses (collage, durée, changement de page) est analysée. Tes réponses sont enregistrées automatiquement sur cet appareil : tu peux fermer et reprendre plus tard.';recProg();dRecF.showModal()};
 $('#recFind').onclick=()=>{dRecR.showModal();const c=localStorage.br_rec_code;if(c){$('#rCode').value=c;recFollow(c)}};
 $('#rSee').onclick=()=>recFollow($('#rCode').value);
 dRecR.addEventListener('close',()=>clearInterval(recT));
-$('#rSend').onclick=async()=>{const n=rec.questions.length,ans=[];
- for(let i=0;i<n;i++){const it=rec.questions[i];
-  if(it.kind==='libre'){const v=document.querySelector(`.rfree[data-i="${i}"]`).value.trim();if(!v){$('#rErr').textContent=`Réponds à toutes les questions du test (manque la question ${i+1}).`;return}ans.push(v)}
-  else{const c=document.querySelector(`input[name="q${i}"]:checked`);if(!c){$('#rErr').textContent=`Réponds à toutes les questions du test (manque la question ${i+1}).`;return}ans.push(+c.value)}}
+$('#rSend').onclick=async()=>{const ans=[];
+ for(let i=0;i<recPick.length;i++){const it=recPick[i],el=document.querySelector(`#rQz .rq[data-id="${it.id}"]`),miss=()=>{$('#rErr').textContent=`Réponds à toutes les questions du test (manque la question ${i+1}).`;el.scrollIntoView({block:'center',behavior:'smooth'})};
+  if(it.kind==='libre'){const v=el.querySelector('textarea').value.trim();if(!v)return miss();ans.push({id:it.id,a:v})}
+  else{const c=el.querySelector('input:checked');if(!c)return miss();ans.push({id:it.id,a:+c.value})}}
  $('#rErr').textContent='';$('#rSend').disabled=true;
  const meta={paste_count:tel.paste,pasted_chars:tel.pasted,paste_blocked:tel.blocked,blur:tel.blur,inputs:tel.inputs,seconds:tel.t0?Math.round((Date.now()-tel.t0)/1000):0};
  const{data,error}=await sb.rpc('recruit_apply',{p_pseudo:$('#rPs').value,p_age:parseInt($('#rAge').value,10)||null,p_dispo:$('#rDi').value,p_xp:$('#rXp').value,p_why:$('#rWh').value,p_answers:ans,p_meta:meta});
  $('#rSend').disabled=false;
  if(error)return $('#rErr').textContent=error.message+(/function|schema cache/i.test(error.message)?' (le script SQL du recrutement n’est pas installé)':'');
- localStorage.br_rec_code=data.code;dRecF.close();$('#rCode').value=data.code;dRecR.showModal();recFollow(data.code)};
+ localStorage.br_rec_code=data.code;try{localStorage.removeItem(DRAFT)}catch(e){}dRecF.close();$('#rCode').value=data.code;dRecR.showModal();recFollow(data.code)};
 async function recFollow(code){clearInterval(recT);code=String(code||'').trim().toUpperCase();if(!code)return;
  const run=async()=>{const{data,error}=await sb.rpc('recruit_result',{p_code:code});
   if(error){clearInterval(recT);if(/introuvable/i.test(error.message))localStorage.removeItem('br_rec_code');$('#rCd').textContent='';$('#rScore').textContent='';$('#rVerd').textContent=error.message;return}
@@ -285,7 +349,7 @@ dRecA.addEventListener('close',()=>clearInterval(recPoll));
 async function recAdminLoad(first){const{data,error}=await recAdm('recruit_admin_list');
  if(error)return toast('❌ '+error.message+(/function|schema cache/i.test(error.message)?' (lance d’abord le script SQL du recrutement)':''));
  recApps=data.apps||[];
- if(first){$('#raOpen').checked=data.open;$('#raSeuil').value=data.seuil;$('#raMin').value=data.delai_min;$('#raMax').value=data.delai_max;$('#raBlock').checked=data.bloque_collage!==false}
+ if(first){$('#raOpen').checked=data.open;$('#raSeuil').value=data.seuil;$('#raMin').value=data.delai_min;$('#raMax').value=data.delai_max;$('#raBlock').checked=data.bloque_collage!==false;$('#raPer').value=data.par_test}
  recRender()}
 function recRender(){const now=Date.now(),tot=recApps.length;let acc=0,ref=0,att=0,pass=0,wait=0,sus=0;
  recApps.forEach(a=>{if(a.passed)pass++;if(a.status==='accepté')acc++;else if(a.status==='refusé')ref++;else att++;if(new Date(a.reveal_at)>now)wait++;if(a.ai_level==='élevé')sus++});
@@ -294,7 +358,7 @@ function recRender(){const now=Date.now(),tot=recApps.length;let acc=0,ref=0,att
  const f=$('#raFilt').value,ic={faible:'🟢',moyen:'🟠','élevé':'🔴'},dc={ok:'✅ envoyé',attente:'⏳ en cours',echec:'⚠️ non confirmé'};
  $('#raRows').innerHTML=recApps.filter(a=>f==='all'||(f==='pass'&&a.passed)||(f==='fail'&&!a.passed)||(f==='att'&&a.status==='en attente')).map(a=>{
   const left=new Date(a.reveal_at)-now;
-  const det=(a.details||[]).map((d,i)=>`<div style="margin:8px 0"><b>${i+1}. ${esc(d.q)}</b><br>${d.kind==='libre'?`<span style="white-space:pre-wrap">${esc(d.a)}</span><br><small>${d.ok?'✅':'❌'} ${d.words} mots · critères validés : ${esc((d.hit||[]).join(', ')||'aucun')}${(d.miss||[]).length?' · manquants : '+esc(d.miss.join(', ')):''}</small>`:`${esc(d.a)} ${d.ok?'✅':'❌'}`}</div>`).join('');
+  const det=(a.details||[]).map((d,i)=>`<div style="margin:8px 0">${d.cat?`<small style="color:var(--mut)">${esc(d.cat)}</small><br>`:''}<b>${i+1}. ${esc(d.q)}</b><br>${d.kind==='libre'?`<span style="white-space:pre-wrap">${esc(d.a)}</span><br><small>${d.ok?'✅':'❌'} ${d.words} mots · critères validés : ${esc((d.hit||[]).join(', ')||'aucun')}${(d.miss||[]).length?' · manquants : '+esc(d.miss.join(', ')):''}</small>`:`${esc(d.a)} ${d.ok?'✅':'❌'}`}</div>`).join('');
   const ai=a.ai_level?`<p style="margin:8px 0 0"><b>Suspicion IA : ${ic[a.ai_level]||''} ${esc(a.ai_level)} (${a.ai_score}/100)</b> <small>— indicateur, pas une preuve</small></p>${(a.ai_flags||[]).length?'<ul style="margin:4px 0 0 18px">'+a.ai_flags.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul>':''}`:'';
   return`<tr><td>${new Date(a.created_at).toLocaleString('fr-FR')}</td><td>${esc(a.pseudo)}</td><td>${a.age}</td><td>${a.score} % ${a.passed?'✅':'❌'}</td><td>${a.ai_level?(ic[a.ai_level]||'')+' '+esc(a.ai_level)+' ('+a.ai_score+')':'—'}</td><td>${dc[a.discord]||''}</td><td>${left>0?'envoi dans '+Math.ceil(left/60000)+' min':'envoyée'}</td><td>${esc(a.status)}</td>
   <td><button class="x" style="background:var(--loire)" data-k="see" data-id="${a.id}">Voir</button> <button class="x" style="background:#1f7a45" data-k="ok" data-id="${a.id}">Accepter</button> <button class="x" data-k="ko" data-id="${a.id}">Refuser</button> <button class="x" style="background:#6b7a83" data-k="del" data-id="${a.id}">Supprimer</button></td></tr>`
@@ -318,7 +382,7 @@ $('#raRows').onclick=async e=>{const b=e.target.closest('button');if(!b)return;c
  if(k==='ok'||k==='ko'){const{error}=await recAdm('recruit_admin_status',{app_id:id,new_status:k==='ok'?'accepté':'refusé'});if(error)toast('❌ '+error.message);return recAdminLoad(false)}
  if(k==='del'){if(!b.dataset.c){b.dataset.c='1';b.textContent='Confirmer ?';setTimeout(()=>{b.dataset.c='';b.textContent='Supprimer'},4000);return}
   const{error}=await recAdm('recruit_admin_delete',{app_id:id});if(error)toast('❌ '+error.message);recAdminLoad(false)}};
-$('#raSave').onclick=async()=>{const{error}=await recAdm('recruit_admin_settings',{p_open:$('#raOpen').checked,p_seuil:parseInt($('#raSeuil').value,10),p_dmin:parseInt($('#raMin').value,10),p_dmax:parseInt($('#raMax').value,10),p_block:$('#raBlock').checked});
+$('#raSave').onclick=async()=>{const{error}=await recAdm('recruit_admin_settings',{p_open:$('#raOpen').checked,p_seuil:parseInt($('#raSeuil').value,10),p_dmin:parseInt($('#raMin').value,10),p_dmax:parseInt($('#raMax').value,10),p_block:$('#raBlock').checked,p_per_test:parseInt($('#raPer').value,10)||0});
  if(error)return toast('❌ '+error.message);toast('Réglages enregistrés.');loadRec()};
 $('#raCsv').onclick=()=>{const q=v=>{v=String(v??'');if(/^[=+\-@]/.test(v))v="'"+v;return'"'+v.replace(/"/g,'""')+'"'};
  const rows=[['Date','Pseudo','Âge','Score %','Réussi','Suspicion IA','Statut','Disponibilités','Expérience','Motivation']].concat(recApps.map(a=>[a.created_at,a.pseudo,a.age,a.score,a.passed?'oui':'non',(a.ai_level||'')+(a.ai_score!=null?' ('+a.ai_score+'/100)':''),a.status,a.dispo,a.xp,a.why]));
@@ -352,7 +416,7 @@ sb.channel('site-live')
  .on('postgres_changes',{event:'*',schema:'public',table:'items'},live)
  .on('postgres_changes',{event:'*',schema:'public',table:'categories'},live)
  .on('postgres_changes',{event:'*',schema:'public',table:'giveaway_entries'},live)
- .on('postgres_changes',{event:'*',schema:'public',table:'site_settings'},live)
+ .on('postgres_changes',{event:'*',schema:'public',table:'site_settings'},()=>bg())
  .subscribe();
-load();loadRec();
+bg();load();loadRec();
 </script></body></html>
