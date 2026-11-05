@@ -61,7 +61,8 @@ fieldset{border:1px solid var(--line);border-radius:14px;margin:0 0 16px;padding
 .pl{display:inline-block;margin:6px 0 0;padding:4px 14px;border:2px solid var(--tx);border-radius:8px;background:var(--surf);color:var(--ink);font:800 17px 'Bricolage Grotesque';letter-spacing:.14em}
 .srv{display:inline-block;margin-top:22px;padding:8px 20px;border-radius:99px;background:#ffffff1c;border:1px solid #ffffff33;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);font:600 15px 'Bricolage Grotesque',system-ui,sans-serif;color:var(--w)}
 .srv:empty{display:none}
-footer.ft{text-align:center;padding:10px 16px 46px}footer.ft img{max-width:100%;height:auto;border-radius:14px;box-shadow:var(--sh)}footer.ft p{margin:14px 0 0;font-size:14px;color:var(--mut)}
+footer.ft{text-align:center;padding:10px 16px 46px}footer.ft img{max-width:100%;height:auto;border-radius:14px;box-shadow:var(--sh)}footer.ft p{margin:14px 0 0;font-size:14px;color:var(--mut)}footer.ft .fl a{color:var(--acc);font-weight:600;text-decoration:none}footer.ft .fl a:hover{text-decoration:underline}
+.hl{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:16px}.hl a{color:var(--w);text-decoration:none;font:600 15px 'Bricolage Grotesque',system-ui,sans-serif;padding:9px 18px;border-radius:99px;background:#ffffff1c;border:1px solid #ffffff33;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);transition:background .2s,transform .15s}.hl a:hover{background:#ffffff33;transform:translateY(-1px)}
 #recrutement .rbox{background:linear-gradient(135deg,color-mix(in srgb,var(--loire) 12%,var(--surf)),var(--surf));border:1px solid var(--line);border-radius:20px;padding:26px;box-shadow:var(--sh)}
 #recrutement p{margin:0;max-width:62ch}
 .opt{display:flex;gap:10px;align-items:flex-start;margin:6px 0;padding:10px 12px;border:1px solid var(--line);border-radius:12px;cursor:pointer;font:400 16px/1.4 Newsreader,Georgia,serif;background:var(--surf);transition:border-color .2s,background .2s}.opt:hover{border-color:var(--acc)}.opt input{width:auto;margin-top:5px}
@@ -76,6 +77,21 @@ footer.ft{text-align:center;padding:10px 16px 46px}footer.ft img{max-width:100%;
 #recMain{padding-bottom:26px}
 .rstats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin:14px 0}.rs{border:1px solid var(--line);border-radius:14px;padding:10px;text-align:center;background:var(--bg)}.rs b{display:block;font:800 22px 'Bricolage Grotesque',sans-serif;color:var(--tx)}.rs span{font-size:13px;color:var(--mut)}
 .rt{width:100%;border-collapse:collapse;font-size:14px;margin-top:10px}.rt th{font:700 12px 'Bricolage Grotesque',sans-serif;text-transform:uppercase;letter-spacing:.05em;color:var(--mut)}.rt th,.rt td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--line3);vertical-align:top}.rt tbody tr:nth-child(odd) td{background:color-mix(in srgb,var(--bg) 60%,transparent)}.rt tbody tr:hover td{background:var(--line3)}
+#terrains .lbox{background:var(--surf);border:1px solid var(--line);border-radius:20px;padding:22px;box-shadow:var(--sh)}
+.lsearch{display:flex;gap:10px;flex-wrap:wrap}.lsearch input{flex:1;min-width:160px;width:auto;font-size:20px;font-weight:600}
+.lvt{margin:16px 0 10px;font-size:17px}
+.lv{position:relative;overflow:hidden;border-radius:14px;border:1px solid var(--line);background:var(--bg);width:100%}
+.lv img{position:absolute;max-width:none;height:auto;display:block}
+.lvpin{position:absolute;width:0;height:0}
+.lvpin i{position:absolute;left:-22px;top:-22px;width:44px;height:44px;border-radius:50%;border:4px solid #ffd34d;box-shadow:0 0 0 3px #e5322d,0 0 18px 4px #ffd34d99;animation:ring 1.6s ease-out infinite}
+.lvpin svg{position:absolute;left:-28px;bottom:26px;width:56px;height:74px;filter:drop-shadow(0 4px 6px #0008);animation:bob 1s ease-in-out infinite}
+.lvpin svg path{fill:#e5322d;stroke:#fff;stroke-width:4;stroke-linejoin:round}
+.lvpin.up svg{bottom:auto;top:26px;transform:rotate(180deg);animation-name:bobup}
+@keyframes ring{0%{transform:scale(.8);opacity:1}100%{transform:scale(1.5);opacity:.2}}@keyframes bob{50%{transform:translateY(-8px)}}@keyframes bobup{50%{transform:rotate(180deg) translateY(-8px)}}
+.lmwrap{overflow:auto;max-height:52vh;border:1px solid var(--line);border-radius:12px;background:var(--bg);margin-top:10px}
+#lmStage{position:relative;line-height:0;cursor:crosshair}#lmStage img{display:block;width:100%;height:auto}
+.lmk{position:absolute;width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;background:#e5322d;border:2px solid #fff;cursor:pointer;box-shadow:0 1px 4px #0009}
+.lmk.on{background:#ffd34d;outline:2px solid #e5322d}.lmk.pend{background:var(--loire);outline:3px solid #ffd34d;pointer-events:none}
 @keyframes rise{from{opacity:0;transform:translate(var(--tx0,0),14px)}}
 @keyframes pop{from{opacity:0;transform:translateY(10px) scale(.97)}}
 .post,.lk,#recrutement .rbox{animation:rise .6s cubic-bezier(.2,.7,.2,1) both}
@@ -88,11 +104,16 @@ footer.ft{text-align:center;padding:10px 16px 46px}footer.ft img{max-width:100%;
 <a class="skip" href="#main">Aller au contenu</a>
 <header><span class="brand">Belle-Roche</span><nav class="tabs" id="tabs" aria-label="Sections"></nav>
 <div class="hb"><button class="g" id="bTheme" type="button"></button><button class="g" id="bTk">Tickets</button><button class="g" id="bUser">Connexion</button><button id="bAdm">Admin</button></div></header>
-<div class="hero"><h1>Belle-Roche-Sur-Amboise</h1><p>Le site officiel de la ville</p><div class="srv" id="srv" role="status" aria-live="polite"></div></div>
+<div class="hero"><h1>Belle-Roche-Sur-Amboise</h1><p>Le site officiel de la ville</p><div class="srv" id="srv" role="status" aria-live="polite"></div>
+<div class="hl"><a href="https://amboise.life/carte.html" target="_blank" rel="noopener noreferrer">🗺️ Carte interactive</a><a href="https://sites.google.com/view/nova-life-wiki/accueil" target="_blank" rel="noopener noreferrer">📖 Wiki Nova-Life</a></div></div>
 <main id="main"></main>
+<main id="lotMain"><section id="terrains" hidden><h2>Trouver un terrain</h2>
+<div class="lbox"><p style="margin:0 0 12px">Tape un numéro de terrain : la carte s’affiche avec une flèche sur son emplacement.</p>
+<div class="lsearch"><input id="lotQ" inputmode="numeric" autocomplete="off" placeholder="Ex. 699" aria-label="Numéro du terrain"><button id="lotGo">Localiser</button></div>
+<div id="lotOut" aria-live="polite"></div></div></section></main>
 <main id="recMain"><section id="recrutement" hidden><h2>Recrutement staff</h2>
 <div class="rbox"><p id="recIntro"></p><div class="row"><button id="recGo">Postuler</button><button class="g" id="recFind">Retrouver ma réponse</button></div></div></section></main>
-<footer class="ft"><a href="https://www.teamkit.fr/serveur/tk-novalifeamboise-206?src=banniere" title="BelleRoche — serveur Nova-Life: Amboise gratuit sur TeamKit"><img src="https://www.teamkit.fr/banniere/tk-novalifeamboise-206.png" alt="BelleRoche — serveur Nova-Life: Amboise gratuit sur TeamKit" width="600" height="200" loading="lazy" decoding="async"></a><p>Belle-Roche-Sur-Amboise · site officiel de la ville</p></footer>
+<footer class="ft"><a href="https://www.teamkit.fr/serveur/tk-novalifeamboise-206?src=banniere" title="BelleRoche — serveur Nova-Life: Amboise gratuit sur TeamKit"><img src="https://www.teamkit.fr/banniere/tk-novalifeamboise-206.png" alt="BelleRoche — serveur Nova-Life: Amboise gratuit sur TeamKit" width="600" height="200" loading="lazy" decoding="async"></a><p class="fl"><a href="https://amboise.life/carte.html" target="_blank" rel="noopener noreferrer">Carte interactive</a> · <a href="https://sites.google.com/view/nova-life-wiki/accueil" target="_blank" rel="noopener noreferrer">Wiki Nova-Life</a></p><p>Belle-Roche-Sur-Amboise · site officiel de la ville</p></footer>
 <div id="toast"></div>
 
 <dialog id="dAuth"><h2 id="aT">Connexion</h2>
@@ -119,6 +140,7 @@ footer.ft{text-align:center;padding:10px 16px 46px}footer.ft img{max-width:100%;
 <a href="https://www.teamkit.fr/serveur/tk-novalifeamboise-206?src=banniere" title="BelleRoche — serveur Nova-Life: Amboise gratuit sur TeamKit"><img src="https://www.teamkit.fr/banniere/tk-novalifeamboise-206.png" alt="BelleRoche — serveur Nova-Life: Amboise gratuit sur TeamKit" width="600" height="200" style="max-width:100%;height:auto"></a>
 <div class="row"><button id="stOn">Lancer le suivi</button><button class="g" id="stNow">Actualiser maintenant</button><button class="g" id="stNew">Nouveau message</button><button class="x" style="margin:0" id="stOff">Arrêter</button></div>
 <p id="stOut" role="status" style="margin:10px 0 0;font-weight:600"></p></fieldset>
+<fieldset><legend>Terrains (carte)</legend><p style="margin:6px 0">Outil public « Trouver un terrain » : ajoute une carte puis place les numéros de terrain dessus.</p><div class="row"><button id="lotOpen">Gérer les terrains</button></div></fieldset>
 <fieldset id="whBox"><legend>Webhooks Discord (séparés)</legend>
 <p style="margin:6px 0;font-weight:600">Statut du serveur</p>
 <div class="row" style="margin-top:6px"><button class="g" data-wh="check" data-w="statut">Vérifier</button><button class="g" data-wh="test" data-w="statut">Envoyer un test</button><button class="g" data-wh="sync" data-w="statut">Resynchroniser le message</button></div>
@@ -131,6 +153,27 @@ footer.ft{text-align:center;padding:10px 16px 46px}footer.ft img{max-width:100%;
 <div class="row"><button class="g" id="adOut">Quitter le mode admin</button><button class="g" onclick="dAdm.close()">Fermer</button></div></dialog>
 
 <dialog id="dTk" style="width:min(94vw,560px)"><h2>Tickets</h2><div id="tkF"><label>Sujet</label><input id="tkS"><label>Message</label><textarea id="tkM" rows="3"></textarea><div class="row"><button id="tkOk">Envoyer le ticket</button></div></div><div id="tkL" style="margin-top:14px"></div><div class="row"><button class="g" onclick="dTk.close()">Fermer</button></div></dialog>
+<dialog id="dLotFull" style="width:min(96vw,1100px)"><div id="lotFullBox"></div><div class="row"><button class="g" onclick="dLotFull.close()">Fermer</button></div></dialog>
+<dialog id="dLots" style="width:min(96vw,1000px)"><h2>Terrains</h2>
+<div class="row" style="margin-top:0;align-items:flex-end"><div style="flex:1;min-width:200px"><label style="margin-top:0">Carte</label><select id="lmSel"></select></div>
+<button class="g" id="lmNew">Nouvelle carte</button><button class="g" id="lmEdit">Modifier</button><button class="x" id="lmDel" style="margin:0">Supprimer</button></div>
+<fieldset id="lmForm" hidden style="margin-top:12px"><legend>Carte</legend>
+<label>Nom (ex. Amboise)</label><input id="lmName" maxlength="80">
+<label>Adresse de l’image (https://… ou fichier de ton dépôt, ex. cartes/amboise.png)</label><input id="lmUrl">
+<label>Largeur de l’extrait affiché, en pixels de l’image (860 par défaut ; plus grand = vue plus large)</label><input id="lmVw" type="number" min="200" max="6000" value="860">
+<div class="row"><button id="lmFSave">Enregistrer la carte</button><button class="g" id="lmFCancel">Annuler</button></div></fieldset>
+<div class="row" style="align-items:center"><button id="lmDetect">🔍 Détecter les étiquettes</button>
+<label style="margin:0">Affichage <select id="lmZoom" style="width:auto"><option value="fit">Ajusté</option><option value="1">100 %</option><option value="2">200 %</option></select></label><span id="lmInfo" style="color:var(--mut)"></span></div>
+<div class="lmwrap"><div id="lmStage"></div></div>
+<p style="margin:8px 0 0;font-size:15px;color:var(--mut)">Clique sur la carte à l’endroit d’un terrain, tape son numéro (ex. 699 ou 242-254) puis Entrée. Un point rouge = terrain déjà enregistré (clique dessus pour le modifier ou le supprimer).</p>
+<fieldset style="margin-top:12px"><legend>Terrain</legend><label>Numéro ou plage de numéros</label><input id="lmLabel" placeholder="699 ou 242-254" autocomplete="off">
+<div class="row"><button id="lmSave">Enregistrer</button><button class="x" id="lmRm" style="margin:0">Supprimer ce terrain</button></div>
+<p id="lmOut" role="status" style="margin:10px 0 0;font-weight:600"></p></fieldset>
+<div class="row"><button class="g" onclick="dLots.close()">Fermer</button></div></dialog>
+<dialog id="dLq" style="width:min(94vw,640px)"><h2>Numéroter les étiquettes</h2><p id="lqInfo" style="margin:0 0 8px;color:var(--mut)"></p>
+<canvas id="lqCv" width="560" height="280" style="width:100%;height:auto;border-radius:12px;border:1px solid var(--line);background:var(--bg)"></canvas>
+<label>Numéro écrit dans le cadre bleu (ex. 699 ou 242-254)</label><input id="lqIn" autocomplete="off"><p id="lqErr" role="alert" style="color:var(--err);font-weight:600;margin:6px 0 0"></p>
+<div class="row"><button id="lqOk">Enregistrer et suivant (Entrée)</button><button class="g" id="lqSkip">Passer</button><button class="g" id="lqStop">Terminer</button></div></dialog>
 <dialog id="dRecF" style="width:min(94vw,720px)"><h2>Candidature staff</h2>
 <label>Pseudo Discord</label><input id="rPs" maxlength="40"><label>Âge</label><input id="rAge" type="number" min="10" max="99">
 <label>Disponibilités (jours / heures par semaine)</label><input id="rDi" maxlength="120">
@@ -170,7 +213,7 @@ async function bg(){const{data}=await sb.from('site_settings').select('value').e
 async function load(){const[c,i,e]=await Promise.all([sb.from('categories').select('*').order('position'),sb.from('items').select('*').order('created_at',{ascending:false}),sb.from('giveaway_entries').select('*')]);cats=c.data||[];items=i.data||[];entries=e.data||[];render()}
 function render(){
  $('#bUser').textContent=user?user.prenom+' '+user.nom+' (quitter)':'Connexion';
- $('#tabs').innerHTML=cats.map(c=>`<a href="#c${c.id}">${esc(c.name)}</a>`).join('')+(rec&&rec.open?'<a href="#recrutement">Recrutement staff</a>':'');
+ $('#tabs').innerHTML=cats.map(c=>`<a href="#c${c.id}">${esc(c.name)}</a>`).join('')+(lotRows.length?'<a href="#terrains">Terrains</a>':'')+(rec&&rec.open?'<a href="#recrutement">Recrutement staff</a>':'');
  const del=id=>admin?`<button class="x" data-del="${id}">Supprimer</button> <button class="x" style="background:var(--loire)" data-dc="${id}">Envoyer sur Discord</button>`:'';
  $('#main').innerHTML=cats.map(c=>{const it=items.filter(x=>x.category_id===c.id);
   const b=c.kind==='cars'?`<div class="grid">${it.map(x=>carCard(x,del(x.id))).join('')}</div>`:c.kind==='giveaway'?it.map(x=>givCard(x,del(x.id))).join(''):c.kind==='links'?`<div class="grid">${it.map(x=>`<div class="lk"><a href="${esc(safe(x.link_url))}" target="_blank" rel="noopener"><div class="im" style="background-image:url('${esc(x.image_url)}')"></div><h3>${esc(x.title)}</h3></a>${del(x.id)}</div>`).join('')}</div>`
@@ -272,6 +315,109 @@ function setTheme(t,save){document.documentElement.dataset.theme=t;const d=t==='
 setTheme(document.documentElement.dataset.theme==='dark'?'dark':'light');
 themeBtn.onclick=()=>setTheme(document.documentElement.dataset.theme==='dark'?'light':'dark',true);
 if(window.matchMedia)matchMedia('(prefers-color-scheme:dark)').addEventListener('change',e=>{let c=null;try{c=localStorage.getItem('br_theme')}catch(x){}if(c!=='dark'&&c!=='light')setTheme(e.matches?'dark':'light')});
+// ===== Terrains : recherche publique + éditeur admin =====
+let lotMaps=[],lotRows=[],lotZ=1,lotImgs={},lotList=[],lotCur=0,lotT;
+const lotZoom=[.6,1,1.7],admL=(fn,a)=>sb.rpc(fn,{admin_code:localStorage.br_admin_code||'',...a});
+function lotImage(url){return lotImgs[url]||(lotImgs[url]=new Promise((ok,ko)=>{const i=new Image();i.onload=()=>ok({w:i.naturalWidth,h:i.naturalHeight});i.onerror=()=>{delete lotImgs[url];ko(new Error('image'))};i.src=url}))}
+async function loadLots(){const[m,l]=await Promise.all([sb.from('lot_maps').select('*').order('position').order('id'),sb.from('lots').select('*').limit(5000)]);
+ lotMaps=m.error?[]:(m.data||[]);lotRows=l.error?[]:(l.data||[]);
+ $('#terrains').hidden=!lotRows.length;render();if(dLots.open)lmDraw();if($('#lotQ').value.trim())lotSearch()}
+function lotFind(q){q=String(q).trim().replace(/[–—−]/g,'-').replace(/\s*-\s*/g,'-');if(!q)return[];
+ if(/^\d{1,5}$/.test(q)){const n=+q;return lotRows.filter(l=>l.num_min!=null&&n>=l.num_min&&n<=l.num_max).sort((a,b)=>(a.num_max-a.num_min)-(b.num_max-b.num_min)||a.id-b.id)}
+ return lotRows.filter(l=>l.label.toLowerCase()===q.toLowerCase())}
+// extrait de la carte centré sur le terrain, avec une flèche qui le désigne (tout en pourcentages : s'adapte à l'écran)
+function lotViewHTML(map,lot,im,z,full){
+ let cw=Math.min(im.w,Math.round(map.view_w*lotZoom[z])),ch=Math.min(im.h,Math.round(cw*.66));if(full){cw=im.w;ch=im.h}
+ const px=lot.x*im.w,py=lot.y*im.h,cx0=Math.max(0,Math.min(im.w-cw,px-cw/2)),cy0=Math.max(0,Math.min(im.h-ch,py-ch/2)),rx=(px-cx0)/cw,ry=(py-cy0)/ch;
+ return`<div class="lv" style="aspect-ratio:${cw}/${ch}"><img src="${esc(map.url)}" alt="Extrait de la carte autour du terrain ${esc(lot.label)}" style="width:${im.w/cw*100}%;left:${-cx0/cw*100}%;top:${-cy0/ch*100}%"><div class="lvpin${ry<.34?' up':''}" style="left:${rx*100}%;top:${ry*100}%"><i></i><svg viewBox="0 0 60 80" aria-hidden="true"><path d="M30 78 L6 48 H21 V4 H39 V48 H54 Z"/></svg></div></div>`}
+async function lotShow(i){const lot=lotList[i];if(!lot)return;lotCur=i;const map=lotMaps.find(m=>m.id===lot.map_id),out=$('#lotOut');if(!map)return;
+ out.innerHTML='<p class="empty">Chargement de la carte…</p>';
+ let im;try{im=await lotImage(map.url)}catch(e){if(lotCur===i)out.innerHTML='<p class="empty">Impossible de charger l’image de la carte.</p>';return}
+ if(lotCur!==i)return;
+ const chips=lotList.length>1?'<div class="row" style="margin:0 0 10px">'+lotList.map((l,j)=>`<button class="g" data-lot="${j}"${j===i?' aria-pressed="true"':''}>${esc(l.label)} · ${esc((lotMaps.find(m=>m.id===l.map_id)||{}).name||'')}</button>`).join('')+'</div>':'';
+ out.innerHTML=`${chips}<p class="lvt"><b>Terrain ${esc($('#lotQ').value.trim())}</b>${lot.label!==$('#lotQ').value.trim().replace(/[–—−]/g,'-').replace(/\s*-\s*/g,'-')?` · bloc ${esc(lot.label)}`:''} · ${esc(map.name)}</p>${lotViewHTML(map,lot,im,lotZ,false)}<div class="row"><button class="g" data-z="-1">− Plus large</button><button class="g" data-z="1">+ Plus près</button><button class="g" id="lotFull">Voir la carte entière</button></div>`}
+function lotSearch(){const q=$('#lotQ').value,out=$('#lotOut');lotList=lotFind(q);
+ if(!q.trim()){out.innerHTML='';return}
+ if(!lotList.length){out.innerHTML=`<p class="empty">Aucun terrain « ${esc(q.trim())} » n’est enregistré. Vérifie le numéro.</p>`;return}
+ lotShow(0)}
+$('#lotQ').addEventListener('input',()=>{clearTimeout(lotT);lotT=setTimeout(lotSearch,250)});
+$('#lotGo').onclick=lotSearch;
+$('#lotOut').onclick=async e=>{const b=e.target.closest('button');if(!b)return;
+ if(b.dataset.lot!=null)return lotShow(+b.dataset.lot);
+ if(b.dataset.z){lotZ=Math.max(0,Math.min(2,lotZ+ +b.dataset.z));return lotShow(lotCur)}
+ if(b.id==='lotFull'){const lot=lotList[lotCur],map=lot&&lotMaps.find(m=>m.id===lot.map_id);if(!map)return;const im=await lotImage(map.url);$('#lotFullBox').innerHTML=lotViewHTML(map,lot,im,1,true);dLotFull.showModal()}};
+// --- éditeur admin
+let lmCur=null,lmLot=null,lmPend=null,lmZ='fit',lmEditId=null,lqItems=[],lqI=0,lqSrc=null,lqW=1,lqH=1,lqAdded=0;
+const lmMap=()=>lotMaps.find(m=>m.id===lmCur),lmSay=m=>$('#lmOut').textContent=m;
+function lmFill(){const s=$('#lmSel');s.innerHTML=lotMaps.map(m=>`<option value="${m.id}">${esc(m.name)} (${lotRows.filter(l=>l.map_id===m.id).length})</option>`).join('')||'<option value="">Aucune carte</option>';
+ if(!lotMaps.some(m=>m.id===lmCur))lmCur=lotMaps[0]?lotMaps[0].id:null;s.value=lmCur==null?'':lmCur}
+function lmDraw(){lmFill();const m=lmMap(),st=$('#lmStage');
+ if(!m){st.style.width='100%';st.innerHTML='<p class="empty" style="padding:14px;line-height:1.5">Ajoute une carte pour commencer.</p>';$('#lmInfo').textContent='';return}
+ lotImage(m.url).then(im=>{if(lmCur!==m.id)return;st.style.width=lmZ==='fit'?'100%':(im.w*(+lmZ))+'px';
+  st.innerHTML=`<img id="lmImg" src="${esc(m.url)}" alt="Carte ${esc(m.name)}">`+lotRows.filter(l=>l.map_id===m.id).map(l=>`<div class="lmk${lmLot&&lmLot.id===l.id?' on':''}" data-id="${l.id}" style="left:${l.x*100}%;top:${l.y*100}%" title="${esc(l.label)}"></div>`).join('')+(lmPend?`<div class="lmk pend" style="left:${lmPend.x*100}%;top:${lmPend.y*100}%"></div>`:'');
+  $('#lmInfo').textContent=`${im.w}×${im.h} px · ${lotRows.filter(l=>l.map_id===m.id).length} terrain(s)`}).catch(()=>{st.style.width='100%';st.innerHTML='<p class="empty" style="padding:14px;line-height:1.5">Image introuvable : vérifie l’adresse de la carte (bouton Modifier).</p>'})}
+$('#lotOpen').onclick=()=>{lmSay('');lmDraw();dLots.showModal()};
+$('#lmSel').onchange=()=>{lmCur=+$('#lmSel').value;lmLot=null;lmPend=null;$('#lmLabel').value='';lmDraw()};
+$('#lmZoom').onchange=()=>{lmZ=$('#lmZoom').value;lmDraw()};
+$('#lmStage').onclick=e=>{const k=e.target.closest('.lmk[data-id]');
+ if(k){lmLot=lotRows.find(l=>l.id==k.dataset.id)||null;lmPend=null;$('#lmLabel').value=lmLot?lmLot.label:'';lmSay(lmLot?'Terrain sélectionné : change le numéro, ou clique ailleurs pour le déplacer, puis Enregistrer.':'');return lmDraw()}
+ const img=$('#lmImg');if(!img||e.target!==img)return;const r=img.getBoundingClientRect();
+ lmPend={x:Math.min(1,Math.max(0,(e.clientX-r.left)/r.width)),y:Math.min(1,Math.max(0,(e.clientY-r.top)/r.height))};lmDraw();$('#lmLabel').focus()};
+$('#lmSave').onclick=async()=>{const m=lmMap();if(!m)return lmSay('Ajoute d’abord une carte.');
+ const pos=lmPend||(lmLot?{x:lmLot.x,y:lmLot.y}:null);if(!pos)return lmSay('Clique d’abord sur la carte, à l’endroit du terrain.');
+ const{error}=await admL('lot_admin_save',{p_map:m.id,p_label:$('#lmLabel').value,p_x:pos.x,p_y:pos.y,p_id:lmLot?lmLot.id:null});
+ if(error)return lmSay('❌ '+error.message);lmSay('✅ Terrain enregistré.');lmPend=null;lmLot=null;$('#lmLabel').value='';await loadLots()};
+$('#lmLabel').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();$('#lmSave').click()}});
+$('#lmRm').onclick=async()=>{if(!lmLot)return lmSay('Clique sur un point rouge pour choisir le terrain à supprimer.');if(!confirm('Supprimer le terrain '+lmLot.label+' ?'))return;
+ const{error}=await admL('lot_admin_delete',{p_id:lmLot.id});if(error)return lmSay('❌ '+error.message);lmLot=null;lmPend=null;$('#lmLabel').value='';lmSay('Terrain supprimé.');await loadLots()};
+$('#lmNew').onclick=()=>{lmEditId=null;$('#lmName').value='';$('#lmUrl').value='';$('#lmVw').value=860;$('#lmForm').hidden=false;$('#lmName').focus()};
+$('#lmEdit').onclick=()=>{const m=lmMap();if(!m)return lmSay('Aucune carte à modifier.');lmEditId=m.id;$('#lmName').value=m.name;$('#lmUrl').value=m.url;$('#lmVw').value=m.view_w;$('#lmForm').hidden=false};
+$('#lmFCancel').onclick=()=>{$('#lmForm').hidden=true};
+$('#lmFSave').onclick=async()=>{const{data,error}=await admL('lot_admin_map_save',{p_id:lmEditId,p_name:$('#lmName').value,p_url:$('#lmUrl').value,p_view_w:parseInt($('#lmVw').value,10)||860});
+ if(error)return lmSay('❌ '+error.message+(/function|schema cache/i.test(error.message)?' (lance d’abord le script SQL des terrains)':''));
+ lotImgs={};lmCur=data;$('#lmForm').hidden=true;lmSay('✅ Carte enregistrée.');await loadLots()};
+$('#lmDel').onclick=async()=>{const m=lmMap();if(!m)return;if(!confirm('Supprimer la carte « '+m.name+' » et tous ses terrains ?'))return;
+ const{error}=await admL('lot_admin_map_delete',{p_id:m.id});if(error)return lmSay('❌ '+error.message);lmCur=null;lmLot=null;lmPend=null;lmSay('Carte supprimée.');await loadLots()};
+// --- détection automatique des étiquettes (texte blanc) puis numérotation guidée
+function detectBand(px,w,h,o){const T=o.t,kw=o.kw,kh=o.kh,n=w*h,m=new Uint8Array(n);
+ for(let i=0,j=0;j<n;j++,i+=4)m[j]=(px[i]>T&&px[i+1]>T&&px[i+2]>T)?1:0;
+ const d1=new Uint8Array(n),P=new Int32Array(w+1);
+ for(let y=0;y<h;y++){const r=y*w;for(let x=0;x<w;x++)P[x+1]=P[x]+m[r+x];for(let x=0;x<w;x++)d1[r+x]=(P[Math.min(w,x+kw+1)]-P[Math.max(0,x-kw)])>0?1:0}
+ const d2=new Uint8Array(n);
+ for(let y=0;y<h;y++){const a=Math.max(0,y-kh),b=Math.min(h-1,y+kh);for(let x=0;x<w;x++){let v=0;for(let yy=a;yy<=b&&!v;yy++)v=d1[yy*w+x];d2[y*w+x]=v}}
+ const out=[],stack=new Int32Array(n),seen=new Uint8Array(n);
+ for(let s=0;s<n;s++){if(!d2[s]||seen[s])continue;let sp=0,x0=w,x1=0,y0=h,y1=0;stack[sp++]=s;seen[s]=1;
+  while(sp){const p=stack[--sp],x=p%w,y=(p-x)/w;if(x<x0)x0=x;if(x>x1)x1=x;if(y<y0)y0=y;if(y>y1)y1=y;
+   if(x>0&&d2[p-1]&&!seen[p-1]){seen[p-1]=1;stack[sp++]=p-1}if(x<w-1&&d2[p+1]&&!seen[p+1]){seen[p+1]=1;stack[sp++]=p+1}
+   if(y>0&&d2[p-w]&&!seen[p-w]){seen[p-w]=1;stack[sp++]=p-w}if(y<h-1&&d2[p+w]&&!seen[p+w]){seen[p+w]=1;stack[sp++]=p+w}}
+  const bw=x1-x0+1,bh=y1-y0+1;if(bh<o.minH||bh>o.maxH||bw<o.minW||bw>o.maxW||bw<bh*1.2)continue;
+  out.push({cx:(x0+x1)/2,cy:(y0+y1)/2,w:bw,h:bh,top:y0===0,bottom:y1===h-1})}
+ return out}
+function detectLabels(getBand,W,H,o){o=Object.assign({t:215,kw:2,kh:2,minH:8,maxH:30,minW:14,maxW:110,band:1200},o||{});const res=[],step=o.band-60;
+ for(let y0=0;y0<H;y0+=step){const bh=Math.min(o.band,H-y0),px=getBand(y0,bh);
+  detectBand(px,W,bh,o).forEach(b=>{if((b.top&&y0>0)||(b.bottom&&y0+bh<H))return;res.push({cx:b.cx,cy:b.cy+y0,w:b.w,h:b.h})});if(y0+bh>=H)break}
+ const uniq=[];res.forEach(b=>{if(!uniq.some(u=>Math.abs(u.cx-b.cx)<12&&Math.abs(u.cy-b.cy)<12))uniq.push(b)});
+ return uniq.sort((a,b)=>(Math.round(a.cy/40)-Math.round(b.cy/40))||(a.cx-b.cx))}
+$('#lmDetect').onclick=async()=>{const m=lmMap();if(!m)return lmSay('Ajoute d’abord une carte.');lmSay('Analyse de l’image…');
+ try{
+  const img=await new Promise((ok,ko)=>{const i=new Image();i.crossOrigin='anonymous';i.onload=()=>ok(i);i.onerror=()=>ko(new Error('chargement'));i.src=m.url});
+  const W=img.naturalWidth,H=img.naturalHeight,cv=document.createElement('canvas');cv.width=W;cv.height=H;
+  const cx=cv.getContext('2d',{willReadFrequently:true});cx.drawImage(img,0,0);
+  const found=detectLabels((y0,bh)=>cx.getImageData(0,y0,W,bh).data,W,H),have=lotRows.filter(l=>l.map_id===m.id);
+  lqItems=found.filter(b=>!have.some(l=>Math.abs(l.x*W-b.cx)<14&&Math.abs(l.y*H-b.cy)<14));
+  if(!lqItems.length)return lmSay(found.length?'Toutes les étiquettes détectées sont déjà enregistrées.':'Aucune étiquette détectée : place les terrains à la main (clic sur la carte).');
+  lqSrc=cv;lqW=W;lqH=H;lqI=0;lqAdded=0;lmSay(lqItems.length+' étiquette(s) détectée(s).');lqDraw();dLq.showModal();$('#lqIn').focus()
+ }catch(e){lmSay(e&&e.name==='SecurityError'?'❌ Cette image vient d’un autre site : la détection exige une image hébergée sur ton propre site (ex. cartes/amboise.png dans ton dépôt). Tu peux toujours placer les terrains à la main.':'❌ Impossible de lire l’image ('+(e&&e.message||e)+').')}};
+function lqDraw(){const b=lqItems[lqI],cv=$('#lqCv'),c=cv.getContext('2d'),sw=140,sh=70,sx=Math.max(0,Math.min(lqW-sw,b.cx-sw/2)),sy=Math.max(0,Math.min(lqH-sh,b.cy-sh/2)),k=cv.width/sw;
+ c.imageSmoothingEnabled=false;c.drawImage(lqSrc,sx,sy,sw,sh,0,0,cv.width,cv.height);
+ c.strokeStyle='#00e5ff';c.lineWidth=3;c.strokeRect((b.cx-b.w/2-sx)*k-3,(b.cy-b.h/2-sy)*k-3,b.w*k+6,b.h*k+6);
+ $('#lqInfo').textContent=`Étiquette ${lqI+1} / ${lqItems.length} · ${lqAdded} enregistrée(s)`;$('#lqIn').value='';$('#lqErr').textContent=''}
+async function lqNext(save){const b=lqItems[lqI],m=lmMap();
+ if(save){const{error}=await admL('lot_admin_save',{p_map:m.id,p_label:$('#lqIn').value,p_x:b.cx/lqW,p_y:b.cy/lqH});if(error){$('#lqErr').textContent=error.message;return}lqAdded++}
+ lqI++;if(lqI>=lqItems.length)return lqEnd();lqDraw();$('#lqIn').focus()}
+async function lqEnd(){dLq.close();lmSay(`✅ ${lqAdded} terrain(s) ajouté(s).`);await loadLots()}
+$('#lqOk').onclick=()=>lqNext(true);$('#lqSkip').onclick=()=>lqNext(false);$('#lqStop').onclick=lqEnd;
+$('#lqIn').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();lqNext(true)}});
 // ===== Recrutement staff =====
 let rec=null,recT,recApps=[],recOpened={},recPoll;
 const recAdm=(fn,args)=>sb.rpc(fn,{admin_code:localStorage.br_admin_code||'',...args});
@@ -408,7 +554,7 @@ $('#stOn').onclick=()=>stCall('status_start','✅ Suivi lancé : le message Disc
 $('#stNow').onclick=()=>stCall('status_refresh','✅ Message actualisé.');
 $('#stNew').onclick=()=>stCall('status_resend','✅ Nouveau message publié (supprime l’ancien sur Discord si besoin).');
 $('#stOff').onclick=()=>stCall('status_stop','⚪ Suivi arrêté.');
-loadSt();
+loadSt().catch(()=>{});
 // Direct : le site se met à jour tout seul quand quelqu'un publie
 let liveT;const live=()=>{clearTimeout(liveT);liveT=setTimeout(load,400)};
 sb.channel('status-live').on('postgres_changes',{event:'*',schema:'public',table:'server_status'},p=>{st=p.new;showSt()}).subscribe();
@@ -418,5 +564,5 @@ sb.channel('site-live')
  .on('postgres_changes',{event:'*',schema:'public',table:'giveaway_entries'},live)
  .on('postgres_changes',{event:'*',schema:'public',table:'site_settings'},()=>bg())
  .subscribe();
-bg();load();loadRec();
+[bg,load,loadRec,loadLots].forEach(f=>Promise.resolve().then(f).catch(e=>console.warn('Chargement impossible :',e)));
 </script></body></html>
