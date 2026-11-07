@@ -78,7 +78,12 @@ footer.ft{text-align:center;padding:10px 16px 46px}footer.ft img{max-width:100%;
 .rstats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin:14px 0}.rs{border:1px solid var(--line);border-radius:14px;padding:10px;text-align:center;background:var(--bg)}.rs b{display:block;font:800 22px 'Bricolage Grotesque',sans-serif;color:var(--tx)}.rs span{font-size:13px;color:var(--mut)}
 .rt{width:100%;border-collapse:collapse;font-size:14px;margin-top:10px}.rt th{font:700 12px 'Bricolage Grotesque',sans-serif;text-transform:uppercase;letter-spacing:.05em;color:var(--mut)}.rt th,.rt td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--line3);vertical-align:top}.rt tbody tr:nth-child(odd) td{background:color-mix(in srgb,var(--bg) 60%,transparent)}.rt tbody tr:hover td{background:var(--line3)}
 #terrains .lbox{background:var(--surf);border:1px solid var(--line);border-radius:20px;padding:22px;box-shadow:var(--sh)}
-.lsearch{display:flex;gap:10px;flex-wrap:wrap}.lsearch input{flex:1;min-width:160px;width:auto;font-size:20px;font-weight:600}
+.lsearch{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-start}
+.cb{position:relative;flex:1;min-width:220px}.cb input{width:100%;font-size:20px;font-weight:600}
+#lotSug{position:absolute;left:0;right:0;top:calc(100% + 6px);z-index:8;margin:0;padding:6px;list-style:none;background:var(--surf);border:1px solid var(--line2);border-radius:14px;box-shadow:var(--sh);max-height:280px;overflow:auto}
+#lotSug li{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;cursor:pointer;font:600 16px 'Bricolage Grotesque',sans-serif}
+#lotSug li.on,#lotSug li:hover{background:var(--line3)}#lotSug .sn{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}#lotSug .sm{font-weight:400;font-size:13px;color:var(--mut)}
+.tag{display:inline-block;font:700 12px 'Bricolage Grotesque',sans-serif;padding:2px 9px;border-radius:99px;background:var(--line3);color:var(--tx);vertical-align:middle}
 .lvt{margin:16px 0 10px;font-size:17px}
 .lv{position:relative;overflow:hidden;border-radius:14px;border:1px solid var(--line);background:var(--bg);width:100%}
 .lv img{position:absolute;max-width:none;height:auto;display:block}
@@ -91,7 +96,7 @@ footer.ft{text-align:center;padding:10px 16px 46px}footer.ft img{max-width:100%;
 .lmwrap{overflow:auto;max-height:52vh;border:1px solid var(--line);border-radius:12px;background:var(--bg);margin-top:10px}
 #lmStage{position:relative;line-height:0;cursor:crosshair}#lmStage img{display:block;width:100%;height:auto}
 .lmk{position:absolute;width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;background:#e5322d;border:2px solid #fff;cursor:pointer;box-shadow:0 1px 4px #0009}
-.lmk.on{background:#ffd34d;outline:2px solid #e5322d}.lmk.pend{background:var(--loire);outline:3px solid #ffd34d;pointer-events:none}
+.lmk.ent{background:var(--loire)}.lmk.on{background:#ffd34d;outline:2px solid #e5322d}.lmk.pend{background:var(--loire);outline:3px solid #ffd34d;pointer-events:none}
 @keyframes rise{from{opacity:0;transform:translate(var(--tx0,0),14px)}}
 @keyframes pop{from{opacity:0;transform:translateY(10px) scale(.97)}}
 .post,.lk,#recrutement .rbox{animation:rise .6s cubic-bezier(.2,.7,.2,1) both}
@@ -107,9 +112,9 @@ footer.ft{text-align:center;padding:10px 16px 46px}footer.ft img{max-width:100%;
 <div class="hero"><h1>Belle-Roche-Sur-Amboise</h1><p>Le site officiel de la ville</p><div class="srv" id="srv" role="status" aria-live="polite"></div>
 <div class="hl"><a href="https://amboise.life/carte.html" target="_blank" rel="noopener noreferrer">🗺️ Carte interactive</a><a href="https://sites.google.com/view/nova-life-wiki/accueil" target="_blank" rel="noopener noreferrer">📖 Wiki Nova-Life</a></div></div>
 <main id="main"></main>
-<main id="lotMain"><section id="terrains" hidden><h2>Trouver un terrain</h2>
-<div class="lbox"><p style="margin:0 0 12px">Tape un numéro de terrain : la carte s’affiche avec une flèche sur son emplacement.</p>
-<div class="lsearch"><input id="lotQ" inputmode="numeric" autocomplete="off" placeholder="Ex. 699" aria-label="Numéro du terrain"><button id="lotGo">Localiser</button></div>
+<main id="lotMain"><section id="terrains" hidden><h2>Localiser une entreprise</h2>
+<div class="lbox"><p style="margin:0 0 12px">Choisis une entreprise dans la liste (ou tape un numéro de terrain) : la carte s’affiche avec une flèche sur son emplacement.</p>
+<div class="lsearch"><div class="cb"><input id="lotQ" role="combobox" aria-expanded="false" aria-controls="lotSug" aria-autocomplete="list" autocomplete="off" placeholder="Nom d’entreprise ou n° de terrain" aria-label="Entreprise ou numéro de terrain"><ul id="lotSug" role="listbox" hidden></ul></div><button id="lotGo">Localiser</button></div>
 <div id="lotOut" aria-live="polite"></div></div></section></main>
 <main id="recMain"><section id="recrutement" hidden><h2>Recrutement staff</h2>
 <div class="rbox"><p id="recIntro"></p><div class="row"><button id="recGo">Postuler</button><button class="g" id="recFind">Retrouver ma réponse</button></div></div></section></main>
@@ -140,7 +145,7 @@ footer.ft{text-align:center;padding:10px 16px 46px}footer.ft img{max-width:100%;
 <a href="https://www.teamkit.fr/serveur/tk-novalifeamboise-206?src=banniere" title="BelleRoche — serveur Nova-Life: Amboise gratuit sur TeamKit"><img src="https://www.teamkit.fr/banniere/tk-novalifeamboise-206.png" alt="BelleRoche — serveur Nova-Life: Amboise gratuit sur TeamKit" width="600" height="200" style="max-width:100%;height:auto"></a>
 <div class="row"><button id="stOn">Lancer le suivi</button><button class="g" id="stNow">Actualiser maintenant</button><button class="g" id="stNew">Nouveau message</button><button class="x" style="margin:0" id="stOff">Arrêter</button></div>
 <p id="stOut" role="status" style="margin:10px 0 0;font-weight:600"></p></fieldset>
-<fieldset><legend>Terrains (carte)</legend><p style="margin:6px 0">Outil public « Trouver un terrain » : ajoute une carte puis place les numéros de terrain dessus.</p><div class="row"><button id="lotOpen">Gérer les terrains</button></div></fieldset>
+<fieldset><legend>Terrains et entreprises (carte)</legend><p style="margin:6px 0">Outil public « Localiser une entreprise » : ajoute une carte, puis place dessus les numéros de terrain et les entreprises.</p><div class="row"><button id="lotOpen">Gérer les emplacements</button></div></fieldset>
 <fieldset id="whBox"><legend>Webhooks Discord (séparés)</legend>
 <p style="margin:6px 0;font-weight:600">Statut du serveur</p>
 <div class="row" style="margin-top:6px"><button class="g" data-wh="check" data-w="statut">Vérifier</button><button class="g" data-wh="test" data-w="statut">Envoyer un test</button><button class="g" data-wh="sync" data-w="statut">Resynchroniser le message</button></div>
@@ -154,7 +159,7 @@ footer.ft{text-align:center;padding:10px 16px 46px}footer.ft img{max-width:100%;
 
 <dialog id="dTk" style="width:min(94vw,560px)"><h2>Tickets</h2><div id="tkF"><label>Sujet</label><input id="tkS"><label>Message</label><textarea id="tkM" rows="3"></textarea><div class="row"><button id="tkOk">Envoyer le ticket</button></div></div><div id="tkL" style="margin-top:14px"></div><div class="row"><button class="g" onclick="dTk.close()">Fermer</button></div></dialog>
 <dialog id="dLotFull" style="width:min(96vw,1100px)"><div id="lotFullBox"></div><div class="row"><button class="g" onclick="dLotFull.close()">Fermer</button></div></dialog>
-<dialog id="dLots" style="width:min(96vw,1000px)"><h2>Terrains</h2>
+<dialog id="dLots" style="width:min(96vw,1000px)"><h2>Terrains et entreprises</h2>
 <div class="row" style="margin-top:0;align-items:flex-end"><div style="flex:1;min-width:200px"><label style="margin-top:0">Carte</label><select id="lmSel"></select></div>
 <button class="g" id="lmNew">Nouvelle carte</button><button class="g" id="lmEdit">Modifier</button><button class="x" id="lmDel" style="margin:0">Supprimer</button></div>
 <fieldset id="lmForm" hidden style="margin-top:12px"><legend>Carte</legend>
@@ -165,14 +170,14 @@ footer.ft{text-align:center;padding:10px 16px 46px}footer.ft img{max-width:100%;
 <div class="row" style="align-items:center"><button id="lmDetect">🔍 Détecter les étiquettes</button>
 <label style="margin:0">Affichage <select id="lmZoom" style="width:auto"><option value="fit">Ajusté</option><option value="1">100 %</option><option value="2">200 %</option></select></label><span id="lmInfo" style="color:var(--mut)"></span></div>
 <div class="lmwrap"><div id="lmStage"></div></div>
-<p style="margin:8px 0 0;font-size:15px;color:var(--mut)">Clique sur la carte à l’endroit d’un terrain, tape son numéro (ex. 699 ou 242-254) puis Entrée. Un point rouge = terrain déjà enregistré (clique dessus pour le modifier ou le supprimer).</p>
-<fieldset style="margin-top:12px"><legend>Terrain</legend><label>Numéro ou plage de numéros</label><input id="lmLabel" placeholder="699 ou 242-254" autocomplete="off">
-<div class="row"><button id="lmSave">Enregistrer</button><button class="x" id="lmRm" style="margin:0">Supprimer ce terrain</button></div>
+<p style="margin:8px 0 0;font-size:15px;color:var(--mut)">Clique sur la carte à l’endroit voulu, puis tape un <b>numéro de terrain</b> (ex. 699 ou 242-254) <b>ou un nom d’entreprise</b> (ex. Garage des Lilas) et Entrée. Point rouge = terrain, point bleu = entreprise (clique dessus pour le modifier ou le supprimer).</p>
+<fieldset style="margin-top:12px"><legend>Emplacement</legend><label>Numéro de terrain ou nom d’entreprise <small id="lmKind" style="font-weight:400;color:var(--mut)"></small></label><input id="lmLabel" placeholder="699, 242-254 ou Garage des Lilas" autocomplete="off" maxlength="60">
+<div class="row"><button id="lmSave">Enregistrer</button><button class="x" id="lmRm" style="margin:0">Supprimer cet emplacement</button></div>
 <p id="lmOut" role="status" style="margin:10px 0 0;font-weight:600"></p></fieldset>
 <div class="row"><button class="g" onclick="dLots.close()">Fermer</button></div></dialog>
 <dialog id="dLq" style="width:min(94vw,640px)"><h2>Numéroter les étiquettes</h2><p id="lqInfo" style="margin:0 0 8px;color:var(--mut)"></p>
 <canvas id="lqCv" width="560" height="280" style="width:100%;height:auto;border-radius:12px;border:1px solid var(--line);background:var(--bg)"></canvas>
-<label>Numéro écrit dans le cadre bleu (ex. 699 ou 242-254)</label><input id="lqIn" autocomplete="off"><p id="lqErr" role="alert" style="color:var(--err);font-weight:600;margin:6px 0 0"></p>
+<label>Numéro écrit dans le cadre bleu (ex. 699 ou 242-254), ou un nom d’entreprise</label><input id="lqIn" autocomplete="off"><p id="lqErr" role="alert" style="color:var(--err);font-weight:600;margin:6px 0 0"></p>
 <div class="row"><button id="lqOk">Enregistrer et suivant (Entrée)</button><button class="g" id="lqSkip">Passer</button><button class="g" id="lqStop">Terminer</button></div></dialog>
 <dialog id="dRecF" style="width:min(94vw,720px)"><h2>Candidature staff</h2>
 <label>Pseudo Discord</label><input id="rPs" maxlength="40"><label>Âge</label><input id="rAge" type="number" min="10" max="99">
@@ -211,14 +216,17 @@ const toast=m=>{const t=$('#toast');t.textContent=m;t.style.display='block';setT
 async function bg(){const{data}=await sb.from('site_settings').select('value').eq('key','bg_url').maybeSingle();const h=document.querySelector('.hero');
  h.style.background=data&&data.value?`linear-gradient(#16202bb0,#16202bb0),url('${data.value.replace(/'/g,'%27')}') center/cover`:''}
 async function load(){const[c,i,e]=await Promise.all([sb.from('categories').select('*').order('position'),sb.from('items').select('*').order('created_at',{ascending:false}),sb.from('giveaway_entries').select('*')]);cats=c.data||[];items=i.data||[];entries=e.data||[];render()}
+const lotEl=document.getElementById('terrains');
 function render(){
  $('#bUser').textContent=user?user.prenom+' '+user.nom+' (quitter)':'Connexion';
- $('#tabs').innerHTML=cats.map(c=>`<a href="#c${c.id}">${esc(c.name)}</a>`).join('')+(lotRows.length?'<a href="#terrains">Terrains</a>':'')+(rec&&rec.open?'<a href="#recrutement">Recrutement staff</a>':'');
+ const host=cats.find(c=>c.kind==='posts')||cats[0],locTab=lotRows.length?'<a href="#terrains">Localiser</a>':'';
+ $('#tabs').innerHTML=cats.map(c=>`<a href="#c${c.id}">${esc(c.name)}</a>`+(host&&c.id===host.id?locTab:'')).join('')+(host?'':locTab)+(rec&&rec.open?'<a href="#recrutement">Recrutement staff</a>':'');
  const del=id=>admin?`<button class="x" data-del="${id}">Supprimer</button> <button class="x" style="background:var(--loire)" data-dc="${id}">Envoyer sur Discord</button>`:'';
  $('#main').innerHTML=cats.map(c=>{const it=items.filter(x=>x.category_id===c.id);
   const b=c.kind==='cars'?`<div class="grid">${it.map(x=>carCard(x,del(x.id))).join('')}</div>`:c.kind==='giveaway'?it.map(x=>givCard(x,del(x.id))).join(''):c.kind==='links'?`<div class="grid">${it.map(x=>`<div class="lk"><a href="${esc(safe(x.link_url))}" target="_blank" rel="noopener"><div class="im" style="background-image:url('${esc(x.image_url)}')"></div><h3>${esc(x.title)}</h3></a>${del(x.id)}</div>`).join('')}</div>`
   :it.map(x=>`<article class="post" style="background-image:url('${esc(x.bg_url)}')"><div class="pc">${x.image_url?`<img src="${esc(x.image_url)}" alt="" loading="lazy" decoding="async">`:''}<h3>${esc(x.title)}</h3><p>${esc(x.text)}</p><time>${new Date(x.created_at).toLocaleDateString('fr-FR')}</time>${del(x.id)}</div></article>`).join('');
   return`<section id="c${c.id}"><h2>${esc(c.name)}</h2>${it.length?b:'<p class="empty">Rien ici pour le moment.</p>'}</section>`}).join('');
+ const hs=host&&$('#c'+host.id);if(hs)hs.after(lotEl);else $('#lotMain').appendChild(lotEl);
  const o=c=>cats.filter(x=>x.kind===c).map(x=>`<option value="${x.id}">${esc(x.name)}</option>`).join('');
  const sel=['pCat','lCat','gCat','vCat'].map(i=>$('#'+i).value);
  $('#pCat').innerHTML=o('posts');$('#lCat').innerHTML=o('links');$('#gCat').innerHTML=o('giveaway');$('#vCat').innerHTML=o('cars');
@@ -321,10 +329,15 @@ const lotZoom=[.6,1,1.7],admL=(fn,a)=>sb.rpc(fn,{admin_code:localStorage.br_admi
 function lotImage(url){return lotImgs[url]||(lotImgs[url]=new Promise((ok,ko)=>{const i=new Image();i.onload=()=>ok({w:i.naturalWidth,h:i.naturalHeight});i.onerror=()=>{delete lotImgs[url];ko(new Error('image'))};i.src=url}))}
 async function loadLots(){const[m,l]=await Promise.all([sb.from('lot_maps').select('*').order('position').order('id'),sb.from('lots').select('*').limit(5000)]);
  lotMaps=m.error?[]:(m.data||[]);lotRows=l.error?[]:(l.data||[]);
- $('#terrains').hidden=!lotRows.length;render();if(dLots.open)lmDraw();if($('#lotQ').value.trim())lotSearch()}
-function lotFind(q){q=String(q).trim().replace(/[–—−]/g,'-').replace(/\s*-\s*/g,'-');if(!q)return[];
- if(/^\d{1,5}$/.test(q)){const n=+q;return lotRows.filter(l=>l.num_min!=null&&n>=l.num_min&&n<=l.num_max).sort((a,b)=>(a.num_max-a.num_min)-(b.num_max-b.num_min)||a.id-b.id)}
- return lotRows.filter(l=>l.label.toLowerCase()===q.toLowerCase())}
+ lotEl.hidden=!lotRows.length;render();if(dLots.open)lmDraw();if($('#lotQ').value.trim())lotSearch()}
+const lotNorm=t=>String(t).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/\s+/g,' ').trim();
+function lotFind(q){const raw=String(q).trim();if(!raw)return[];const dash=raw.replace(/[–—−]/g,'-').replace(/\s*-\s*/g,'-');
+ if(/^\d{1,5}$/.test(dash)){const n=+dash;return lotRows.filter(l=>l.num_min!=null&&n>=l.num_min&&n<=l.num_max).sort((a,b)=>(a.num_max-a.num_min)-(b.num_max-b.num_min)||a.id-b.id)}
+ const k=lotNorm(raw),kd=lotNorm(dash),ex=lotRows.filter(l=>{const n=lotNorm(l.label);return n===k||n===kd});if(ex.length)return ex;
+ return lotRows.filter(l=>l.kind==='entreprise'&&lotNorm(l.label).includes(k)).sort((a,b)=>{const sa=lotNorm(a.label).startsWith(k)?0:1,sb=lotNorm(b.label).startsWith(k)?0:1;return sa-sb||a.label.localeCompare(b.label,'fr')})}
+function lotTitle(lot,map){const q=$('#lotQ').value.trim();
+ if(lot.kind==='entreprise')return`<b>${esc(lot.label)}</b> <span class="tag">Entreprise</span> · ${esc(map.name)}`;
+ const same=lot.label===q.replace(/[–—−]/g,'-').replace(/\s*-\s*/g,'-');return`<b>Terrain ${esc(same?lot.label:q)}</b>${same?'':` · bloc ${esc(lot.label)}`} · ${esc(map.name)}`}
 // extrait de la carte centré sur le terrain, avec une flèche qui le désigne (tout en pourcentages : s'adapte à l'écran)
 function lotViewHTML(map,lot,im,z,full){
  let cw=Math.min(im.w,Math.round(map.view_w*lotZoom[z])),ch=Math.min(im.h,Math.round(cw*.66));if(full){cw=im.w;ch=im.h}
@@ -335,12 +348,31 @@ async function lotShow(i){const lot=lotList[i];if(!lot)return;lotCur=i;const map
  let im;try{im=await lotImage(map.url)}catch(e){if(lotCur===i)out.innerHTML='<p class="empty">Impossible de charger l’image de la carte.</p>';return}
  if(lotCur!==i)return;
  const chips=lotList.length>1?'<div class="row" style="margin:0 0 10px">'+lotList.map((l,j)=>`<button class="g" data-lot="${j}"${j===i?' aria-pressed="true"':''}>${esc(l.label)} · ${esc((lotMaps.find(m=>m.id===l.map_id)||{}).name||'')}</button>`).join('')+'</div>':'';
- out.innerHTML=`${chips}<p class="lvt"><b>Terrain ${esc($('#lotQ').value.trim())}</b>${lot.label!==$('#lotQ').value.trim().replace(/[–—−]/g,'-').replace(/\s*-\s*/g,'-')?` · bloc ${esc(lot.label)}`:''} · ${esc(map.name)}</p>${lotViewHTML(map,lot,im,lotZ,false)}<div class="row"><button class="g" data-z="-1">− Plus large</button><button class="g" data-z="1">+ Plus près</button><button class="g" id="lotFull">Voir la carte entière</button></div>`}
+ out.innerHTML=`${chips}<p class="lvt">${lotTitle(lot,map)}</p>${lotViewHTML(map,lot,im,lotZ,false)}<div class="row"><button class="g" data-z="-1">− Plus large</button><button class="g" data-z="1">+ Plus près</button><button class="g" id="lotFull">Voir la carte entière</button></div>`}
 function lotSearch(){const q=$('#lotQ').value,out=$('#lotOut');lotList=lotFind(q);
  if(!q.trim()){out.innerHTML='';return}
- if(!lotList.length){out.innerHTML=`<p class="empty">Aucun terrain « ${esc(q.trim())} » n’est enregistré. Vérifie le numéro.</p>`;return}
+ if(!lotList.length){out.innerHTML=`<p class="empty">Aucune entreprise ni aucun terrain « ${esc(q.trim())} » n’est enregistré. Choisis dans la liste ou vérifie le numéro.</p>`;return}
  lotShow(0)}
-$('#lotQ').addEventListener('input',()=>{clearTimeout(lotT);lotT=setTimeout(lotSearch,250)});
+// suggestions : la liste défile parmi les entreprises remplies par l'admin (et les terrains quand on tape un numéro)
+let sugList=[],sugI=-1;
+function lotSuggest(q){const k=lotNorm(q),ent=lotRows.filter(l=>l.kind==='entreprise').sort((a,b)=>a.label.localeCompare(b.label,'fr'));let out;
+ if(!k)out=ent;else out=ent.filter(l=>lotNorm(l.label).startsWith(k)).concat(ent.filter(l=>!lotNorm(l.label).startsWith(k)&&lotNorm(l.label).includes(k)));
+ if(/^\d{1,5}$/.test(k)){const n=+k,ter=lotRows.filter(l=>l.kind!=='entreprise'),pre=ter.filter(l=>l.label.startsWith(k)),inr=ter.filter(l=>!l.label.startsWith(k)&&l.num_min<=n&&n<=l.num_max);out=out.concat(pre.concat(inr).slice(0,8))}
+ return out.slice(0,60)}
+function sugDraw(){const ul=$('#lotSug'),q=$('#lotQ');sugList=lotSuggest(q.value);sugI=-1;
+ if(!sugList.length||document.activeElement!==q){ul.hidden=true;q.setAttribute('aria-expanded','false');return}
+ ul.innerHTML=sugList.map((l,i)=>`<li role="option" id="sug${i}" data-i="${i}"><span>${l.kind==='entreprise'?'🏢':'📍'}</span><span class="sn">${esc(l.kind==='entreprise'?l.label:'Terrain '+l.label)}</span><span class="sm">${esc((lotMaps.find(m=>m.id===l.map_id)||{}).name||'')}</span></li>`).join('');
+ ul.hidden=false;q.setAttribute('aria-expanded','true')}
+function sugMark(){[...$('#lotSug').children].forEach((li,i)=>{li.classList.toggle('on',i===sugI);if(i===sugI){li.scrollIntoView({block:'nearest'});$('#lotQ').setAttribute('aria-activedescendant',li.id)}})}
+function sugPick(i){const l=sugList[i];if(!l)return;$('#lotQ').value=l.label;$('#lotSug').hidden=true;$('#lotQ').setAttribute('aria-expanded','false');lotSearch()}
+$('#lotQ').addEventListener('focus',sugDraw);
+$('#lotQ').addEventListener('input',()=>{sugDraw();clearTimeout(lotT);lotT=setTimeout(lotSearch,250)});
+$('#lotQ').addEventListener('keydown',e=>{const ul=$('#lotSug');
+ if(e.key==='ArrowDown'||e.key==='ArrowUp'){if(ul.hidden)sugDraw();if(!sugList.length)return;e.preventDefault();sugI=(sugI+(e.key==='ArrowDown'?1:-1)+sugList.length)%sugList.length;sugMark()}
+ else if(e.key==='Enter'){if(!ul.hidden&&sugI>=0){e.preventDefault();sugPick(sugI)}else{ul.hidden=true;lotSearch()}}
+ else if(e.key==='Escape'){ul.hidden=true}});
+$('#lotSug').addEventListener('mousedown',e=>{const li=e.target.closest('li');if(li){e.preventDefault();sugPick(+li.dataset.i)}});
+$('#lotQ').addEventListener('blur',()=>setTimeout(()=>{$('#lotSug').hidden=true},120));
 $('#lotGo').onclick=lotSearch;
 $('#lotOut').onclick=async e=>{const b=e.target.closest('button');if(!b)return;
  if(b.dataset.lot!=null)return lotShow(+b.dataset.lot);
@@ -354,22 +386,25 @@ function lmFill(){const s=$('#lmSel');s.innerHTML=lotMaps.map(m=>`<option value=
 function lmDraw(){lmFill();const m=lmMap(),st=$('#lmStage');
  if(!m){st.style.width='100%';st.innerHTML='<p class="empty" style="padding:14px;line-height:1.5">Ajoute une carte pour commencer.</p>';$('#lmInfo').textContent='';return}
  lotImage(m.url).then(im=>{if(lmCur!==m.id)return;st.style.width=lmZ==='fit'?'100%':(im.w*(+lmZ))+'px';
-  st.innerHTML=`<img id="lmImg" src="${esc(m.url)}" alt="Carte ${esc(m.name)}">`+lotRows.filter(l=>l.map_id===m.id).map(l=>`<div class="lmk${lmLot&&lmLot.id===l.id?' on':''}" data-id="${l.id}" style="left:${l.x*100}%;top:${l.y*100}%" title="${esc(l.label)}"></div>`).join('')+(lmPend?`<div class="lmk pend" style="left:${lmPend.x*100}%;top:${lmPend.y*100}%"></div>`:'');
-  $('#lmInfo').textContent=`${im.w}×${im.h} px · ${lotRows.filter(l=>l.map_id===m.id).length} terrain(s)`}).catch(()=>{st.style.width='100%';st.innerHTML='<p class="empty" style="padding:14px;line-height:1.5">Image introuvable : vérifie l’adresse de la carte (bouton Modifier).</p>'})}
+  st.innerHTML=`<img id="lmImg" src="${esc(m.url)}" alt="Carte ${esc(m.name)}">`+lotRows.filter(l=>l.map_id===m.id).map(l=>`<div class="lmk${lmLot&&lmLot.id===l.id?' on':''}${l.kind==='entreprise'?' ent':''}" data-id="${l.id}" style="left:${l.x*100}%;top:${l.y*100}%" title="${esc(l.label)}"></div>`).join('')+(lmPend?`<div class="lmk pend" style="left:${lmPend.x*100}%;top:${lmPend.y*100}%"></div>`:'');
+  $('#lmInfo').textContent=`${im.w}×${im.h} px · ${lotRows.filter(l=>l.map_id===m.id&&l.kind!=='entreprise').length} terrain(s) · ${lotRows.filter(l=>l.map_id===m.id&&l.kind==='entreprise').length} entreprise(s)`}).catch(()=>{st.style.width='100%';st.innerHTML='<p class="empty" style="padding:14px;line-height:1.5">Image introuvable : vérifie l’adresse de la carte (bouton Modifier).</p>'})}
 $('#lotOpen').onclick=()=>{lmSay('');lmDraw();dLots.showModal()};
 $('#lmSel').onchange=()=>{lmCur=+$('#lmSel').value;lmLot=null;lmPend=null;$('#lmLabel').value='';lmDraw()};
 $('#lmZoom').onchange=()=>{lmZ=$('#lmZoom').value;lmDraw()};
 $('#lmStage').onclick=e=>{const k=e.target.closest('.lmk[data-id]');
- if(k){lmLot=lotRows.find(l=>l.id==k.dataset.id)||null;lmPend=null;$('#lmLabel').value=lmLot?lmLot.label:'';lmSay(lmLot?'Terrain sélectionné : change le numéro, ou clique ailleurs pour le déplacer, puis Enregistrer.':'');return lmDraw()}
+ if(k){lmLot=lotRows.find(l=>l.id==k.dataset.id)||null;lmPend=null;$('#lmLabel').value=lmLot?lmLot.label:'';kindHint();lmSay(lmLot?'Emplacement sélectionné : change le nom ou le numéro, ou clique ailleurs pour le déplacer, puis Enregistrer.':'');return lmDraw()}
  const img=$('#lmImg');if(!img||e.target!==img)return;const r=img.getBoundingClientRect();
  lmPend={x:Math.min(1,Math.max(0,(e.clientX-r.left)/r.width)),y:Math.min(1,Math.max(0,(e.clientY-r.top)/r.height))};lmDraw();$('#lmLabel').focus()};
 $('#lmSave').onclick=async()=>{const m=lmMap();if(!m)return lmSay('Ajoute d’abord une carte.');
  const pos=lmPend||(lmLot?{x:lmLot.x,y:lmLot.y}:null);if(!pos)return lmSay('Clique d’abord sur la carte, à l’endroit du terrain.');
  const{error}=await admL('lot_admin_save',{p_map:m.id,p_label:$('#lmLabel').value,p_x:pos.x,p_y:pos.y,p_id:lmLot?lmLot.id:null});
- if(error)return lmSay('❌ '+error.message);lmSay('✅ Terrain enregistré.');lmPend=null;lmLot=null;$('#lmLabel').value='';await loadLots()};
+ if(error)return lmSay('❌ '+error.message);lmSay('✅ Emplacement enregistré.');lmPend=null;lmLot=null;$('#lmLabel').value='';kindHint();await loadLots()};
+const lotKindOf=v=>/^\d{1,5}(\s*[-–—−]\s*\d{1,5})?$/.test(String(v).trim())?'terrain':'entreprise';
+function kindHint(){const v=$('#lmLabel').value.trim();$('#lmKind').textContent=v?(lotKindOf(v)==='terrain'?'→ sera enregistré comme terrain':'→ sera enregistré comme entreprise'):''}
+$('#lmLabel').addEventListener('input',kindHint);
 $('#lmLabel').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();$('#lmSave').click()}});
-$('#lmRm').onclick=async()=>{if(!lmLot)return lmSay('Clique sur un point rouge pour choisir le terrain à supprimer.');if(!confirm('Supprimer le terrain '+lmLot.label+' ?'))return;
- const{error}=await admL('lot_admin_delete',{p_id:lmLot.id});if(error)return lmSay('❌ '+error.message);lmLot=null;lmPend=null;$('#lmLabel').value='';lmSay('Terrain supprimé.');await loadLots()};
+$('#lmRm').onclick=async()=>{if(!lmLot)return lmSay('Clique sur un point pour choisir l’emplacement à supprimer.');if(!confirm('Supprimer « '+lmLot.label+' » ?'))return;
+ const{error}=await admL('lot_admin_delete',{p_id:lmLot.id});if(error)return lmSay('❌ '+error.message);lmLot=null;lmPend=null;$('#lmLabel').value='';kindHint();lmSay('Emplacement supprimé.');await loadLots()};
 $('#lmNew').onclick=()=>{lmEditId=null;$('#lmName').value='';$('#lmUrl').value='';$('#lmVw').value=860;$('#lmForm').hidden=false;$('#lmName').focus()};
 $('#lmEdit').onclick=()=>{const m=lmMap();if(!m)return lmSay('Aucune carte à modifier.');lmEditId=m.id;$('#lmName').value=m.name;$('#lmUrl').value=m.url;$('#lmVw').value=m.view_w;$('#lmForm').hidden=false};
 $('#lmFCancel').onclick=()=>{$('#lmForm').hidden=true};
@@ -415,7 +450,7 @@ function lqDraw(){const b=lqItems[lqI],cv=$('#lqCv'),c=cv.getContext('2d'),sw=14
 async function lqNext(save){const b=lqItems[lqI],m=lmMap();
  if(save){const{error}=await admL('lot_admin_save',{p_map:m.id,p_label:$('#lqIn').value,p_x:b.cx/lqW,p_y:b.cy/lqH});if(error){$('#lqErr').textContent=error.message;return}lqAdded++}
  lqI++;if(lqI>=lqItems.length)return lqEnd();lqDraw();$('#lqIn').focus()}
-async function lqEnd(){dLq.close();lmSay(`✅ ${lqAdded} terrain(s) ajouté(s).`);await loadLots()}
+async function lqEnd(){dLq.close();lmSay(`✅ ${lqAdded} emplacement(s) ajouté(s).`);await loadLots()}
 $('#lqOk').onclick=()=>lqNext(true);$('#lqSkip').onclick=()=>lqNext(false);$('#lqStop').onclick=lqEnd;
 $('#lqIn').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();lqNext(true)}});
 // ===== Recrutement staff =====
