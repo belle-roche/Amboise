@@ -85,16 +85,21 @@ footer.ft{text-align:center;padding:10px 16px 46px}footer.ft img{max-width:100%;
 #lotSug li.on,#lotSug li:hover{background:var(--line3)}#lotSug .sn{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}#lotSug .sm{font-weight:400;font-size:13px;color:var(--mut)}
 .tag{display:inline-block;font:700 12px 'Bricolage Grotesque',sans-serif;padding:2px 9px;border-radius:99px;background:var(--line3);color:var(--tx);vertical-align:middle}
 .lvt{margin:16px 0 10px;font-size:17px}
-.lv{position:relative;overflow:hidden;border-radius:14px;border:1px solid var(--line);background:var(--bg);width:100%}
-.lv img{position:absolute;max-width:none;height:auto;display:block}
+#lotMV{width:100%;aspect-ratio:3/2;max-height:75vh;min-height:280px}#lmMV{height:min(58vh,560px);margin-top:10px}
+.mv{position:relative;width:100%;height:100%;overflow:hidden;border:1px solid var(--line);border-radius:14px;background:var(--bg);touch-action:none;user-select:none;-webkit-user-select:none;outline:0}
+.mv:focus-visible{outline:3px solid var(--or);outline-offset:2px}.mv.pan{cursor:grab}.mv.edit{cursor:crosshair}.mv.grab{cursor:grabbing}
+.mvi{position:absolute;left:0;top:0;max-width:none;transform-origin:0 0;will-change:transform;pointer-events:none}
+.mvm{position:absolute;inset:0;pointer-events:none;overflow:hidden}.mvm .lmk{pointer-events:auto}.mvm .lmk.pend{pointer-events:none}
+.mvc{position:absolute;right:10px;top:10px;z-index:3;display:flex;flex-direction:column;gap:6px}
+.mvc button{width:40px;height:40px;min-height:0;padding:0;font-size:20px;line-height:1;border-radius:10px;background:var(--surf);color:var(--tx);border:1px solid var(--line2);box-shadow:var(--sh)}.mvc button:hover{background:var(--line3)}
+.mvh{position:absolute;left:10px;bottom:10px;z-index:3;max-width:calc(100% - 70px);background:#0b141ccc;color:#fff;font:600 12px 'Bricolage Grotesque',system-ui,sans-serif;padding:6px 10px;border-radius:8px;pointer-events:none;transition:opacity .6s}.mv.quiet .mvh{opacity:0}
+.mv:fullscreen{width:100vw;height:100vh;border-radius:0;border:0}.mv.mvfs{position:fixed;inset:0;z-index:60;width:100vw;height:100vh;border-radius:0;border:0}
 .lvpin{position:absolute;width:0;height:0}
 .lvpin i{position:absolute;left:-22px;top:-22px;width:44px;height:44px;border-radius:50%;border:4px solid #ffd34d;box-shadow:0 0 0 3px #e5322d,0 0 18px 4px #ffd34d99;animation:ring 1.6s ease-out infinite}
 .lvpin svg{position:absolute;left:-28px;bottom:26px;width:56px;height:74px;filter:drop-shadow(0 4px 6px #0008);animation:bob 1s ease-in-out infinite}
 .lvpin svg path{fill:#e5322d;stroke:#fff;stroke-width:4;stroke-linejoin:round}
 .lvpin.up svg{bottom:auto;top:26px;transform:rotate(180deg);animation-name:bobup}
 @keyframes ring{0%{transform:scale(.8);opacity:1}100%{transform:scale(1.5);opacity:.2}}@keyframes bob{50%{transform:translateY(-8px)}}@keyframes bobup{50%{transform:rotate(180deg) translateY(-8px)}}
-.lmwrap{overflow:auto;max-height:52vh;border:1px solid var(--line);border-radius:12px;background:var(--bg);margin-top:10px}
-#lmStage{position:relative;line-height:0;cursor:crosshair}#lmStage img{display:block;width:100%;height:auto}
 .lmk{position:absolute;width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;background:#e5322d;border:2px solid #fff;cursor:pointer;box-shadow:0 1px 4px #0009}
 .lmk.ent{background:var(--loire)}.lmk.on{background:#ffd34d;outline:2px solid #e5322d}.lmk.pend{background:var(--loire);outline:3px solid #ffd34d;pointer-events:none}
 @keyframes rise{from{opacity:0;transform:translate(var(--tx0,0),14px)}}
@@ -158,7 +163,6 @@ footer.ft{text-align:center;padding:10px 16px 46px}footer.ft img{max-width:100%;
 <div class="row"><button class="g" id="adOut">Quitter le mode admin</button><button class="g" onclick="dAdm.close()">Fermer</button></div></dialog>
 
 <dialog id="dTk" style="width:min(94vw,560px)"><h2>Tickets</h2><div id="tkF"><label>Sujet</label><input id="tkS"><label>Message</label><textarea id="tkM" rows="3"></textarea><div class="row"><button id="tkOk">Envoyer le ticket</button></div></div><div id="tkL" style="margin-top:14px"></div><div class="row"><button class="g" onclick="dTk.close()">Fermer</button></div></dialog>
-<dialog id="dLotFull" style="width:min(96vw,1100px)"><div id="lotFullBox"></div><div class="row"><button class="g" onclick="dLotFull.close()">Fermer</button></div></dialog>
 <dialog id="dLots" style="width:min(96vw,1000px)"><h2>Terrains et entreprises</h2>
 <div class="row" style="margin-top:0;align-items:flex-end"><div style="flex:1;min-width:200px"><label style="margin-top:0">Carte</label><select id="lmSel"></select></div>
 <button class="g" id="lmNew">Nouvelle carte</button><button class="g" id="lmEdit">Modifier</button><button class="x" id="lmDel" style="margin:0">Supprimer</button></div>
@@ -167,10 +171,10 @@ footer.ft{text-align:center;padding:10px 16px 46px}footer.ft img{max-width:100%;
 <label>Adresse de l’image (https://… ou fichier de ton dépôt, ex. cartes/amboise.png)</label><input id="lmUrl">
 <label>Largeur de l’extrait affiché, en pixels de l’image (860 par défaut ; plus grand = vue plus large)</label><input id="lmVw" type="number" min="200" max="6000" value="860">
 <div class="row"><button id="lmFSave">Enregistrer la carte</button><button class="g" id="lmFCancel">Annuler</button></div></fieldset>
-<div class="row" style="align-items:center"><button id="lmDetect">🔍 Détecter les étiquettes</button>
-<label style="margin:0">Affichage <select id="lmZoom" style="width:auto"><option value="fit">Ajusté</option><option value="1">100 %</option><option value="2">200 %</option></select></label><span id="lmInfo" style="color:var(--mut)"></span></div>
-<div class="lmwrap"><div id="lmStage"></div></div>
-<p style="margin:8px 0 0;font-size:15px;color:var(--mut)">Clique sur la carte à l’endroit voulu, puis tape un <b>numéro de terrain</b> (ex. 699 ou 242-254) <b>ou un nom d’entreprise</b> (ex. Garage des Lilas) et Entrée. Point rouge = terrain, point bleu = entreprise (clique dessus pour le modifier ou le supprimer).</p>
+<div class="row" style="align-items:center"><button id="lmDetect">🔍 Détecter les étiquettes</button><button class="g" id="lmImp">📥 Importer des étiquettes repérées</button><input type="file" id="lmImpF" accept=".json,application/json" hidden>
+<span id="lmInfo" style="color:var(--mut)"></span></div>
+<div id="lmMV"></div>
+<p style="margin:8px 0 0;font-size:15px;color:var(--mut)">Molette = zoom, clic droit maintenu = se déplacer, ⛶ = plein écran. Clic gauche sur la carte à l’endroit voulu, puis tape un <b>numéro de terrain</b> (ex. 699 ou 242-254) <b>ou un nom d’entreprise</b> (ex. Garage des Lilas) et Entrée. Point rouge = terrain, point bleu = entreprise (clique dessus pour le modifier ou le supprimer).</p>
 <fieldset style="margin-top:12px"><legend>Emplacement</legend><label>Numéro de terrain ou nom d’entreprise <small id="lmKind" style="font-weight:400;color:var(--mut)"></small></label><input id="lmLabel" placeholder="699, 242-254 ou Garage des Lilas" autocomplete="off" maxlength="60">
 <div class="row"><button id="lmSave">Enregistrer</button><button class="x" id="lmRm" style="margin:0">Supprimer cet emplacement</button></div>
 <p id="lmOut" role="status" style="margin:10px 0 0;font-weight:600"></p></fieldset>
@@ -178,7 +182,7 @@ footer.ft{text-align:center;padding:10px 16px 46px}footer.ft img{max-width:100%;
 <dialog id="dLq" style="width:min(94vw,640px)"><h2>Numéroter les étiquettes</h2><p id="lqInfo" style="margin:0 0 8px;color:var(--mut)"></p>
 <canvas id="lqCv" width="560" height="280" style="width:100%;height:auto;border-radius:12px;border:1px solid var(--line);background:var(--bg)"></canvas>
 <label>Numéro écrit dans le cadre bleu (ex. 699 ou 242-254), ou un nom d’entreprise</label><input id="lqIn" autocomplete="off"><p id="lqErr" role="alert" style="color:var(--err);font-weight:600;margin:6px 0 0"></p>
-<div class="row"><button id="lqOk">Enregistrer et suivant (Entrée)</button><button class="g" id="lqSkip">Passer</button><button class="g" id="lqStop">Terminer</button></div></dialog>
+<div class="row"><button id="lqOk">Enregistrer et suivant (Entrée)</button><button class="g" id="lqSure" hidden>Accepter les lectures sûres</button><button class="g" id="lqSkip">Passer</button><button class="g" id="lqStop">Terminer</button></div></dialog>
 <dialog id="dRecF" style="width:min(94vw,720px)"><h2>Candidature staff</h2>
 <label>Pseudo Discord</label><input id="rPs" maxlength="40"><label>Âge</label><input id="rAge" type="number" min="10" max="99">
 <label>Disponibilités (jours / heures par semaine)</label><input id="rDi" maxlength="120">
@@ -325,7 +329,7 @@ themeBtn.onclick=()=>setTheme(document.documentElement.dataset.theme==='dark'?'l
 if(window.matchMedia)matchMedia('(prefers-color-scheme:dark)').addEventListener('change',e=>{let c=null;try{c=localStorage.getItem('br_theme')}catch(x){}if(c!=='dark'&&c!=='light')setTheme(e.matches?'dark':'light')});
 // ===== Terrains : recherche publique + éditeur admin =====
 let lotMaps=[],lotRows=[],lotZ=1,lotImgs={},lotList=[],lotCur=0,lotT;
-const lotZoom=[.6,1,1.7],admL=(fn,a)=>sb.rpc(fn,{admin_code:localStorage.br_admin_code||'',...a});
+const admL=(fn,a)=>sb.rpc(fn,{admin_code:localStorage.br_admin_code||'',...a});
 function lotImage(url){return lotImgs[url]||(lotImgs[url]=new Promise((ok,ko)=>{const i=new Image();i.onload=()=>ok({w:i.naturalWidth,h:i.naturalHeight});i.onerror=()=>{delete lotImgs[url];ko(new Error('image'))};i.src=url}))}
 async function loadLots(){const[m,l]=await Promise.all([sb.from('lot_maps').select('*').order('position').order('id'),sb.from('lots').select('*').limit(5000)]);
  lotMaps=m.error?[]:(m.data||[]);lotRows=l.error?[]:(l.data||[]);
@@ -339,17 +343,79 @@ function lotTitle(lot,map){const q=$('#lotQ').value.trim();
  if(lot.kind==='entreprise')return`<b>${esc(lot.label)}</b> <span class="tag">Entreprise</span> · ${esc(map.name)}`;
  const same=lot.label===q.replace(/[–—−]/g,'-').replace(/\s*-\s*/g,'-');return`<b>Terrain ${esc(same?lot.label:q)}</b>${same?'':` · bloc ${esc(lot.label)}`} · ${esc(map.name)}`}
 // extrait de la carte centré sur le terrain, avec une flèche qui le désigne (tout en pourcentages : s'adapte à l'écran)
-function lotViewHTML(map,lot,im,z,full){
- let cw=Math.min(im.w,Math.round(map.view_w*lotZoom[z])),ch=Math.min(im.h,Math.round(cw*.66));if(full){cw=im.w;ch=im.h}
- const px=lot.x*im.w,py=lot.y*im.h,cx0=Math.max(0,Math.min(im.w-cw,px-cw/2)),cy0=Math.max(0,Math.min(im.h-ch,py-ch/2)),rx=(px-cx0)/cw,ry=(py-cy0)/ch;
- return`<div class="lv" style="aspect-ratio:${cw}/${ch}"><img src="${esc(map.url)}" alt="Extrait de la carte autour du terrain ${esc(lot.label)}" style="width:${im.w/cw*100}%;left:${-cx0/cw*100}%;top:${-cy0/ch*100}%"><div class="lvpin${ry<.34?' up':''}" style="left:${rx*100}%;top:${ry*100}%"><i></i><svg viewBox="0 0 60 80" aria-hidden="true"><path d="M30 78 L6 48 H21 V4 H39 V48 H54 Z"/></svg></div></div>`}
-async function lotShow(i){const lot=lotList[i];if(!lot)return;lotCur=i;const map=lotMaps.find(m=>m.id===lot.map_id),out=$('#lotOut');if(!map)return;
+// ===== Visionneuse de carte : molette = zoom, clic droit maintenu = déplacer, plein écran =====
+function MapView(host,o){
+ const root=document.createElement('div');root.className='mv'+(o.leftPan?' pan':'')+(o.edit?' edit':'');root.tabIndex=0;
+ root.setAttribute('aria-label',o.alt||'Carte');
+ root.innerHTML=`<img class="mvi" alt="${esc(o.alt||'Carte')}" draggable="false"><div class="mvm"></div><div class="mvc" role="group" aria-label="Contrôles de la carte"><button type="button" data-a="in" title="Zoomer" aria-label="Zoomer">+</button><button type="button" data-a="out" title="Dézoomer" aria-label="Dézoomer">−</button><button type="button" data-a="fit" title="Voir toute la carte" aria-label="Voir toute la carte">⤢</button>${o.noFocus?'':'<button type="button" data-a="focus" title="Recentrer sur la flèche" aria-label="Recentrer sur la flèche">◎</button>'}<button type="button" data-a="full" title="Plein écran" aria-label="Plein écran">⛶</button></div><div class="mvh">${o.edit?'Molette : zoom · clic droit maintenu : déplacer · clic gauche : placer':'Molette : zoom · clic droit maintenu (ou glisser) : déplacer · ⛶ plein écran'}</div>`;
+ host.innerHTML='';host.appendChild(root);
+ const img=root.querySelector('.mvi'),layer=root.querySelector('.mvm'),W=o.w,H=o.h;
+ img.style.width=W+'px';img.style.height=H+'px';img.src=o.url;
+ let s=1,tx=0,ty=0,fitS=1,ready=false,last={w:0,h:0},markers=[],els=[],pointers=new Map(),drag=null,pinch=null,fo=null;
+ const size=()=>({w:root.clientWidth,h:root.clientHeight});
+ const maxS=()=>Math.max(4,fitS*6),clampS=v=>Math.max(fitS,Math.min(v,maxS()));
+ function clampT(){const c=size(),iw=W*s,ih=H*s;tx=iw<=c.w?(c.w-iw)/2:Math.min(0,Math.max(c.w-iw,tx));ty=ih<=c.h?(c.h-ih)/2:Math.min(0,Math.max(c.h-ih,ty))}
+ function apply(){clampT();img.style.transform=`translate(${tx}px,${ty}px) scale(${s})`;place()}
+ function place(){const c=size();markers.forEach((m,i)=>{const e=els[i],px=tx+m.x*W*s,py=ty+m.y*H*s;
+   const vis=px>-30&&py>-30&&px<c.w+30&&py<c.h+30;e.style.display=vis?'':'none';if(!vis)return;
+   e.style.left=px+'px';e.style.top=py+'px';if(m.pin)e.classList.toggle('up',py<120)})}
+ function fit(){const c=size();if(!c.w||!c.h)return;fitS=Math.min(c.w/W,c.h/H);s=fitS;tx=(c.w-W*s)/2;ty=(c.h-H*s)/2;apply()}
+ function focus(x,y,cropW){const c=size();if(!c.w||!c.h){fo=[x,y,cropW];return}fo=[x,y,cropW];fitS=Math.min(c.w/W,c.h/H);s=clampS(c.w/Math.max(50,cropW||c.w/fitS));tx=c.w/2-x*W*s;ty=c.h/2-y*H*s;apply()}
+ function zoomAt(f,mx,my){const ns=clampS(s*f);if(ns===s)return;tx=mx-(mx-tx)*(ns/s);ty=my-(my-ty)*(ns/s);s=ns;apply()}
+ const mid=()=>{const c=size();return[c.w/2,c.h/2]};
+ function resize(){const c=size();if(!c.w||!c.h)return;
+  if(!ready){ready=true;last=c;fo?focus(fo[0],fo[1],fo[2]):fit();return}
+  if(c.w===last.w&&c.h===last.h)return;
+  const wasFit=s<=fitS*1.001,cx=(last.w/2-tx)/s,cy=(last.h/2-ty)/s;last=c;fitS=Math.min(c.w/W,c.h/H);
+  if(wasFit){s=fitS}else{s=clampS(s)}tx=c.w/2-cx*s;ty=c.h/2-cy*s;apply()}
+ function toImg(e){const r=root.getBoundingClientRect(),x=((e.clientX-r.left)-tx)/(W*s),y=((e.clientY-r.top)-ty)/(H*s);return x>=0&&x<=1&&y>=0&&y<=1?{x,y}:null}
+ function setMarkers(list){markers=list||[];layer.innerHTML='';els=markers.map(m=>{const e=document.createElement('div');
+   if(m.pin){e.className='lvpin';e.innerHTML='<i></i><svg viewBox="0 0 60 80" aria-hidden="true"><path d="M30 78 L6 48 H21 V4 H39 V48 H54 Z"/></svg>'}
+   else{e.className=m.cls||'lmk';e.dataset.mid=m.id;if(m.title)e.title=m.title}layer.appendChild(e);return e});place()}
+ const hide=()=>root.classList.add('quiet'),panOK=d=>d.b===2||(o.leftPan&&d.b===0)||d.t==='touch'||d.t==='pen';
+ root.addEventListener('contextmenu',e=>e.preventDefault());
+ root.addEventListener('wheel',e=>{e.preventDefault();hide();const r=root.getBoundingClientRect();zoomAt(Math.exp(-e.deltaY*(e.deltaMode===1?.05:.0016)),e.clientX-r.left,e.clientY-r.top)},{passive:false});
+ root.addEventListener('pointerdown',e=>{if(e.target.closest('.mvc'))return;pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});
+  try{root.setPointerCapture&&root.setPointerCapture(e.pointerId)}catch(x){}
+  root.focus({preventScroll:true});hide();
+  if(pointers.size===1){const mk=e.target.closest&&e.target.closest('[data-mid]');drag={id:e.pointerId,b:e.button,x:e.clientX,y:e.clientY,tx0:tx,ty0:ty,mk:mk?mk.dataset.mid:null,mv:0,t:e.pointerType};if(panOK(drag))root.classList.add('grab')}
+  else if(pointers.size===2){const[a,b]=[...pointers.values()],r=root.getBoundingClientRect();pinch={d:Math.hypot(a.x-b.x,a.y-b.y)||1,s0:s,px:((a.x+b.x)/2-r.left-tx)/s,py:((a.y+b.y)/2-r.top-ty)/s};drag=null}});
+ root.addEventListener('pointermove',e=>{if(!pointers.has(e.pointerId))return;pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});
+  if(pinch&&pointers.size>=2){const[a,b]=[...pointers.values()],r=root.getBoundingClientRect(),ns=clampS(pinch.s0*Math.hypot(a.x-b.x,a.y-b.y)/pinch.d);
+   s=ns;tx=(a.x+b.x)/2-r.left-pinch.px*s;ty=(a.y+b.y)/2-r.top-pinch.py*s;apply();return}
+  if(drag&&e.pointerId===drag.id){const dx=e.clientX-drag.x,dy=e.clientY-drag.y;drag.mv=Math.max(drag.mv,Math.hypot(dx,dy));
+   if(panOK(drag)&&drag.mv>3){tx=drag.tx0+dx;ty=drag.ty0+dy;apply()}}});
+ const up=e=>{pointers.delete(e.pointerId);root.classList.remove('grab');
+  if(pinch){if(pointers.size<2)pinch=null;drag=null;return}
+  if(drag&&e.pointerId===drag.id){const d=drag;drag=null;
+   if(d.mv<5&&d.b===0&&e.type==='pointerup'){if(d.mk!=null){o.onMarker&&o.onMarker(/^\d+$/.test(d.mk)?+d.mk:d.mk)}else if(o.onClick){const p=toImg(e);if(p)o.onClick(p.x,p.y,e)}}}};
+ root.addEventListener('pointerup',up);root.addEventListener('pointercancel',up);
+ root.addEventListener('keydown',e=>{const[mx,my]=mid(),st=60;
+  if(e.key==='+'||e.key==='='){zoomAt(1.3,mx,my)}else if(e.key==='-'||e.key==='_'){zoomAt(1/1.3,mx,my)}
+  else if(e.key==='0'||e.key==='Home'){fit()}
+  else if(e.key==='ArrowLeft'){tx+=st;apply()}else if(e.key==='ArrowRight'){tx-=st;apply()}else if(e.key==='ArrowUp'){ty+=st;apply()}else if(e.key==='ArrowDown'){ty-=st;apply()}
+  else if(e.key==='Escape'&&root.classList.contains('mvfs')){root.classList.remove('mvfs');resize();return}
+  else return;e.preventDefault();hide()});
+ const isFull=()=>document.fullscreenElement===root||root.classList.contains('mvfs');
+ function full(){if(isFull()){if(document.fullscreenElement)document.exitFullscreen();root.classList.remove('mvfs')}
+  else if(root.requestFullscreen){root.requestFullscreen().catch(()=>root.classList.add('mvfs'))}else root.classList.add('mvfs');setTimeout(resize,200)}
+ root.querySelector('.mvc').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const[mx,my]=mid();hide();
+  ({in:()=>zoomAt(1.4,mx,my),out:()=>zoomAt(1/1.4,mx,my),fit,focus:()=>fo&&focus(fo[0],fo[1],fo[2]),full})[b.dataset.a]()});
+ const onFs=()=>setTimeout(resize,120);document.addEventListener('fullscreenchange',onFs);
+ let ro=null;if(typeof ResizeObserver!=='undefined'){ro=new ResizeObserver(resize);ro.observe(root)}
+ setTimeout(resize,0);
+ return{focus,fit,zoomAt,setMarkers,resize,toImg,destroy(){document.removeEventListener('fullscreenchange',onFs);ro&&ro.disconnect();host.innerHTML=''},
+  state:()=>({s,tx,ty,fitS}),el:root}}
+let lotMV=null;
+async function lotShow(i){const lot=lotList[i];if(!lot)return;lotCur=i;if(lotMV){lotMV.destroy();lotMV=null}const map=lotMaps.find(m=>m.id===lot.map_id),out=$('#lotOut');if(!map)return;
  out.innerHTML='<p class="empty">Chargement de la carte…</p>';
  let im;try{im=await lotImage(map.url)}catch(e){if(lotCur===i)out.innerHTML='<p class="empty">Impossible de charger l’image de la carte.</p>';return}
  if(lotCur!==i)return;
  const chips=lotList.length>1?'<div class="row" style="margin:0 0 10px">'+lotList.map((l,j)=>`<button class="g" data-lot="${j}"${j===i?' aria-pressed="true"':''}>${esc(l.label)} · ${esc((lotMaps.find(m=>m.id===l.map_id)||{}).name||'')}</button>`).join('')+'</div>':'';
- out.innerHTML=`${chips}<p class="lvt">${lotTitle(lot,map)}</p>${lotViewHTML(map,lot,im,lotZ,false)}<div class="row"><button class="g" data-z="-1">− Plus large</button><button class="g" data-z="1">+ Plus près</button><button class="g" id="lotFull">Voir la carte entière</button></div>`}
-function lotSearch(){const q=$('#lotQ').value,out=$('#lotOut');lotList=lotFind(q);
+ out.innerHTML=`${chips}<p class="lvt">${lotTitle(lot,map)}</p><div id="lotMV"></div>`;
+ lotMV=MapView($('#lotMV'),{url:map.url,w:im.w,h:im.h,leftPan:true,alt:`Carte ${map.name} : ${lot.label}`});
+ lotMV.setMarkers([{id:lot.id,x:lot.x,y:lot.y,pin:true}]);lotMV.focus(lot.x,lot.y,map.view_w)}
+function lotSearch(){const q=$('#lotQ').value,out=$('#lotOut');lotList=lotFind(q);if(lotMV&&(!q.trim()||!lotList.length)){lotMV.destroy();lotMV=null}
  if(!q.trim()){out.innerHTML='';return}
  if(!lotList.length){out.innerHTML=`<p class="empty">Aucune entreprise ni aucun terrain « ${esc(q.trim())} » n’est enregistré. Choisis dans la liste ou vérifie le numéro.</p>`;return}
  lotShow(0)}
@@ -374,27 +440,26 @@ $('#lotQ').addEventListener('keydown',e=>{const ul=$('#lotSug');
 $('#lotSug').addEventListener('mousedown',e=>{const li=e.target.closest('li');if(li){e.preventDefault();sugPick(+li.dataset.i)}});
 $('#lotQ').addEventListener('blur',()=>setTimeout(()=>{$('#lotSug').hidden=true},120));
 $('#lotGo').onclick=lotSearch;
-$('#lotOut').onclick=async e=>{const b=e.target.closest('button');if(!b)return;
- if(b.dataset.lot!=null)return lotShow(+b.dataset.lot);
- if(b.dataset.z){lotZ=Math.max(0,Math.min(2,lotZ+ +b.dataset.z));return lotShow(lotCur)}
- if(b.id==='lotFull'){const lot=lotList[lotCur],map=lot&&lotMaps.find(m=>m.id===lot.map_id);if(!map)return;const im=await lotImage(map.url);$('#lotFullBox').innerHTML=lotViewHTML(map,lot,im,1,true);dLotFull.showModal()}};
+$('#lotOut').onclick=e=>{const b=e.target.closest('button[data-lot]');if(b)lotShow(+b.dataset.lot)};
 // --- éditeur admin
 let lmCur=null,lmLot=null,lmPend=null,lmZ='fit',lmEditId=null,lqItems=[],lqI=0,lqSrc=null,lqW=1,lqH=1,lqAdded=0;
 const lmMap=()=>lotMaps.find(m=>m.id===lmCur),lmSay=m=>$('#lmOut').textContent=m;
 function lmFill(){const s=$('#lmSel');s.innerHTML=lotMaps.map(m=>`<option value="${m.id}">${esc(m.name)} (${lotRows.filter(l=>l.map_id===m.id).length})</option>`).join('')||'<option value="">Aucune carte</option>';
  if(!lotMaps.some(m=>m.id===lmCur))lmCur=lotMaps[0]?lotMaps[0].id:null;s.value=lmCur==null?'':lmCur}
-function lmDraw(){lmFill();const m=lmMap(),st=$('#lmStage');
- if(!m){st.style.width='100%';st.innerHTML='<p class="empty" style="padding:14px;line-height:1.5">Ajoute une carte pour commencer.</p>';$('#lmInfo').textContent='';return}
- lotImage(m.url).then(im=>{if(lmCur!==m.id)return;st.style.width=lmZ==='fit'?'100%':(im.w*(+lmZ))+'px';
-  st.innerHTML=`<img id="lmImg" src="${esc(m.url)}" alt="Carte ${esc(m.name)}">`+lotRows.filter(l=>l.map_id===m.id).map(l=>`<div class="lmk${lmLot&&lmLot.id===l.id?' on':''}${l.kind==='entreprise'?' ent':''}" data-id="${l.id}" style="left:${l.x*100}%;top:${l.y*100}%" title="${esc(l.label)}"></div>`).join('')+(lmPend?`<div class="lmk pend" style="left:${lmPend.x*100}%;top:${lmPend.y*100}%"></div>`:'');
-  $('#lmInfo').textContent=`${im.w}×${im.h} px · ${lotRows.filter(l=>l.map_id===m.id&&l.kind!=='entreprise').length} terrain(s) · ${lotRows.filter(l=>l.map_id===m.id&&l.kind==='entreprise').length} entreprise(s)`}).catch(()=>{st.style.width='100%';st.innerHTML='<p class="empty" style="padding:14px;line-height:1.5">Image introuvable : vérifie l’adresse de la carte (bouton Modifier).</p>'})}
-$('#lotOpen').onclick=()=>{lmSay('');lmDraw();dLots.showModal()};
+let lmMV=null,lmMVUrl=null,lmDims={w:0,h:0};
+function lmDraw(){lmFill();const m=lmMap(),box=$('#lmMV');
+ if(!m){if(lmMV){lmMV.destroy();lmMV=null;lmMVUrl=null}box.innerHTML='<p class="empty" style="padding:14px;line-height:1.5">Ajoute une carte pour commencer.</p>';$('#lmInfo').textContent='';return}
+ const paint=()=>{const mine=lotRows.filter(l=>l.map_id===m.id);
+  lmMV.setMarkers(mine.map(l=>({id:l.id,x:l.x,y:l.y,cls:'lmk'+(l.kind==='entreprise'?' ent':'')+(lmLot&&lmLot.id===l.id?' on':''),title:l.label})).concat(lmPend?[{id:'pend',x:lmPend.x,y:lmPend.y,cls:'lmk pend'}]:[]));
+  $('#lmInfo').textContent=`${lmDims.w}×${lmDims.h} px · ${mine.filter(l=>l.kind!=='entreprise').length} terrain(s) · ${mine.filter(l=>l.kind==='entreprise').length} entreprise(s)`};
+ if(lmMV&&lmMVUrl===m.url){paint();return}
+ lotImage(m.url).then(im=>{if(lmCur!==m.id)return;lmDims=im;if(lmMV)lmMV.destroy();lmMVUrl=m.url;
+  lmMV=MapView(box,{url:m.url,w:im.w,h:im.h,edit:true,noFocus:true,alt:'Carte '+m.name,
+   onClick:(x,y)=>{lmPend={x,y};lmDraw();$('#lmLabel').focus()},
+   onMarker:id=>{lmLot=lotRows.find(l=>l.id==id)||null;lmPend=null;$('#lmLabel').value=lmLot?lmLot.label:'';kindHint();lmSay(lmLot?'Emplacement sélectionné : change le nom ou le numéro, ou clique ailleurs pour le déplacer, puis Enregistrer.':'');lmDraw()}});
+  paint()}).catch(()=>{if(lmMV){lmMV.destroy();lmMV=null;lmMVUrl=null}box.innerHTML='<p class="empty" style="padding:14px;line-height:1.5">Image introuvable : vérifie l’adresse de la carte (bouton Modifier).</p>'})}
+$('#lotOpen').onclick=()=>{lmSay('');dLots.showModal();lmDraw()};
 $('#lmSel').onchange=()=>{lmCur=+$('#lmSel').value;lmLot=null;lmPend=null;$('#lmLabel').value='';lmDraw()};
-$('#lmZoom').onchange=()=>{lmZ=$('#lmZoom').value;lmDraw()};
-$('#lmStage').onclick=e=>{const k=e.target.closest('.lmk[data-id]');
- if(k){lmLot=lotRows.find(l=>l.id==k.dataset.id)||null;lmPend=null;$('#lmLabel').value=lmLot?lmLot.label:'';kindHint();lmSay(lmLot?'Emplacement sélectionné : change le nom ou le numéro, ou clique ailleurs pour le déplacer, puis Enregistrer.':'');return lmDraw()}
- const img=$('#lmImg');if(!img||e.target!==img)return;const r=img.getBoundingClientRect();
- lmPend={x:Math.min(1,Math.max(0,(e.clientX-r.left)/r.width)),y:Math.min(1,Math.max(0,(e.clientY-r.top)/r.height))};lmDraw();$('#lmLabel').focus()};
 $('#lmSave').onclick=async()=>{const m=lmMap();if(!m)return lmSay('Ajoute d’abord une carte.');
  const pos=lmPend||(lmLot?{x:lmLot.x,y:lmLot.y}:null);if(!pos)return lmSay('Clique d’abord sur la carte, à l’endroit du terrain.');
  const{error}=await admL('lot_admin_save',{p_map:m.id,p_label:$('#lmLabel').value,p_x:pos.x,p_y:pos.y,p_id:lmLot?lmLot.id:null});
@@ -410,7 +475,7 @@ $('#lmEdit').onclick=()=>{const m=lmMap();if(!m)return lmSay('Aucune carte à mo
 $('#lmFCancel').onclick=()=>{$('#lmForm').hidden=true};
 $('#lmFSave').onclick=async()=>{const{data,error}=await admL('lot_admin_map_save',{p_id:lmEditId,p_name:$('#lmName').value,p_url:$('#lmUrl').value,p_view_w:parseInt($('#lmVw').value,10)||860});
  if(error)return lmSay('❌ '+error.message+(/function|schema cache/i.test(error.message)?' (lance d’abord le script SQL des terrains)':''));
- lotImgs={};lmCur=data;$('#lmForm').hidden=true;lmSay('✅ Carte enregistrée.');await loadLots()};
+ lotImgs={};lmCur=data;lmMVUrl=null;$('#lmForm').hidden=true;lmSay('✅ Carte enregistrée.');await loadLots()};
 $('#lmDel').onclick=async()=>{const m=lmMap();if(!m)return;if(!confirm('Supprimer la carte « '+m.name+' » et tous ses terrains ?'))return;
  const{error}=await admL('lot_admin_map_delete',{p_id:m.id});if(error)return lmSay('❌ '+error.message);lmCur=null;lmLot=null;lmPend=null;lmSay('Carte supprimée.');await loadLots()};
 // --- détection automatique des étiquettes (texte blanc) puis numérotation guidée
@@ -441,16 +506,43 @@ $('#lmDetect').onclick=async()=>{const m=lmMap();if(!m)return lmSay('Ajoute d’
   const found=detectLabels((y0,bh)=>cx.getImageData(0,y0,W,bh).data,W,H),have=lotRows.filter(l=>l.map_id===m.id);
   lqItems=found.filter(b=>!have.some(l=>Math.abs(l.x*W-b.cx)<14&&Math.abs(l.y*H-b.cy)<14));
   if(!lqItems.length)return lmSay(found.length?'Toutes les étiquettes détectées sont déjà enregistrées.':'Aucune étiquette détectée : place les terrains à la main (clic sur la carte).');
-  lqSrc=cv;lqW=W;lqH=H;lqI=0;lqAdded=0;lmSay(lqItems.length+' étiquette(s) détectée(s).');lqDraw();dLq.showModal();$('#lqIn').focus()
+  lqSrc=cv;lqW=W;lqH=H;lqI=0;lqAdded=0;lqUsed=new Set(have.map(l=>lqKey(l.label)));$('#lqSure').hidden=true;lmSay(lqItems.length+' étiquette(s) détectée(s).');lqDraw();dLq.showModal();$('#lqIn').focus()
  }catch(e){lmSay(e&&e.name==='SecurityError'?'❌ Cette image vient d’un autre site : la détection exige une image hébergée sur ton propre site (ex. cartes/amboise.png dans ton dépôt). Tu peux toujours placer les terrains à la main.':'❌ Impossible de lire l’image ('+(e&&e.message||e)+').')}};
-function lqDraw(){const b=lqItems[lqI],cv=$('#lqCv'),c=cv.getContext('2d'),sw=140,sh=70,sx=Math.max(0,Math.min(lqW-sw,b.cx-sw/2)),sy=Math.max(0,Math.min(lqH-sh,b.cy-sh/2)),k=cv.width/sw;
- c.imageSmoothingEnabled=false;c.drawImage(lqSrc,sx,sy,sw,sh,0,0,cv.width,cv.height);
- c.strokeStyle='#00e5ff';c.lineWidth=3;c.strokeRect((b.cx-b.w/2-sx)*k-3,(b.cy-b.h/2-sy)*k-3,b.w*k+6,b.h*k+6);
- $('#lqInfo').textContent=`Étiquette ${lqI+1} / ${lqItems.length} · ${lqAdded} enregistrée(s)`;$('#lqIn').value='';$('#lqErr').textContent=''}
-async function lqNext(save){const b=lqItems[lqI],m=lmMap();
- if(save){const{error}=await admL('lot_admin_save',{p_map:m.id,p_label:$('#lqIn').value,p_x:b.cx/lqW,p_y:b.cy/lqH});if(error){$('#lqErr').textContent=error.message;return}lqAdded++}
+let lqUsed=new Set();
+const lqKey=v=>lotNorm(String(v).replace(/[–—−]/g,'-').replace(/\s*-\s*/g,'-'));
+function lqPos(b){return b.x!=null?{x:b.x,y:b.y}:{x:b.cx/lqW,y:b.cy/lqH}}
+function lqDraw(){const b=lqItems[lqI],cv=$('#lqCv'),c=cv.getContext('2d');
+ if(b.img){   // étiquette importée : on affiche l'extrait de capture fourni avec le fichier
+  if(!b._im){b._im=new Image();b._im.src=b.img}
+  const paint=()=>{c.imageSmoothingEnabled=true;c.drawImage(b._im,0,0,cv.width,cv.height);const k=cv.width/300;c.strokeStyle='#00e5ff';c.lineWidth=3;c.strokeRect((b.cx-b.lw/2)*k-3,(b.cy-b.lh/2)*k-3,b.lw*k+6,b.lh*k+6)};
+  if(b._im.complete&&b._im.naturalWidth)paint();else b._im.onload=paint}
+ else{const sw=140,sh=70,sx=Math.max(0,Math.min(lqW-sw,b.cx-sw/2)),sy=Math.max(0,Math.min(lqH-sh,b.cy-sh/2)),k=cv.width/sw;
+  c.imageSmoothingEnabled=false;c.drawImage(lqSrc,sx,sy,sw,sh,0,0,cv.width,cv.height);
+  c.strokeStyle='#00e5ff';c.lineWidth=3;c.strokeRect((b.cx-b.w/2-sx)*k-3,(b.cy-b.h/2-sy)*k-3,b.w*k+6,b.h*k+6)}
+ $('#lqInfo').textContent=`Étiquette ${lqI+1} / ${lqItems.length} · ${lqAdded} enregistrée(s)`+(b.guess?` · lecture automatique : ${b.guess} ${b.sure?'(sûre)':'(à vérifier)'}`:'');
+ $('#lqIn').value=b.guess||'';$('#lqErr').textContent='';$('#lqIn').select()}
+async function lqNext(save){const b=lqItems[lqI],m=lmMap(),pp=lqPos(b);
+ if(save){const v=$('#lqIn').value;if(lqUsed.has(lqKey(v))){$('#lqErr').textContent='Ce numéro est déjà placé sur la carte : corrige-le, ou clique sur Passer.';return}
+  const{error}=await admL('lot_admin_save',{p_map:m.id,p_label:v,p_x:pp.x,p_y:pp.y});if(error){$('#lqErr').textContent=error.message;return}lqUsed.add(lqKey(v));lqAdded++}
  lqI++;if(lqI>=lqItems.length)return lqEnd();lqDraw();$('#lqIn').focus()}
 async function lqEnd(){dLq.close();lmSay(`✅ ${lqAdded} emplacement(s) ajouté(s).`);await loadLots()}
+$('#lmImp').onclick=()=>{if(!lmMap())return lmSay('Ajoute d’abord la carte complète (bouton Nouvelle carte).');$('#lmImpF').click()};
+$('#lmImpF').onchange=async e=>{const f=e.target.files[0];e.target.value='';if(!f)return;const m=lmMap();
+ let d;try{d=JSON.parse(await f.text())}catch(x){return lmSay('❌ Fichier illisible.')}
+ if(!d||!Array.isArray(d.items)||!d.items.length)return lmSay('❌ Ce fichier ne contient aucune étiquette.');
+ let im;try{im=await lotImage(m.url)}catch(x){return lmSay('❌ Image de la carte introuvable : vérifie son adresse (bouton Modifier).')}
+ if(Math.abs(im.w/im.h-d.width/d.height)>.02)return lmSay(`❌ L’image de cette carte (${im.w}×${im.h}) n’a pas les mêmes proportions que celle du fichier (${d.width}×${d.height}) : utilise la carte complète fournie.`);
+ const have=lotRows.filter(l=>l.map_id===m.id);lqUsed=new Set(have.map(l=>lqKey(l.label)));
+ lqItems=d.items.filter(b=>!have.some(l=>Math.abs(l.x-b.x)<.002&&Math.abs(l.y-b.y)<.002));
+ if(!lqItems.length)return lmSay('Toutes les étiquettes du fichier sont déjà enregistrées.');
+ lqI=0;lqAdded=0;const n=lqItems.filter(b=>b.sure&&b.guess).length;$('#lqSure').hidden=!n;$('#lqSure').textContent=`Accepter les ${n} lectures sûres`;
+ lmSay(lqItems.length+' étiquette(s) à numéroter.');lqDraw();dLq.showModal();$('#lqIn').focus()};
+$('#lqSure').onclick=async()=>{const m=lmMap(),list=lqItems.filter(b=>b.sure&&b.guess),done=new Set();let ok=0,ko=0;$('#lqSure').disabled=true;
+ for(const b of list){if(lqUsed.has(lqKey(b.guess))){ko++;continue}
+  $('#lqErr').textContent=`Enregistrement… ${ok+ko+1} / ${list.length}`;const{error}=await admL('lot_admin_save',{p_map:m.id,p_label:b.guess,p_x:b.x,p_y:b.y});
+  if(error)ko++;else{ok++;done.add(b);lqUsed.add(lqKey(b.guess))}}
+ lqAdded+=ok;lqItems=lqItems.filter(b=>!done.has(b));$('#lqSure').disabled=false;$('#lqSure').hidden=true;lqI=0;
+ if(!lqItems.length)return lqEnd();lqDraw();$('#lqErr').textContent=`${ok} enregistrée(s) automatiquement`+(ko?` · ${ko} à vérifier (doublon ou refus)`:'')+'.'};
 $('#lqOk').onclick=()=>lqNext(true);$('#lqSkip').onclick=()=>lqNext(false);$('#lqStop').onclick=lqEnd;
 $('#lqIn').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();lqNext(true)}});
 // ===== Recrutement staff =====
